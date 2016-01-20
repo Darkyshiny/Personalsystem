@@ -13,6 +13,8 @@ namespace Personalsystem.Models
         public string Surname { get; set; }
         public double Salary { get; set; }
         public string CVurl { get; set; }
+        
+        
 
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

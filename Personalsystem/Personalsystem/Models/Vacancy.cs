@@ -10,6 +10,8 @@ namespace Personalsystem.Models
     {
         public int Id { get; set; }
         public string Description { get; set; }
-
+        public int Did { get; set; }
+        [ForeignKey("Did")]
+        public virtual Department Department { get; set; }
     }
 }
