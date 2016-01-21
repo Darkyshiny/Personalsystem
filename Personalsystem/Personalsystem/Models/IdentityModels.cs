@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace Personalsystem.Models
 {
@@ -13,6 +14,7 @@ namespace Personalsystem.Models
         public string Surname { get; set; }
         public double Salary { get; set; }
         public string CVurl { get; set; }
+        public List<Message> PM { get; set; }
         
         
 
