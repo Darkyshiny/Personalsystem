@@ -387,30 +387,33 @@ namespace Personalsystem.Migrations
 
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-
+            
             RoleManager.Create(new IdentityRole("SuperAdmin"));
             RoleManager.Create(new IdentityRole("Admin"));
             RoleManager.Create(new IdentityRole("Executive"));
             RoleManager.Create(new IdentityRole("Employee"));
             RoleManager.Create(new IdentityRole("JobSearch"));
 
-            
+
 
             // Seed a superadmin
+            if (!context.user.Any(u => u.UserName == "SuperAdmin"))
+            {
+                context.user.AddOrUpdate(
 
-            context.user.AddOrUpdate(
+                    new ApplicationUser { UserName = "SuperAdmin", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com", PasswordHash = hasher.HashPassword("admin") }
 
-                new ApplicationUser { UserName = "SuperAdmin", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com", PasswordHash = hasher.HashPassword("admin") }
-
-                );
-            context.SaveChanges();
-            var useradmin = context.user.First(u => u.UserName == "SuperAdmin");
-            UserManager.AddToRole(useradmin.Id, "SuperAdmin");
-            context.SaveChanges();
-
+                    );
+                context.SaveChanges();
+                var useradmin = context.user.First(u => u.UserName == "SuperAdmin");
+                UserManager.AddToRole(useradmin.Id, "SuperAdmin");
+                context.group.Find(1).Employees.Add(useradmin);
+                context.SaveChanges();
+            }
             // Seed some users into a temporary list
 
             var tempGroup = new List<ApplicationUser>();
+            
             for (int i = 0; i < 100; i++)
             {
                 tempGroup.Add(
@@ -420,25 +423,24 @@ namespace Personalsystem.Migrations
             context.SaveChanges();
 
             // Add users from temporary list to userlist and random group
-
-            foreach (ApplicationUser user in tempGroup)
+            if (!context.user.Any(u => u.UserName == "User1"))
             {
-                context.user.AddOrUpdate(user);
+                foreach (ApplicationUser user in tempGroup)
+                {
+                    context.user.AddOrUpdate(user);
+                    context.SaveChanges();
+                    UserManager.AddToRole(user.Id, "Employee");
+                }
                 context.SaveChanges();
-                UserManager.AddToRole(user.Id, "Employee");
+
+                Random rng = new Random();
+                foreach (ApplicationUser user in tempGroup)
+                {
+                    int i = rng.Next(1, context.group.Count());
+                    context.group.Find(i).Employees.Add(user);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
-
-            Random rng = new Random();
-
-            foreach (ApplicationUser user in context.user)
-            {
-                
-                context.group.Find(3).Employees.Add(user);
-            }
-            context.SaveChanges();
-
-
         }
     }
 }
