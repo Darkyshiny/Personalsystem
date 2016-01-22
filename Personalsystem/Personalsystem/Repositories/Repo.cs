@@ -1,34 +1,27 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
 
 namespace Personalsystem.Repositories
 {
     public class Repo
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+        static Random rnd = new Random();
 
-
-        public void SetUserRole(string roleName, string userName)
+        public void GetRandom(int first, int last)
         {
-            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            RoleManager<IdentityRole> RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-
-            var user = UserManager.FindByName(userName);
-            var rolesForUser = UserManager.GetRoles(user.Id);
-
-            if (!rolesForUser.Contains(roleName))
-            {
-                UserManager.AddToRole(user.Id, roleName);
-            }
-
+            last++;
+            rnd.Next(first, last);
         }
+
+        public void SetUserRole()
+        {
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
+        }
+
     }
 }
