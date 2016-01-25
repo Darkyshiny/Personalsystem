@@ -70,24 +70,28 @@ namespace Personalsystem.Migrations
                         {
                             Id = 0,
                             Did = 1,
+                            Cid = 0,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         },
                         new Vacancy 
                         {
                             Id = 1, 
                             Did = 1,
+                            Cid = 0,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         },
                         new Vacancy 
                         {
                             Id = 2, 
                             Did = 2,
+                            Cid = 0,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         },
                         new Vacancy 
                         {
                             Id = 3,
                             Did = 2,
+                            Cid = 0,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         }
                     },
@@ -239,24 +243,28 @@ namespace Personalsystem.Migrations
                         {
                             Id = 4,
                             Did = 3,
+                            Cid = 1,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         },
                         new Vacancy 
                         {
                             Id = 5,
                             Did = 3,
+                            Cid = 1,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         },
                         new Vacancy 
                         {
                             Id = 6,
                             Did = 4,
+                            Cid = 1,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         },
                         new Vacancy 
                         {
                             Id = 7,
                             Did = 4,
+                            Cid = 1,
                             Description = "You need 10 years of experience and magical powers to get this job"
                         }
                     },
@@ -394,53 +402,54 @@ namespace Personalsystem.Migrations
             RoleManager.Create(new IdentityRole("Employee"));
             RoleManager.Create(new IdentityRole("JobSearch"));
 
-
-
-            // Seed a superadmin
-            if (!context.user.Any(u => u.UserName == "SuperAdmin"))
-            {
-                context.user.AddOrUpdate(
-
-                    new ApplicationUser { UserName = "SuperAdmin", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com", PasswordHash = hasher.HashPassword("admin") }
-
-                    );
-                context.SaveChanges();
-                var useradmin = context.user.First(u => u.UserName == "SuperAdmin");
-                UserManager.AddToRole(useradmin.Id, "SuperAdmin");
-                context.group.Find(1).Employees.Add(useradmin);
-                context.SaveChanges();
-            }
-            // Seed some users into a temporary list
-
-            var tempGroup = new List<ApplicationUser>();
             
-            for (int i = 0; i < 100; i++)
-            {
-                tempGroup.Add(
-                new ApplicationUser { UserName = "User" + i, Name = "Usain", Surname = "Userian", Email = "user" + i + "@gmail.com", PasswordHash = hasher.HashPassword("user" + i) }
-                    );
-            };
-            context.SaveChanges();
+            /* 
+             * 
+             * 
+             * GER UPP PÅ ATT SEEDA USERS SKAPA DOM MANUELLT!!!
+             * 
+             * 
+            */
 
-            // Add users from temporary list to userlist and random group
-            if (!context.user.Any(u => u.UserName == "User1"))
-            {
-                foreach (ApplicationUser user in tempGroup)
-                {
-                    context.user.AddOrUpdate(user);
-                    context.SaveChanges();
-                    UserManager.AddToRole(user.Id, "Employee");
-                }
-                context.SaveChanges();
+            //// Seed a superadmin
+            //if (!context.user.Any(u => u.UserName == "SuperAdmin"))
+            //{
+            //    string password = hasher.HashPassword("admin");
+            //    var useradmin = new ApplicationUser { UserName = "SuperAdmin", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com", PasswordHash = password};
+            //    UserManager.Create(useradmin);
+            //    //context.group.Find(1).Employees.Add(useradmin);
+            //    //context.SaveChanges();
+            //    UserManager.AddToRole(useradmin.Id, "SuperAdmin");
+            //}
+            //// Seed some users into a temporary list
 
-                Random rng = new Random();
-                foreach (ApplicationUser user in tempGroup)
-                {
-                    int i = rng.Next(1, context.group.Count());
-                    context.group.Find(i).Employees.Add(user);
-                }
-                context.SaveChanges();
-            }
+            //var tempGroup = new List<ApplicationUser>();
+            
+
+
+
+            //context.SaveChanges();
+
+            //// Add users from temporary list to userlist and random group
+            //if (!context.user.Any(u => u.UserName == "User1"))
+            //{
+            //    Random rng = new Random();
+            //    for (int i = 0; i < 100; i++ )
+            //    {
+            //        string password = hasher.HashPassword("user" + i);
+            //        var user = new ApplicationUser { UserName = "User" + i, Name = "Usain", Surname = "Userian", Email = "user" + i + "@gmail.com", PasswordHash = password };
+            //        UserManager.Create(user);
+            //        int r = rng.Next(1, context.group.Count());
+            //        //context.group.Find(3).Employees.Add(user);
+            //        //context.SaveChanges();
+            //        UserManager.AddToRole(user.Id, "Employee");
+            //    }
+            //    foreach (ApplicationUser user in tempGroup)
+            //    {
+            //    }
+            //    context.SaveChanges();
+            //}
+            
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Personalsystem.Migrations
                         Company_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ApplicationUsers", t => t.Uid, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.Uid, cascadeDelete: true)
                 .ForeignKey("dbo.Vacancies", t => t.Vid, cascadeDelete: true)
                 .ForeignKey("dbo.Companies", t => t.Company_Id)
                 .Index(t => t.Uid)
@@ -36,7 +36,7 @@ namespace Personalsystem.Migrations
                 .Index(t => t.Company_Id);
             
             CreateTable(
-                "dbo.ApplicationUsers",
+                "dbo.AspNetUsers",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
@@ -62,7 +62,7 @@ namespace Personalsystem.Migrations
                 .Index(t => t.Group_Id);
             
             CreateTable(
-                "dbo.IdentityUserClaims",
+                "dbo.AspNetUserClaims",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -72,11 +72,11 @@ namespace Personalsystem.Migrations
                         ApplicationUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
                 .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
-                "dbo.IdentityUserLogins",
+                "dbo.AspNetUserLogins",
                 c => new
                     {
                         UserId = c.String(nullable: false, maxLength: 128),
@@ -85,7 +85,7 @@ namespace Personalsystem.Migrations
                         ApplicationUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.UserId)
-                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
                 .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
@@ -101,13 +101,13 @@ namespace Personalsystem.Migrations
                         Company_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
                 .ForeignKey("dbo.Companies", t => t.Company_Id)
                 .Index(t => t.ApplicationUser_Id)
                 .Index(t => t.Company_Id);
             
             CreateTable(
-                "dbo.IdentityUserRoles",
+                "dbo.AspNetUserRoles",
                 c => new
                     {
                         RoleId = c.String(nullable: false, maxLength: 128),
@@ -116,8 +116,8 @@ namespace Personalsystem.Migrations
                         IdentityRole_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.RoleId, t.UserId })
-                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
-                .ForeignKey("dbo.IdentityRoles", t => t.IdentityRole_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
+                .ForeignKey("dbo.AspNetRoles", t => t.IdentityRole_Id)
                 .Index(t => t.ApplicationUser_Id)
                 .Index(t => t.IdentityRole_Id);
             
@@ -128,13 +128,13 @@ namespace Personalsystem.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Description = c.String(),
                         Did = c.Int(nullable: false),
-                        Company_Id = c.Int(),
+                        Cid = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Companies", t => t.Cid, cascadeDelete: true)
                 .ForeignKey("dbo.Departments", t => t.Did, cascadeDelete: true)
-                .ForeignKey("dbo.Companies", t => t.Company_Id)
                 .Index(t => t.Did)
-                .Index(t => t.Company_Id);
+                .Index(t => t.Cid);
             
             CreateTable(
                 "dbo.Departments",
@@ -163,7 +163,7 @@ namespace Personalsystem.Migrations
                 .Index(t => t.Department_Id);
             
             CreateTable(
-                "dbo.IdentityRoles",
+                "dbo.AspNetRoles",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
@@ -175,43 +175,43 @@ namespace Personalsystem.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.IdentityUserRoles", "IdentityRole_Id", "dbo.IdentityRoles");
-            DropForeignKey("dbo.Vacancies", "Company_Id", "dbo.Companies");
+            DropForeignKey("dbo.AspNetUserRoles", "IdentityRole_Id", "dbo.AspNetRoles");
             DropForeignKey("dbo.Messages", "Company_Id", "dbo.Companies");
             DropForeignKey("dbo.Departments", "Company_Id", "dbo.Companies");
             DropForeignKey("dbo.Applications", "Company_Id", "dbo.Companies");
             DropForeignKey("dbo.Applications", "Vid", "dbo.Vacancies");
             DropForeignKey("dbo.Vacancies", "Did", "dbo.Departments");
             DropForeignKey("dbo.Groups", "Department_Id", "dbo.Departments");
-            DropForeignKey("dbo.ApplicationUsers", "Group_Id", "dbo.Groups");
-            DropForeignKey("dbo.Applications", "Uid", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.IdentityUserRoles", "ApplicationUser_Id", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.Messages", "ApplicationUser_Id", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.IdentityUserLogins", "ApplicationUser_Id", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.IdentityUserClaims", "ApplicationUser_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.AspNetUsers", "Group_Id", "dbo.Groups");
+            DropForeignKey("dbo.Vacancies", "Cid", "dbo.Companies");
+            DropForeignKey("dbo.Applications", "Uid", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserRoles", "ApplicationUser_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Messages", "ApplicationUser_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserLogins", "ApplicationUser_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserClaims", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropIndex("dbo.Groups", new[] { "Department_Id" });
             DropIndex("dbo.Departments", new[] { "Company_Id" });
-            DropIndex("dbo.Vacancies", new[] { "Company_Id" });
+            DropIndex("dbo.Vacancies", new[] { "Cid" });
             DropIndex("dbo.Vacancies", new[] { "Did" });
-            DropIndex("dbo.IdentityUserRoles", new[] { "IdentityRole_Id" });
-            DropIndex("dbo.IdentityUserRoles", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "IdentityRole_Id" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.Messages", new[] { "Company_Id" });
             DropIndex("dbo.Messages", new[] { "ApplicationUser_Id" });
-            DropIndex("dbo.IdentityUserLogins", new[] { "ApplicationUser_Id" });
-            DropIndex("dbo.IdentityUserClaims", new[] { "ApplicationUser_Id" });
-            DropIndex("dbo.ApplicationUsers", new[] { "Group_Id" });
+            DropIndex("dbo.AspNetUserLogins", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.AspNetUserClaims", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.AspNetUsers", new[] { "Group_Id" });
             DropIndex("dbo.Applications", new[] { "Company_Id" });
             DropIndex("dbo.Applications", new[] { "Vid" });
             DropIndex("dbo.Applications", new[] { "Uid" });
-            DropTable("dbo.IdentityRoles");
+            DropTable("dbo.AspNetRoles");
             DropTable("dbo.Groups");
             DropTable("dbo.Departments");
             DropTable("dbo.Vacancies");
-            DropTable("dbo.IdentityUserRoles");
+            DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.Messages");
-            DropTable("dbo.IdentityUserLogins");
-            DropTable("dbo.IdentityUserClaims");
-            DropTable("dbo.ApplicationUsers");
+            DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.AspNetUserClaims");
+            DropTable("dbo.AspNetUsers");
             DropTable("dbo.Applications");
             DropTable("dbo.Companies");
         }
