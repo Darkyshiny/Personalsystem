@@ -6,11 +6,9 @@ using System.Web;
 
 namespace Personalsystem.Models
 {
-    public class Vacancy
+    public class BlogPost : Message
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-
+        public string Name { get; set; }
         public int cId { get; set; }
         [ForeignKey("cId")]
         public virtual Company company { get; set; }

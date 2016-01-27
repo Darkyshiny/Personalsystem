@@ -38,8 +38,8 @@ namespace Personalsystem.Controllers
             return View(company);
         }
 
-        // GET: Companies/Create
-        [Authorize(Roles=("SuperAdmin"))]
+        // GET: Companies/Create 
+        [Authorize(Roles=("Super Admin"))]
         public ActionResult Create()
         {
             return View();
@@ -50,7 +50,7 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ("SuperAdmin"))]
+        [Authorize(Roles = ("Super Admin"))]
         public ActionResult Create([Bind(Include = "Id,Name,Description")] Company company)
         {
             if (ModelState.IsValid)
@@ -64,7 +64,7 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Companies/Edit/5
-        [Authorize(Roles = ("SuperAdmin, Admin"))]
+        [Authorize(Roles = ("Super Admin, Admin"))]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -84,7 +84,7 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ("SuperAdmin, Admin"))]
+        [Authorize(Roles = ("Super Admin, Admin"))]
         public ActionResult Edit([Bind(Include = "Id,Name,Description")] Company company)
         {
             if (ModelState.IsValid)
@@ -97,7 +97,7 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Companies/Delete/5
-        [Authorize(Roles = ("SuperAdmin"))]
+        [Authorize(Roles = ("Super Admin"))]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -115,10 +115,10 @@ namespace Personalsystem.Controllers
         // POST: Companies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ("SuperAdmin"))]
         public ActionResult DeleteConfirmed(int id)
         {
             Company company = db.company.Find(id);
+            
             db.company.Remove(company);
             db.SaveChanges();
             return RedirectToAction("Index");

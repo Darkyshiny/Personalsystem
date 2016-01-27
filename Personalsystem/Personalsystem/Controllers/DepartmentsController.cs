@@ -19,8 +19,8 @@ namespace Personalsystem.Controllers
         // GET: Departments
         public ActionResult Index()
         {
-
-            return View(db.department.ToList());
+            
+            return View();
         }
 
         // GET: Departments/Details/5
