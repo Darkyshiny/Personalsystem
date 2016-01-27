@@ -6,11 +6,11 @@ using System.Web;
 
 namespace Personalsystem.Models
 {
-    public class Message
+    public class PrivateMessage : Message
     {
-        public int Id { get; set; }
-        public string Content { get; set; }
-        public DateTime Timestamp { get; set; }
-    }
+        public string Uid { get; set; }
+        [ForeignKey("Uid")]
+        public virtual ApplicationUser user { get; set; }
 
+    }
 }

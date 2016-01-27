@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Personalsystem.Models
 {
@@ -14,7 +16,11 @@ namespace Personalsystem.Models
         public string Surname { get; set; }
         public double Salary { get; set; }
         public string CVurl { get; set; }
-        public List<Message> PM { get; set; }
+        public int? cId { get; set; }
+        [ForeignKey("cId")]
+        public virtual Company company { get; set; }
+
+
         
         
 

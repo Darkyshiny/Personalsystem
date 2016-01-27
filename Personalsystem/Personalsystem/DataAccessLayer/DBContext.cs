@@ -17,6 +17,8 @@ namespace Personalsystem.DataAccessLayer
         public DbSet<Group> group { get; set; }
         public DbSet<Vacancy> vacancy { get; set; }
         public DbSet<ApplicationUser> user { get; set; }
+        public DbSet<BlogPost> post { get; set; }
+        public DbSet<PrivateMessage> message { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
