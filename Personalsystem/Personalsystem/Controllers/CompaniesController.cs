@@ -33,6 +33,8 @@ namespace Personalsystem.Controllers
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
+            List<Department> DepartmentList = db.department.Where(r => r.cId == id).ToList();
+            ViewBag.DepartmentList = DepartmentList;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

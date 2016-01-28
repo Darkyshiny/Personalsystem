@@ -5,7 +5,9 @@
 }
 
 <h2>Details</h2>
-
+<p>
+    @Html.ActionLink("Create New Department", "Create", "Departments", new { cId = Model.Id }, null)
+</p>
 <div>
     <h4>Company</h4>
     <hr />
@@ -25,10 +27,28 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-
     </dl>
 </div>
+<h4>Departments</h4>
+<table>
+    @foreach (@Personalsystem.Models.Department item in ViewBag.DepartmentList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(loopitem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(loopitem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Edit Department", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit Company", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
