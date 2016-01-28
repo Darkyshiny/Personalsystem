@@ -8,8 +8,8 @@ namespace Personalsystem.Models
 {
     public class PrivateMessage : Message
     {
-        public string Uid { get; set; }
-        [ForeignKey("Uid")]
+        public string uId { get; set; }
+        [ForeignKey("uId")]
         public virtual ApplicationUser user { get; set; }
 
     }

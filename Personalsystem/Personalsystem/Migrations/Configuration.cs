@@ -7,6 +7,7 @@ namespace Personalsystem.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using System.Collections.Generic;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Personalsystem.DataAccessLayer.PersonalSystemContext>
     {
@@ -17,9 +18,10 @@ namespace Personalsystem.Migrations
 
         protected override void Seed(Personalsystem.DataAccessLayer.PersonalSystemContext context)
         {
-            context.company.AddOrUpdate(new Company { Name = "Test Company", Description = "Testing Company" });
+            if (context.post.FirstOrDefault().Equals(default(Company)))
+                context.company.AddOrUpdate(new Company { Name = "Test Company", Description = "Testing Company" });
             context.SaveChanges();
-            if(!context.post.Find(1).Name.Equals("Test Post"))
+            if (context.post.FirstOrDefault().Equals(default(BlogPost)))
                 context.post.AddOrUpdate(new BlogPost { Name="Test Post", Content="Test Content", Timestamp= DateTime.Now, cId = 1 });
             context.SaveChanges();
             

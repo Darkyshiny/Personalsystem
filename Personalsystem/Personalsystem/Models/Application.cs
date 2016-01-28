@@ -12,13 +12,13 @@ namespace Personalsystem.Models
         public int Id { get; set; }
 
         [Required]
-        public string Uid { get; set; }
-        [ForeignKey("Uid")]
+        public string uId { get; set; }
+        [ForeignKey("uId")]
         public virtual ApplicationUser ApplicationUser { get; set; }
 
         [Required]
-        public int Vid { get; set; }
-        [ForeignKey("Vid")]
+        public int vId { get; set; }
+        [ForeignKey("vId")]
         public virtual Vacancy Vacancy { get; set; }
 
         public string CoverLetter { get; set; }
