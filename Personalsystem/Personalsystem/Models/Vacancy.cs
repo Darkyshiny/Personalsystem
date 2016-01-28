@@ -11,10 +11,7 @@ namespace Personalsystem.Models
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public int Did { get; set; }
-        [ForeignKey("dId")]
-        public virtual Department Department { get; set; }
-        public int Cid { get; set; }
+        public int cId { get; set; }
         [ForeignKey("cId")]
         public virtual Company Company { get; set; }
 
@@ -23,7 +20,7 @@ namespace Personalsystem.Models
         public List<Vacancy> ListVacancies(Company company)
         {
             var vacancies = db.vacancy.ToList();
-            var result = vacancies.Where(v => v.Cid == company.Id).ToList();
+            var result = vacancies.Where(v => v.cId == company.Id).ToList();
             if (result.Count > 0)
             {
                 return result.OrderBy(v => v.Id).ToList();
@@ -37,7 +34,7 @@ namespace Personalsystem.Models
         public List<Vacancy> ListVacancies(Company company, string search)
         {
             var vacancies = db.vacancy.ToList();
-            var result = vacancies.Where(v => v.Cid == company.Id).ToList();
+            var result = vacancies.Where(v => v.cId == company.Id).ToList();
             var searchString = result.Where(r => r.Description.Contains(search)).ToString();
 
             if (result.Count > 0 & searchString.Contains(search))
