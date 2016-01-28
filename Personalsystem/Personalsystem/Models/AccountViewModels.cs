@@ -49,8 +49,7 @@ namespace Personalsystem.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
 
         [Required]

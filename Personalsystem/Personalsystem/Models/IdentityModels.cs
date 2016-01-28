@@ -19,6 +19,9 @@ namespace Personalsystem.Models
         public int? cId { get; set; }
         [ForeignKey("cId")]
         public virtual Company company { get; set; }
+        public int? gId { get; set; }
+        [ForeignKey("gId")]
+        public virtual Group group { get; set; }
 
 
         
