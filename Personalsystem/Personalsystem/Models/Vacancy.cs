@@ -1,6 +1,7 @@
 ﻿using Personalsystem.DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -14,7 +15,10 @@ namespace Personalsystem.Models
         public int cId { get; set; }
         [ForeignKey("cId")]
         public virtual Company Company { get; set; }
-
+        public int? dId { get; set; }
+        [ForeignKey("dId")]
+        public virtual Department Department { get; set; }
+        
         private PersonalSystemContext db = new PersonalSystemContext();
 
         public List<Vacancy> ListVacancies(Company company)

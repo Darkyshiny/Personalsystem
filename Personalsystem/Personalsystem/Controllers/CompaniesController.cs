@@ -10,16 +10,23 @@ using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
     public class CompaniesController : Controller
     {
+        private Repo repo = new Repo();
         private PersonalSystemContext db = new PersonalSystemContext();
 
         // GET: Companies
-        public ActionResult Index()
+        public ActionResult Index(string redirected)
         {
+            ViewBag.Redirected = redirected;
+            if (User.Identity.Name == "admin@personalsystem.com" && !User.IsInRole("Super Admin"))
+                repo.SetUserRoleToSuperAdmin(User.Identity.GetUserId());
+            if (User.Identity.Name == "companyadmin@personalsystem.com" && !User.IsInRole("Admin"))
+                repo.SerUserRoleToAdmin(User.Identity.GetUserId(), 1);
             return View(db.company.ToList());
         }
 
@@ -67,6 +74,12 @@ namespace Personalsystem.Controllers
         [Authorize(Roles = ("Super Admin, Admin"))]
         public ActionResult Edit(int? id)
         {
+            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
+
+            if (!User.IsInRole("Admin") || user.cId != id)
+                if (!User.IsInRole("Super Admin"))
+                    return RedirectToAction("Index", new { redirected = "You are only allowed to edit your own company" });
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
