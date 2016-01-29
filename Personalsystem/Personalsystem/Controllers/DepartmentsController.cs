@@ -7,11 +7,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Personalsystem.Models;
 
 namespace Personalsystem.Controllers
 {
-    [Authorize(Roles = ("SuperAdmin, Admin"))]
+    [Authorize(Roles = ("Super Admin, Admin"))]
     public class DepartmentsController : Controller
     {
         private PersonalSystemContext db = new PersonalSystemContext();
@@ -19,11 +21,18 @@ namespace Personalsystem.Controllers
         // GET: Departments
         public ActionResult Index()
         {
-            
-            return View();
+            List<Department> departmentList = new List<Department>();
+            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
+            if (!User.IsInRole("Super Admin"))
+                departmentList = db.department.Where(r => r.cId == user.cId).ToList();
+            else 
+                departmentList = db.department.OrderBy(r => r.cId).ToList();
+
+            return View(departmentList);
         }
 
         // GET: Departments/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -39,7 +48,7 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Departments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? cId)
         {
             return View();
         }
@@ -49,13 +58,15 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description")] Department department)
+        public ActionResult Create([Bind(Include = "Id,Name,Description")] Department department, int? cId)
         {
+            
             if (ModelState.IsValid)
             {
+                department.cId = cId.Value;
                 db.department.Add(department);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Companies", new { id = department.cId });
             }
 
             return View(department);
@@ -85,9 +96,12 @@ namespace Personalsystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(department).State = EntityState.Modified;
+                Department depart = db.department.Find(department.Id);
+                department.cId = depart.cId;
+                db.department.Remove(depart);
+                db.department.Add(department);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Companies", new { id = department.cId });
             }
             return View(department);
         }
@@ -115,7 +129,7 @@ namespace Personalsystem.Controllers
             Department department = db.department.Find(id);
             db.department.Remove(department);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Companies", new { id = department.cId });
         }
 
         protected override void Dispose(bool disposing)

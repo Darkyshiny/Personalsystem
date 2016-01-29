@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using System.Web.Hosting;
+using Microsoft.AspNet.Identity;
 
 namespace Personalsystem.Controllers
 {
@@ -19,7 +20,8 @@ namespace Personalsystem.Controllers
         // GET: Files
         public ActionResult Index(int? id)
         {
-            id = 1;
+            id = 2;
+            TempData["AppId"] = id;
             ViewBag.Description = db.vacancy.Find(id).Description.ToString();
             return View();
         }
@@ -68,6 +70,22 @@ namespace Personalsystem.Controllers
                 System.IO.File.Delete(pathString);
             }
             upload.SaveAs(pathString);
+
+            // Update Application and User
+            Application app = new Application();
+  
+            var user = db.user.Find(User.Identity.GetUserId());
+            user.CVurl = pathString;
+            //db.SaveChanges();
+
+            app.uId = user.Id;
+            app.CoverLetter = letter;
+            int test;
+            int.TryParse(TempData["AppId"].ToString(), out test);
+            app.vId = test;
+
+            db.application.Add(app);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 

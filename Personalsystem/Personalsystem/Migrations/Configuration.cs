@@ -160,7 +160,6 @@ using System.Linq;
                 );
                 context.SaveChanges();
             }
-
             var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             if (!RoleManager.RoleExists("Super Admin"))
