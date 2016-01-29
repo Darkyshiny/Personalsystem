@@ -20,5 +20,11 @@ namespace Personalsystem.Controllers
             var vacancy = repo.ListVacancies(companyId);
             return View(vacancy);
         }
+
+        // GET: Apply
+        public ActionResult Apply()
+        {
+            return View();
+        }
     }
 }
