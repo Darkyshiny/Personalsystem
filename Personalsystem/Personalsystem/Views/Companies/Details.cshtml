@@ -6,7 +6,7 @@
 
 <h2>Details</h2>
 
-<div>
+<div class="col-md-12">
     <h4>Company</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -25,10 +25,56 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-
     </dl>
+    <p>
+        @Html.ActionLink("Edit Company", "Edit", new { id = Model.Id })
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+<h4 class="col-md-6">Company Departments</h4>
+<h4 class="col-md-6">Department Groups</h4>
+<table class=" col-md-6">
+    @foreach (Personalsystem.Models.Department item in ViewBag.DepartmentList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(loopitem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(loopitem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Edit Department", "Edit", "Departments", new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Departments", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "Departments", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
+</table>
+
+<table class="col-md-6">
+    @foreach (Personalsystem.Models.Group item in ViewBag.GroupList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(loopitem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(loopitem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(loopitem => item.department.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit Group", "Edit", "Groups", new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Groups", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "Groups", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
+</table>
+<p class="col-md-6">
+    @Html.ActionLink("Create New Department", "Create", "Departments", new { cId = Model.Id }, null)
+</p>
+<p class="col-md-6">
+    @Html.ActionLink("Create New Group", "Create","Groups") 
 </p>
