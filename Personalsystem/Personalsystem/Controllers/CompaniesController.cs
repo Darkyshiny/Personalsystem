@@ -20,13 +20,12 @@ namespace Personalsystem.Controllers
         private PersonalSystemContext db = new PersonalSystemContext();
 
         // GET: Companies
-        public ActionResult Index(string redirected)
+        public ActionResult Index()
         {
-            ViewBag.Redirected = redirected;
-            if (User.Identity.Name == "admin@personalsystem.com" && !User.IsInRole("Super Admin"))
-                repo.SetUserRoleToSuperAdmin(User.Identity.GetUserId());
-            if (User.Identity.Name == "companyadmin@personalsystem.com" && !User.IsInRole("Admin"))
-                repo.SerUserRoleToAdmin(User.Identity.GetUserId(), 1);
+            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
+            if (User.IsInRole("Admin") || User.IsInRole("Executive") || User.IsInRole("Employee"))
+                return RedirectToAction("Details", new { id = user.cId });
+
             return View(db.company.ToList());
         }
 
@@ -34,6 +33,8 @@ namespace Personalsystem.Controllers
         public ActionResult Details(int? id)
         {
             List<Department> DepartmentList = db.department.Where(r => r.cId == id).ToList();
+            List<Group> GroupList = db.group.Where(r => r.department.cId == id).ToList();
+            ViewBag.GroupList = GroupList;
             ViewBag.DepartmentList = DepartmentList;
             if (id == null)
             {
@@ -48,7 +49,7 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Companies/Create 
-        [Authorize(Roles=("Super Admin"))]
+        [Authorize(Roles = ("Super Admin"))]
         public ActionResult Create()
         {
             return View();
@@ -76,12 +77,6 @@ namespace Personalsystem.Controllers
         [Authorize(Roles = ("Super Admin, Admin"))]
         public ActionResult Edit(int? id)
         {
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
-
-            if (!User.IsInRole("Admin") || user.cId != id)
-                if (!User.IsInRole("Super Admin"))
-                    return RedirectToAction("Index", new { redirected = "You are only allowed to edit your own company" });
-            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -133,7 +128,7 @@ namespace Personalsystem.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Company company = db.company.Find(id);
-            
+
             db.company.Remove(company);
             db.SaveChanges();
             return RedirectToAction("Index");
