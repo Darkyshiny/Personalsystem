@@ -26,6 +26,19 @@ namespace Personalsystem.Repositories
             UserManager.AddToRole(userid, "Super Admin");
         }
 
+        public List<ApplicationUser> FindUser(string name)
+        {
+            var query = db.user.Where(u => u.UserName.Equals(name));
+            return query.ToList();
+        }
+
+
+        public List<ApplicationUser> FindPersonalsBySearchDepId(string uname)
+        //Returns a list of all Departement by int id
+        {
+            var query = db.user.Where(u => u.UserName == uname);
+            return query.ToList();
+        }
 
         internal void SerUserRoleToAdmin(string userid, int companyid)
         {
@@ -35,5 +48,8 @@ namespace Personalsystem.Repositories
             db.SaveChanges();
             
         }
+
+
+
     }
 }
