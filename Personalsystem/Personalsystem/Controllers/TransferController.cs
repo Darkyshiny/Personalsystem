@@ -98,18 +98,18 @@ namespace Personalsystem.Controllers
             transferVM.userID = applicationUser.Id;
             transferVM.groupID = applicationUser.gId;
 
-            //ViewBag.dbgrouplist = new SelectList(db.group, "Id", "Name");
+            ViewBag.groupID = new SelectList(db.group, "Id", "Name");
 
-            var target = db.group.Select(g => new SelectListItem
-            {
-                Value = transferVM.groupID.Equals(g.Id).ToString(),
-                Text = g.Name,
-                Selected = transferVM.groupID.Equals(g.Id)
+            //var target = db.group.Select(g => new SelectListItem
+            //{
+            //    Value = transferVM.groupID.Equals(g.Id).ToString(),
+            //    Text = g.Name,
+            //    Selected = transferVM.groupID.Equals(g.Id)
 
 
-            });
+            //});
 
-            transferVM.dbgroupList = new SelectList(target);
+            //transferVM.dbgroupList = new SelectList(target);
 
 
             ViewBag.User = applicationUser.UserName.ToString() + " - UserId:   " + transferVM.userID.ToString() + " - groupID:  " + transferVM.groupID.ToString();
@@ -134,13 +134,13 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "userID, groupID")] TransferVM transferVM)
         {
-            ViewBag.User = "  UserId:   " + transferVM.userID.ToString() + " - groupID: " + transferVM.groupID.ToString() + " - Posted";
+            ViewBag.User = "  UserId:   " + transferVM.userID + " - groupID: " + transferVM.groupID + " - Posted";
             var user = db.user.First(u => u.Id == transferVM.userID);
-            ViewBag.dbgrouplist = new SelectList(db.group, "Id", "Name");
+            ViewBag.groupID = new SelectList(db.group, "Id", "Name");
             if (ModelState.IsValid)
             {
                 //Ta User ID från viewmodell, sök i User efter användern med ID, ändra användarens grupp till viewmodells grupp.
-                db.user.First(u => u.Id == transferVM.userID).gId = transferVM.groupID;
+                db.user.Find(transferVM.userID).gId = transferVM.groupID;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

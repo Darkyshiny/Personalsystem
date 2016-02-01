@@ -166,19 +166,16 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\TransferController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VacancyController.cs" />
     <Compile Include="DataAccessLayer\DbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602010904350_Initial.cs" />
-    <Compile Include="Migrations\201602010904350_Initial.Designer.cs">
-      <DependentUpon>201602010904350_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602010905530_Secondary.cs" />
-    <Compile Include="Migrations\201602010905530_Secondary.Designer.cs">
-      <DependentUpon>201602010905530_Secondary.cs</DependentUpon>
+    <Compile Include="Migrations\201602011404551_Initial.cs" />
+    <Compile Include="Migrations\201602011404551_Initial.Designer.cs">
+      <DependentUpon>201602011404551_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -192,6 +189,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PrivateMessage.cs" />
     <Compile Include="Models\Vacancy.cs" />
+    <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repo.cs" />
     <Compile Include="Startup.cs" />
@@ -271,6 +269,11 @@
     <Content Include="Views\Groups\Index.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Transfer\Create.cshtml" />
+    <Content Include="Views\Transfer\Delete.cshtml" />
+    <Content Include="Views\Transfer\Details.cshtml" />
+    <Content Include="Views\Transfer\Edit.cshtml" />
+    <Content Include="Views\Transfer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -283,11 +286,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602010904350_Initial.resx">
-      <DependentUpon>201602010904350_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602010905530_Secondary.resx">
-      <DependentUpon>201602010905530_Secondary.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602011404551_Initial.resx">
+      <DependentUpon>201602011404551_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
