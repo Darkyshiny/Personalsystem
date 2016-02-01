@@ -9,6 +9,34 @@ namespace Personalsystem.Migrations
         {
             CreateTable(
                 "dbo.Applications",
+                "dbo.Applications",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        vId = c.Int(nullable: false),
+                        CoverLetter = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Vacancies", t => t.vId, cascadeDelete: true)
+                .Index(t => t.vId);
+            
+            CreateTable(
+                "dbo.Vacancies",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Description = c.String(),
+                        cId = c.Int(nullable: false),
+                        dId = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
+                .ForeignKey("dbo.Departments", t => t.dId)
+                .Index(t => t.cId)
+                .Index(t => t.dId);
+            
+            CreateTable(
+                "dbo.Companies",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -198,10 +226,12 @@ namespace Personalsystem.Migrations
             DropForeignKey("dbo.Departments", "cId", "dbo.Companies");
             DropForeignKey("dbo.AspNetUsers", "cId", "dbo.Companies");
             DropForeignKey("dbo.AspNetUserClaims", "ApplicationUser_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Groups", "dId", "dbo.Departments");
+            DropForeignKey("dbo.Applications", "vId", "dbo.Vacancies");
+            DropForeignKey("dbo.Vacancies", "dId", "dbo.Departments");
+            DropForeignKey("dbo.Departments", "cId", "dbo.Companies");
+            DropForeignKey("dbo.Vacancies", "cId", "dbo.Companies");
             DropIndex("dbo.BlogPosts", new[] { "cId" });
-            DropIndex("dbo.PrivateMessages", new[] { "uId" });
-            DropIndex("dbo.Vacancies", new[] { "dId" });
-            DropIndex("dbo.Vacancies", new[] { "cId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "IdentityRole_Id" });
             DropIndex("dbo.AspNetUserRoles", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.AspNetUserLogins", new[] { "ApplicationUser_Id" });
@@ -210,12 +240,14 @@ namespace Personalsystem.Migrations
             DropIndex("dbo.AspNetUserClaims", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.AspNetUsers", new[] { "gId" });
             DropIndex("dbo.AspNetUsers", new[] { "cId" });
+            DropIndex("dbo.PrivateMessages", new[] { "uId" });
+            DropIndex("dbo.Groups", new[] { "dId" });
+            DropIndex("dbo.Departments", new[] { "cId" });
+            DropIndex("dbo.Vacancies", new[] { "dId" });
+            DropIndex("dbo.Vacancies", new[] { "cId" });
             DropIndex("dbo.Applications", new[] { "vId" });
-            DropIndex("dbo.Applications", new[] { "uId" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.BlogPosts");
-            DropTable("dbo.PrivateMessages");
-            DropTable("dbo.Vacancies");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.Departments");
@@ -223,6 +255,11 @@ namespace Personalsystem.Migrations
             DropTable("dbo.Companies");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.PrivateMessages");
+            DropTable("dbo.Groups");
+            DropTable("dbo.Departments");
+            DropTable("dbo.Companies");
+            DropTable("dbo.Vacancies");
             DropTable("dbo.Applications");
         }
     }
