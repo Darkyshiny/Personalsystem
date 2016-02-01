@@ -166,14 +166,19 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VacancyController.cs" />
     <Compile Include="DataAccessLayer\DbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601291151107_Initial1.cs" />
-    <Compile Include="Migrations\201601291151107_Initial1.Designer.cs">
-      <DependentUpon>201601291151107_Initial1.cs</DependentUpon>
+    <Compile Include="Migrations\201602010904350_Initial.cs" />
+    <Compile Include="Migrations\201602010904350_Initial.Designer.cs">
+      <DependentUpon>201602010904350_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602010905530_Secondary.cs" />
+    <Compile Include="Migrations\201602010905530_Secondary.Designer.cs">
+      <DependentUpon>201602010905530_Secondary.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -265,6 +270,7 @@
     <Content Include="Views\Groups\Edit.cshtml" />
     <Content Include="Views\Groups\Index.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -277,8 +283,11 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201601291151107_Initial1.resx">
-      <DependentUpon>201601291151107_Initial1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602010904350_Initial.resx">
+      <DependentUpon>201602010904350_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602010905530_Secondary.resx">
+      <DependentUpon>201602010905530_Secondary.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

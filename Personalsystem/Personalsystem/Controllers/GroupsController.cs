@@ -40,13 +40,13 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Groups/Create
-        public ActionResult Create()
+        public ActionResult Create(int? cId)
         {
             ApplicationUser user = db.user.Find(User.Identity.GetUserId());
             if(!User.IsInRole("Super Admin"))
-                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == user.cId), "Id", "Name");
+                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
             else
-                ViewBag.dId = new SelectList(db.department, "Id", "Name");
+                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
             return View();
         }
 
