@@ -100,16 +100,16 @@ namespace Personalsystem.Controllers
 
             //ViewBag.dbgrouplist = new SelectList(db.group, "Id", "Name");
 
-            var target = db.group.Select(g => new SelectListItem
+            
+
+            transferVM.dbgroupList = new SelectList(db.group.Select(g => new SelectListItem
             {
-                Value = transferVM.groupID.Equals(g.Id).ToString(),
+                Value = transferVM.groupID.ToString().Equals(g.Id).ToString(),
                 Text = g.Name,
-                Selected = transferVM.groupID.Equals(g.Id)
+                Selected = false
 
 
-            });
-
-            transferVM.dbgroupList = new SelectList(target);
+            }));
 
 
             ViewBag.User = applicationUser.UserName.ToString() + " - UserId:   " + transferVM.userID.ToString() + " - groupID:  " + transferVM.groupID.ToString();
