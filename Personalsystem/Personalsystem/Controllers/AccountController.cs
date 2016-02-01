@@ -88,7 +88,7 @@ namespace Personalsystem.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(user_name, model.Password, model.RememberMe, shouldLockout: false);
-            ViewBag.Debug = user_name + " " + user.PasswordHash;
+            //ViewBag.Debug = user_name + " " + user.PasswordHash;
             switch (result)
             {
                 case SignInStatus.Success:
