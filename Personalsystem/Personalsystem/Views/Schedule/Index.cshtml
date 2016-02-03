@@ -1,8 +1,18 @@
-﻿@{
-    ViewBag.Title = "Schedule";
+﻿@model IEnumerable<Personalsystem.Models.Event>
+
+@{
+    ViewBag.Title = "Events";
 }
 
 <style>
+
+    body{
+        font-family: Helvetica, sans-serif;
+        font-weight: 200;
+        font-size: 12px;
+        text-align: justify;
+        text-justify: inter-word;
+    }
 
     .weekdayCol .col-xs-1{
         padding: 0;
@@ -18,7 +28,10 @@
         text-align: center;
         width: 100%;
         height: 100%;
+        border-radius: 10px;
+        
     }
+
     .weekdayContainer:first-child{
     }
     .weekdayContainer h3{
@@ -27,111 +40,204 @@
         margin: 0px;
         padding: 10px 0px 10px 0px;
     }
-    .hourSlot{
-        width:80%;
-        height: 50px;
-        padding: 10%;
-        margin: 0 auto 10px auto;
-        box-shadow: 0px 2px lightcoral;
-        border: 1px solid lightcoral;
+
+    .hourSlot {
+        transition: 0.3s ease;
+        width: 80%;
+        height: 30px;
+        padding: 5px;
+        margin: 0 auto 5px auto;
+        background-color: #ebebeb;
+        border-radius: 5px;
+        border: 1px solid lightgray;
 
     }
+
+    .weekend .hourSlot {
+        border: 1px solid lightcoral;
+    }
+
+    .weekend .hourSlot:hover {
+        transition: 0.3s ease;
+        background-color: lightcoral;
+    }
+
+    .hourSlot:hover {
+        background-color: lightgray;
+    }
+    .hourSlot:active {
+        background-color: orange;
+    }
+
+    .description {
+        -webkit-transition: 0.5s;
+        z-index: 3;
+        position:absolute;
+        box-shadow: #808080 0px 0px 40px;
+        width: 300px;
+        height: auto;
+        padding: 10px;
+        margin: 0 auto;
+    }
+
+    .description.ng-enter {
+      opacity: 0;
+      transform: translateY(-20px);
+      
+    }
+
+    .description.ng-enter.ng-enter-active {
+      opacity: 1;
+            transform: translateY(0px);
+    }
+
+    .description.ng-leave {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+
+    .description.ng-leave.ng-leave-active {
+      opacity: 0;
+            transform: translateY(-20px);
+    }
+
+    
+
+
 </style>
 
-<div class="row">
+@{var loopcount = 0;}
+
+<div class="row" ng-controller="scheduleController">
     <div class="col-xs-12 scheduleContainer">
-        <div class="row weekdayCol">
+        <div class="row weekdayCol"> 
             <div class="col-xs-1">
-                <div class="weekdayContainer">
+                <div class="weekdayContainer" id="monday">
                     <h3>Mon</h3>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
+                    
+                    @foreach (var item in Model)
+                    {
+                        if (item.DayFinder(item.Time) == 1)
+                        {
+                            loopcount++;
+                            <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
+                            <div class="hourSlot description" ng-if="displayByInt == @loopcount" ng-animate=" 'animate' ">@item.Content</div>
+
+                        }
+
+                    }
+
                 </div>
             </div>
             <div class="col-xs-1">
-                <div class="weekdayContainer">
+                <div class="weekdayContainer" id="tuesday">
                     <h3>Tue</h3>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.DayFinder(item.Time) == 2)
+                        {
+                            loopcount++;
+                            <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
+                            <div class="hourSlot description" ng-if="displayByInt == @loopcount" ng-animate=" 'animate' ">@item.Content</div>
+
+                        }
+
+                    }
+
                 </div>
             </div>
             <div class="col-xs-1">
-                <div class="weekdayContainer">
+                <div class="weekdayContainer" id="wednesday">
                     <h3>Wed</h3>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.DayFinder(item.Time) == 3)
+                        {
+                            loopcount++;
+                            <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
+                            <div class="hourSlot description" ng-if="displayByInt == @loopcount" ng-animate=" 'animate' ">@item.Content</div>
+
+                        }
+
+                    }
+
                 </div>
             </div>
             <div class="col-xs-1">
-                <div class="weekdayContainer">
+                <div class="weekdayContainer" id="thursday">
                     <h3>Thu</h3>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.DayFinder(item.Time) == 4)
+                        {
+                            loopcount++;
+                            <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
+                            <div class="hourSlot description" ng-if="displayByInt == @loopcount" ng-animate=" 'animate' ">@item.Content</div>
+
+                        }
+
+                    }
+
                 </div>
             </div>
             <div class="col-xs-1">
-                <div class="weekdayContainer">
+                <div class="weekdayContainer" id="friday">
                     <h3>Fri</h3>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.DayFinder(item.Time) == 5)
+                        {
+                            loopcount++;
+                            <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
+                            <div class="hourSlot description" ng-if="displayByInt == @loopcount" ng-animate=" 'animate' ">@item.Content</div>
+
+                        }
+
+                    }
+
                 </div>
             </div>
             <div class="col-xs-1">
-                <div class="weekdayContainer weekend">
+                <div class="weekdayContainer weekend" id="saturday">
                     <h3>Sat</h3>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.DayFinder(item.Time) == 6)
+                        {
+                            loopcount++;
+                            <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
+                            <div class="hourSlot description" ng-if="displayByInt == @loopcount" ng-animate=" 'animate' ">@item.Content</div>
+
+                        }
+
+                    }
+
                 </div>
             </div>
             <div class="col-xs-1">
-                <div class="weekdayContainer weekend">
+                <div class="weekdayContainer weekend" id="sunday">
                     <h3>Sun</h3>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
-                    <div class="hourSlot"></div>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.DayFinder(item.Time) == 7)
+                        {
+                            loopcount++;
+                            <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
+                            <div class="hourSlot description" ng-if="displayByInt == @loopcount" ng-animate=" 'animate' ">@item.Content</div>
+
+                        }
+
+                    }
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+

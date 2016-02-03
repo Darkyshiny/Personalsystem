@@ -10,6 +10,11 @@ using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using System.Web.Hosting;
 using Microsoft.AspNet.Identity;
+using System.Dynamic;
+using System.ComponentModel;
+using System.IO;
+using System.Web.Configuration;
+using System.Net.Mail;
 
 namespace Personalsystem.Controllers
 {
@@ -20,26 +25,81 @@ namespace Personalsystem.Controllers
         // GET: Files
         public ActionResult Index(int? id)
         {
-            id = 2;
-            TempData["AppId"] = id;
-            ViewBag.Description = db.vacancy.Find(id).Description.ToString();
+            if (id != null)
+            {
+                TempData["AppId"] = id;
+                ViewBag.Description = db.vacancy.Find(id).Description.ToString();
+            }
             return View();
         }
 
-        // GET: Files/Details/5
-        public ActionResult Details(string id)
+        //GET: Vacancies for Company
+        public ActionResult ShowApplicants()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
+            if (!User.IsInRole("Executive"))
+                return RedirectToAction("Login", "Account");
+
+            int compId = Convert.ToInt32(user.cId);
+
+            var emp = (from a in db.application
+                                    join b in db.vacancy on a.vId equals b.Id where b.cId == compId
+                                    join c in db.user on a.uId equals c.Id
+                                    select new{c.Name, c.Surname, c.Email, a.CoverLetter, a.Id, c.CVurl});
+
+            //Creates a temporary Class
+            List<ExpandoObject> Appl = new List<ExpandoObject>();
+
+            foreach (var item in emp)
+            {
+                IDictionary<string, object> itemExpando = new ExpandoObject();
+                foreach (PropertyDescriptor property
+                         in
+                         TypeDescriptor.GetProperties(item.GetType()))
+                {
+                    itemExpando.Add(property.Name, property.GetValue(item));
+                }
+                Appl.Add(itemExpando as ExpandoObject);
+            }
+            ViewBag.appl = Appl;
+            return View();
+        }
+
+        // GET: Files
+        public ActionResult CoverLetter(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.user.Find(id);
+            Application applicationUser = db.application.Find(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
             }
             return View(applicationUser);
+            
         }
+        // GET: Files
+        public ActionResult DownloadCV(string url)
+        {
+
+            byte[] filedata = System.IO.File.ReadAllBytes(url);
+            string contentType = MimeMapping.GetMimeMapping(url);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = url,
+                Inline = true,
+            };
+
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+
+            return File(filedata, contentType);
+        }
+       
 
         // GET: Files/Create
         public ActionResult Create()
@@ -53,17 +113,20 @@ namespace Personalsystem.Controllers
         [HttpPost]
         public ActionResult UploadCV(string letter, HttpPostedFileBase upload)
         {
-            
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
             if (letter.Length == 0 || upload.FileName == null)
             {
                 TempData["Error"] = "To save application both Cover Letter and CV must be given";
-                return RedirectToAction("Index");
+                return RedirectToAction("Account", "Login" );
             }
 
             string folderName = HostingEnvironment.ApplicationPhysicalPath;
-            string pathString = System.IO.Path.Combine(folderName, "Users");
+            string appId = User.Identity.GetUserId();
+            string pathString = System.IO.Path.Combine(folderName, "Users", appId);
             System.IO.Directory.CreateDirectory(pathString);
             string fileName = upload.FileName;
+          
             pathString = System.IO.Path.Combine(pathString, fileName);
             if (System.IO.File.Exists(pathString))
             {

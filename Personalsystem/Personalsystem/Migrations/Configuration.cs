@@ -1,13 +1,13 @@
 ﻿namespace Personalsystem.Migrations
 {
     using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Personalsystem.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Personalsystem.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Personalsystem.DataAccessLayer.PersonalSystemContext>
     {
@@ -184,13 +184,13 @@
                 RoleManager.Create(new IdentityRole("Admin"));
                 RoleManager.Create(new IdentityRole("Executive"));
                 RoleManager.Create(new IdentityRole("Employee"));
-                RoleManager.Create(new IdentityRole("Job Searcher"));
+                RoleManager.Create(new IdentityRole("Job Searcher"));       
             }
             var admin = new ApplicationUser { UserName = "admin@personalsystem.com", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com", gId = 1 };
 
             if (!context.user.Any(u => u.UserName == "admin@personalsystem.com"))
             {
-
+                
                 var result = UserManager.Create(admin, "admin1");
                 if (result.Succeeded)
                 {
@@ -201,20 +201,20 @@
 
             var tempGroup = new List<ApplicationUser>();
 
-            for (int i = 0; i < 100; i++)
-            {
-                tempGroup.Add(new ApplicationUser { UserName = "user" + i + "@gmail.com", Name = "Usain", Surname = "Userian", Email = "user" + i + "@gmail.com" });
-            }
+              for (int i = 0; i < 100; i++)
+              {
+                  tempGroup.Add(new ApplicationUser { UserName = "user" + i + "@gmail.com", Name = "Usain", Surname = "Userian", Email = "user" + i + "@gmail.com" });
+              }
 
             if (!context.user.Any(u => u.Name == "user1@gmail.com"))
-                foreach (var user in tempGroup)
-                {
-                    var result = UserManager.Create(user, "password");
-                    if (result.Succeeded)
-                    {
-                        UserManager.AddToRole(user.Id, "Employee");
-                    }
-                }
+              foreach (var user in tempGroup)
+              {
+                  var result = UserManager.Create(user, "password");
+                  if (result.Succeeded)
+                  {
+                      UserManager.AddToRole(user.Id, "Employee");
+                  }
+              }
 
             if (context.user.Any(u => u.gId == null) & context.group.Any())
             {
@@ -227,6 +227,38 @@
                     user.gId = target;
                 }
                 context.SaveChanges();
+            }
+
+            if (!context.companyEvent.Any(e => e.Id == 1))
+            {
+                Random rng = new Random();
+                for (var i = 0; i < 40; i++)
+                {
+                    context.companyEvent.AddOrUpdate(new Event
+                    {
+                        
+                        cId = 1,
+                        Time = DateTime.Now.AddDays(rng.Next(-1, 6)),
+                        Title = "Hamburger party " + i,
+                        Content =
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    });
+                }
+
+                context.SaveChanges();
+            }
+
+
+            if (context.user.Any(u => u.Id == ""))
+            {
+                var company = context.company.Find(1);
+                List<Group> groups = context.group.Where(g => g.Id != null).ToList();
+                foreach (Group g in groups)
+                {
+                    company.SetWorkTimeToGroup(g, 9, 17);
+                }
+                context.SaveChanges();
+
             }
             if (context.user.Any(u => u.cId == null & context.company.Any()))
             {

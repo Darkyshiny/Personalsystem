@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Personalsystem.Models.PrivateMessage>
+
+@{
+    ViewBag.Title = "Inbox";
+}
+
+<h2>Inbox</h2>
+
+<p>
+    @Html.ActionLink("Compose New", "Compose")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Sender)
+        </th>
+        <th>
+            @Html.DisplayName("Time received")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sender.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Timestamp)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
