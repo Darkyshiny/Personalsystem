@@ -1046,7 +1046,6 @@
     <Content Include="Views\Departments\Edit.cshtml" />
     <Content Include="Views\Departments\Index.cshtml" />
     <Content Include="Views\Vacancy\Index.cshtml" />
-    <Content Include="Views\Files\Index.cshtml" />
     <Content Include="Views\Groups\Create.cshtml" />
     <Content Include="Views\Groups\Delete.cshtml" />
     <Content Include="Views\Groups\Details.cshtml" />
@@ -1070,6 +1069,9 @@
     <Content Include="Views\PM\Edit.cshtml" />
     <Content Include="Views\PM\Inbox.cshtml" />
     <Content Include="Views\PM\Sent.cshtml" />
+    <Content Include="Views\Files\CoverLetter.cshtml" />
+    <Content Include="Views\Files\Index.cshtml" />
+    <Content Include="Views\Files\ShowApplicants.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
