@@ -27,7 +27,10 @@ namespace Personalsystem.Models
         [ForeignKey("gId")]
         public virtual Group group { get; set; }
 
-
+        [InverseProperty("Sender")]
+        public virtual ICollection<PrivateMessage> SentMessages { get; set; }
+        [InverseProperty("Receiver")]
+        public virtual ICollection<PrivateMessage> ReceivedMessages { get; set; }
         
         
 
