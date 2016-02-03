@@ -19,6 +19,7 @@ namespace Personalsystem.DataAccessLayer
         public DbSet<ApplicationUser> user { get; set; }
         public DbSet<BlogPost> post { get; set; }
         public DbSet<PrivateMessage> message { get; set; }
+        public DbSet<Application> application { get; set; }
         public DbSet<Event> companyEvent { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

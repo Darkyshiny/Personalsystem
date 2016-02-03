@@ -1,6 +1,6 @@
-namespace Personalsystem.Migrations
+﻿namespace Personalsystem.Migrations
 {
-using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Personalsystem.Models;
 using System;
@@ -19,17 +19,21 @@ using System.Linq;
         protected override void Seed(Personalsystem.DataAccessLayer.PersonalSystemContext context)
         {
 
-            if (!context.company.Any(c => c.Name == ""))
+            if (!context.company.Any(c => c.Name == "Company 1"))
             {
                 context.company.AddOrUpdate(
 
                 new Company
                 {
-                    Id = 0,
                     Name = "Company 1",
-                    Description = "Getting crunk Incorporated",
-                }
+                    Description = "Getting crunk Incorporated"
+                },
 
+                new Company
+                {
+                    Name = "Test Company",
+                    Description = "Company made for testing."
+                }
                 );
                 context.SaveChanges();
             }
@@ -109,12 +113,16 @@ using System.Linq;
 
                         new Department
                         {
-                            Id = 0,
                             Name = "Department 1",
                             Description = "R&D",
                             cId = 1
+                        },
+                        new Department
+                        {
+                            Name = "Test Department",
+                            Description = "Department made for testing",
+                            cId = 2
                         }
-
                         );
 
                 context.SaveChanges();
@@ -156,11 +164,18 @@ using System.Linq;
                                     Description = "R&D Research staff",
                                     dId = 1
 
+                                },
+                                new Group
+                                {
+                                    Name = "Test Group",
+                                    Description = "Group made for testing",
+                                    dId = 2
                                 }
+
+
                 );
                 context.SaveChanges();
             }
-
             var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             if (!RoleManager.RoleExists("Super Admin"))
@@ -206,7 +221,7 @@ using System.Linq;
 
                 Random rng = new Random();
                 var groupCount = context.group.Count();
-                foreach (ApplicationUser user in context.user.Where(u => u.Name != "admin@personalcompany.com"))
+                foreach (ApplicationUser user in context.user.Where(u => u.UserName != "admin@personalsystem.com"))
                 {
                     int target = rng.Next(1, groupCount + 1);
                     user.gId = target;
@@ -244,6 +259,18 @@ using System.Linq;
                 }
                 context.SaveChanges();
 
+            }
+            if (context.user.Any(u => u.cId == null & context.company.Any()))
+            {
+                List<ApplicationUser> test = context.user.Where(u => u.UserName != "admin@personalsystem.com").ToList();
+                foreach (ApplicationUser user in test)
+                {
+                    ApplicationUser currentuser = context.user.Find(user.Id);
+                    int dId = context.group.Find(user.gId.Value).dId;
+                    int companyid = context.department.Find(dId).cId;
+                    currentuser.cId = companyid;
+                }
+                context.SaveChanges();
             }
         }
     }

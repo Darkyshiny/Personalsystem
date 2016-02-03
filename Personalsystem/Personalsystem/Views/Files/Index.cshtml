@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Personalsystem.Models.Vacancy>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Application</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+    </tr>
+
+    <tr>
+        <td>
+            @ViewBag.Description
+            @ViewBag.Error
+        </td>
+    </tr>
+
+
+</table>
+
+@using (Html.BeginForm("UploadCV", "Files", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div>
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-12">
+                @*Label("Cover letter", htmlAttributes: new { @class = "control-label col-md-12" })*@
+                <br />
+                @Html.TextArea("letter", null, 10, 100, null)
+                @Html.ValidationMessage("Cover letter", "", new { @class = "text-danger" })
+
+                <br />
+                <br />
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-10">
+                @Html.Label("Cv", new { @class = "control-label col-md-10" })
+                <input type="file" id="CV" name="upload" />
+                @Html.ValidationMessage("Cover letter", "", new { @class = "text-danger"  })
+                <br />
+                <br />
+                <input type="submit" value="Upload" class="btn btn-default" />
+               
+                @if (TempData["Error"] != null)
+                {
+                    <h3>@TempData["Error"] </h3>
+                }
+                <br />
+                <br />
+                <br />
+            </div>
+        </div>
+        <div>
+          
+           
+        </div>
+
+
+    </div>
+}
+

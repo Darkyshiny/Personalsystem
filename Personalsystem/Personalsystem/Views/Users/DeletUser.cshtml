@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Personalsystem.Models.ApplicationUser>
+
+
+@{
+    ViewBag.Title = "DeletUser";
+}
+
+<h2>DeleteUser</h2>
+@using (Html.BeginForm("FindUser", "Users", FormMethod.Post))
+{
+    <form method="post">
+        @Html.TextBox("search")
+        <input type="submit" name="submit" />
+    </form>
+}
