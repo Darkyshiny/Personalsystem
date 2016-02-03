@@ -1,6 +1,6 @@
 namespace Personalsystem.Migrations
 {
-    using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Personalsystem.Models;
 using System;
@@ -214,6 +214,37 @@ using System.Linq;
                 context.SaveChanges();
             }
 
+            if (!context.companyEvent.Any(e => e.Id == 1))
+            {
+                Random rng = new Random();
+                for (var i = 0; i < 40; i++)
+                {
+                    context.companyEvent.AddOrUpdate(new Event
+                    {
+                        
+                        cId = 1,
+                        Time = DateTime.Now.AddDays(rng.Next(-1, 6)),
+                        Title = "Hamburger party " + i,
+                        Content =
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    });
+                }
+
+                context.SaveChanges();
+            }
+
+
+            if (context.user.Any(u => u.Id == ""))
+            {
+                var company = context.company.Find(1);
+                List<Group> groups = context.group.Where(g => g.Id != null).ToList();
+                foreach (Group g in groups)
+                {
+                    company.SetWorkTimeToGroup(g, 9, 17);
+                }
+                context.SaveChanges();
+
+            }
         }
     }
 }

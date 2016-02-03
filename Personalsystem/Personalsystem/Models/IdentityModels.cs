@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace Personalsystem.Models
 {
@@ -16,6 +17,9 @@ namespace Personalsystem.Models
         public string Surname { get; set; }
         public double Salary { get; set; }
         public string CVurl { get; set; }
+        public TimeSpan start { get; set; }
+        public TimeSpan end { get; set; }
+
         public int? cId { get; set; }
         [ForeignKey("cId")]
         public virtual Company company { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Personalsystem.DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,13 @@ namespace Personalsystem.Controllers
 {
     public class ScheduleController : Controller
     {
-        // GET: Schedule
+        private PersonalSystemContext db = new PersonalSystemContext();
+
+        // GET: Events
         public ActionResult Index()
         {
-            return View();
+            var result = db.companyEvent.Where(e => e.cId != null).OrderBy(e => e.Time);
+            return View(result.ToList());
         }
     }
 }
