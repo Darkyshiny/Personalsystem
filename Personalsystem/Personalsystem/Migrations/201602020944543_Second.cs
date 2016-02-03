@@ -3,29 +3,12 @@ namespace Personalsystem.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class Second : DbMigration
     {
         public override void Up()
         {
-           
-            
             CreateTable(
-                "dbo.Vacancies",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Description = c.String(),
-                        cId = c.Int(nullable: false),
-                        dId = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
-                .ForeignKey("dbo.Departments", t => t.dId)
-                .Index(t => t.cId)
-                .Index(t => t.dId);
-            
-            CreateTable(
-                "dbo.Companies",
+                "dbo.Applications",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -211,10 +194,6 @@ namespace Personalsystem.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUsers", "gId", "dbo.Groups");
-            DropForeignKey("dbo.Groups", "dId", "dbo.Departments");
-            DropForeignKey("dbo.Departments", "cId", "dbo.Companies");
-            DropForeignKey("dbo.AspNetUsers", "cId", "dbo.Companies");
-            DropForeignKey("dbo.AspNetUserClaims", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Groups", "dId", "dbo.Departments");
             DropForeignKey("dbo.Departments", "cId", "dbo.Companies");
             DropForeignKey("dbo.AspNetUsers", "cId", "dbo.Companies");
