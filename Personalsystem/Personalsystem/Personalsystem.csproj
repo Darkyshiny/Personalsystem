@@ -161,6 +161,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -173,9 +174,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601261439071_Initial.cs" />
-    <Compile Include="Migrations\201601261439071_Initial.Designer.cs">
-      <DependentUpon>201601261439071_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602030926130_initial.cs" />
+    <Compile Include="Migrations\201602030926130_initial.Designer.cs">
+      <DependentUpon>201602030926130_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1069,11 +1070,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602021049171_initial.resx">
-      <DependentUpon>201602021049171_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602030926130_initial.resx">
+      <DependentUpon>201602030926130_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

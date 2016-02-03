@@ -8,67 +8,19 @@ namespace Personalsystem.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Companies",
+                "dbo.Applications",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Events",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Content = c.String(),
-                        Title = c.String(),
-                        Time = c.DateTime(nullable: false),
-                        cId = c.Int(nullable: false),
+                        uId = c.String(nullable: false, maxLength: 128),
+                        vId = c.Int(nullable: false),
+                        CoverLetter = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
-                .Index(t => t.cId);
-            
-            CreateTable(
-                "dbo.Departments",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                        cId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
-                .Index(t => t.cId);
-            
-            CreateTable(
-                "dbo.Groups",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                        dId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Departments", t => t.dId, cascadeDelete: true)
-                .Index(t => t.dId);
-            
-            CreateTable(
-                "dbo.PrivateMessages",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        uId = c.String(maxLength: 128),
-                        Content = c.String(),
-                        Timestamp = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.uId)
-                .Index(t => t.uId);
+                .ForeignKey("dbo.AspNetUsers", t => t.uId, cascadeDelete: true)
+                .ForeignKey("dbo.Vacancies", t => t.vId, cascadeDelete: true)
+                .Index(t => t.uId)
+                .Index(t => t.vId);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -116,6 +68,42 @@ namespace Personalsystem.Migrations
                 .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
+                "dbo.Companies",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Groups",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                        dId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Departments", t => t.dId, cascadeDelete: true)
+                .Index(t => t.dId);
+            
+            CreateTable(
+                "dbo.Departments",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                        cId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
+                .Index(t => t.cId);
+            
+            CreateTable(
                 "dbo.AspNetUserLogins",
                 c => new
                     {
@@ -144,20 +132,6 @@ namespace Personalsystem.Migrations
                 .Index(t => t.IdentityRole_Id);
             
             CreateTable(
-                "dbo.BlogPosts",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        cId = c.Int(nullable: false),
-                        Content = c.String(),
-                        Timestamp = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
-                .Index(t => t.cId);
-            
-            CreateTable(
                 "dbo.Vacancies",
                 c => new
                     {
@@ -173,6 +147,47 @@ namespace Personalsystem.Migrations
                 .Index(t => t.dId);
             
             CreateTable(
+                "dbo.Events",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Content = c.String(),
+                        Title = c.String(),
+                        Time = c.DateTime(nullable: false),
+                        cId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
+                .Index(t => t.cId);
+            
+            CreateTable(
+                "dbo.PrivateMessages",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        uId = c.String(maxLength: 128),
+                        Content = c.String(),
+                        Timestamp = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.uId)
+                .Index(t => t.uId);
+            
+            CreateTable(
+                "dbo.BlogPosts",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        cId = c.Int(nullable: false),
+                        Content = c.String(),
+                        Timestamp = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)
+                .Index(t => t.cId);
+            
+            CreateTable(
                 "dbo.AspNetRoles",
                 c => new
                     {
@@ -186,43 +201,48 @@ namespace Personalsystem.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "IdentityRole_Id", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Vacancies", "dId", "dbo.Departments");
-            DropForeignKey("dbo.Vacancies", "cId", "dbo.Companies");
             DropForeignKey("dbo.BlogPosts", "cId", "dbo.Companies");
             DropForeignKey("dbo.PrivateMessages", "uId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Events", "cId", "dbo.Companies");
+            DropForeignKey("dbo.Applications", "vId", "dbo.Vacancies");
+            DropForeignKey("dbo.Vacancies", "dId", "dbo.Departments");
+            DropForeignKey("dbo.Vacancies", "cId", "dbo.Companies");
+            DropForeignKey("dbo.Applications", "uId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUsers", "gId", "dbo.Groups");
-            DropForeignKey("dbo.AspNetUsers", "cId", "dbo.Companies");
-            DropForeignKey("dbo.AspNetUserClaims", "ApplicationUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Groups", "dId", "dbo.Departments");
             DropForeignKey("dbo.Departments", "cId", "dbo.Companies");
-            DropForeignKey("dbo.Events", "cId", "dbo.Companies");
+            DropForeignKey("dbo.AspNetUsers", "cId", "dbo.Companies");
+            DropForeignKey("dbo.AspNetUserClaims", "ApplicationUser_Id", "dbo.AspNetUsers");
+            DropIndex("dbo.BlogPosts", new[] { "cId" });
+            DropIndex("dbo.PrivateMessages", new[] { "uId" });
+            DropIndex("dbo.Events", new[] { "cId" });
             DropIndex("dbo.Vacancies", new[] { "dId" });
             DropIndex("dbo.Vacancies", new[] { "cId" });
-            DropIndex("dbo.BlogPosts", new[] { "cId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "IdentityRole_Id" });
             DropIndex("dbo.AspNetUserRoles", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.AspNetUserLogins", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.Departments", new[] { "cId" });
+            DropIndex("dbo.Groups", new[] { "dId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.AspNetUsers", new[] { "gId" });
             DropIndex("dbo.AspNetUsers", new[] { "cId" });
-            DropIndex("dbo.PrivateMessages", new[] { "uId" });
-            DropIndex("dbo.Groups", new[] { "dId" });
-            DropIndex("dbo.Departments", new[] { "cId" });
-            DropIndex("dbo.Events", new[] { "cId" });
+            DropIndex("dbo.Applications", new[] { "vId" });
+            DropIndex("dbo.Applications", new[] { "uId" });
             DropTable("dbo.AspNetRoles");
-            DropTable("dbo.Vacancies");
             DropTable("dbo.BlogPosts");
+            DropTable("dbo.PrivateMessages");
+            DropTable("dbo.Events");
+            DropTable("dbo.Vacancies");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.Departments");
+            DropTable("dbo.Groups");
+            DropTable("dbo.Companies");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.PrivateMessages");
-            DropTable("dbo.Groups");
-            DropTable("dbo.Departments");
-            DropTable("dbo.Events");
-            DropTable("dbo.Companies");
+            DropTable("dbo.Applications");
         }
     }
 }

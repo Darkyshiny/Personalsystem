@@ -10,6 +10,8 @@
         font-family: Helvetica, sans-serif;
         font-weight: 200;
         font-size: 12px;
+        text-align: justify;
+        text-justify: inter-word;
     }
 
     .weekdayCol .col-xs-1{
@@ -86,7 +88,7 @@
 
     .description.ng-enter.ng-enter-active {
       opacity: 1;
-            transform: translateY(5px);
+            transform: translateY(0px);
     }
 
     .description.ng-leave {
@@ -151,6 +153,7 @@
 
                     @foreach (var item in Model)
                     {
+                        if (item.DayFinder(item.Time) == 3)
                         {
                             loopcount++;
                             <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
@@ -222,6 +225,7 @@
 
                     @foreach (var item in Model)
                     {
+                        if (item.DayFinder(item.Time) == 7)
                         {
                             loopcount++;
                             <div class="hourSlot" ng-click="hourSlotToggle(@loopcount)">@item.Title</div>
