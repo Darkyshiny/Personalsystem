@@ -48,8 +48,20 @@ namespace Personalsystem.Repositories
             db.SaveChanges();
             
         }
+//Begin, Written by Ali 
+        public List<ApplicationUser> FindPersonalsBySearchUserName(string USERNAME) 
+        {
+            var query = db.user.Where(u => u.UserName  == USERNAME);
+            return query.ToList();
+        }
 
+        public List<ApplicationUser> FindPersonalsBySearchId(string USERID)
+        {
+            var query = db.user.Where(u => u.Id == USERID);
+            return query.ToList();
+        }
 
+//End
 
     }
 }
