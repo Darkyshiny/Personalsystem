@@ -8,45 +8,57 @@ using System.Web;
 using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
+using Personalsystem.Models.VM;
 
 namespace Personalsystem.Controllers
 {
     public class EventsController : Controller
     {
         private PersonalSystemContext db = new PersonalSystemContext();
+        private EventVM vm = new EventVM();
         Event repo = new Event();
 
         // GET: Events
-        public ActionResult Index()
+        [Authorize]
+        public ActionResult Index(int? week)
         {
-            var currentWeek = repo.GetIso8601WeekOfYear(DateTime.Now);
-            var companyEvent = db.companyEvent.Include(c => c.company);
-            List<Event> result = new List<Event>();
+            if (week != null)
+            {
+                vm.week += week;
+            }
 
-            foreach (var item in companyEvent)
+            var userId = User.Identity.GetUserId();
+            var user = db.user.Find(userId);
+            var userCompany = db.company.First(c => c.Id == user.cId);
+            var currentYear = DateTime.Now.Year;
+            var currentWeek = repo.GetIso8601WeekOfYear(DateTime.Now) + vm.week;
+          
+
+
+            //if (currentWeek == 53)
+            //{
+            //    currentYear + 1;
+            //    currentWeek = 1;
+            //}
+            //if (currentWeek == 0)
+            //{
+            //    currentYear - 1;
+            //    currentWeek = 52;
+            //}
+
+            var companyEvents = vm.events().Where(c => c.cId == userCompany.Id);
+
+            foreach (var item in companyEvents)
             {
                 if (repo.GetIso8601WeekOfYear(item.Time) == currentWeek)
                 {
-                    result.Add(item);
+                    vm.eventList.Add(item);
                 }
+
             }
 
-            return View(result);
-        }
-
-        // GET: Events/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Event @event = db.companyEvent.Find(id);
-            if (@event == null)
-            {
-                return HttpNotFound();
-            }
-            return View(@event);
+            return View(vm);
         }
 
         // GET: Events/Create

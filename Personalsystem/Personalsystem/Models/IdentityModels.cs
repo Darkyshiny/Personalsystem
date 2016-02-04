@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.Web;
 
 namespace Personalsystem.Models
 {
@@ -27,6 +28,10 @@ namespace Personalsystem.Models
         [ForeignKey("gId")]
         public virtual Group group { get; set; }
 
+        public void GetCurrentUser()
+        {
+            HttpContext.Current.User.Identity.GetUserId();
+        }
 
         
         
