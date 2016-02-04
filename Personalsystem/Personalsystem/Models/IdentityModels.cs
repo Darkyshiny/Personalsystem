@@ -33,6 +33,10 @@ namespace Personalsystem.Models
             HttpContext.Current.User.Identity.GetUserId();
         }
 
+        [InverseProperty("Sender")]
+        public virtual ICollection<PrivateMessage> SentMessages { get; set; }
+        [InverseProperty("Receiver")]
+        public virtual ICollection<PrivateMessage> ReceivedMessages { get; set; }
         
         
 

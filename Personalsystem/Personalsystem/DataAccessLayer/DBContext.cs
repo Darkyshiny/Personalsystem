@@ -32,6 +32,16 @@ namespace Personalsystem.DataAccessLayer
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+            modelBuilder.Entity<PrivateMessage>()
+                .HasRequired(m => m.Sender)
+                .WithMany(m => m.SentMessages)
+                .HasForeignKey(m => m.senderId)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<PrivateMessage>()
+                .HasRequired(m => m.Receiver)
+                .WithMany(m => m.ReceivedMessages)
+                .HasForeignKey(m => m.receiverId)
+                .WillCascadeOnDelete(false);
             base.OnModelCreating(modelBuilder);
         }
     }

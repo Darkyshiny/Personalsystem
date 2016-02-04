@@ -166,6 +166,7 @@
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PMController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\TransferController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -174,9 +175,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602030926130_initial.cs" />
-    <Compile Include="Migrations\201602030926130_initial.Designer.cs">
-      <DependentUpon>201602030926130_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602031207339_Initial.cs" />
+    <Compile Include="Migrations\201602031207339_Initial.Designer.cs">
+      <DependentUpon>201602031207339_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1046,7 +1047,6 @@
     <Content Include="Views\Departments\Edit.cshtml" />
     <Content Include="Views\Departments\Index.cshtml" />
     <Content Include="Views\Vacancy\Index.cshtml" />
-    <Content Include="Views\Files\Index.cshtml" />
     <Content Include="Views\Groups\Create.cshtml" />
     <Content Include="Views\Groups\Delete.cshtml" />
     <Content Include="Views\Groups\Details.cshtml" />
@@ -1064,6 +1064,18 @@
     <Content Include="Views\Events\Details.cshtml" />
     <Content Include="Views\Events\Edit.cshtml" />
     <Content Include="Views\Events\Index.cshtml" />
+    <Content Include="Views\PM\Compose.cshtml" />
+    <Content Include="Views\PM\Delete.cshtml" />
+    <Content Include="Views\PM\Details.cshtml" />
+    <Content Include="Views\PM\Edit.cshtml" />
+    <Content Include="Views\PM\Inbox.cshtml" />
+    <Content Include="Views\PM\Sent.cshtml" />
+    <Content Include="Views\Files\CoverLetter.cshtml" />
+    <Content Include="Views\Files\Index.cshtml" />
+    <Content Include="Views\Files\ShowApplicants.cshtml" />
+    <Content Include="Views\Users\DeletUser.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1076,8 +1088,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602030926130_initial.resx">
-      <DependentUpon>201602030926130_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602031207339_Initial.resx">
+      <DependentUpon>201602031207339_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
