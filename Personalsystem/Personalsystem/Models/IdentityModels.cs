@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.Web;
 
 namespace Personalsystem.Models
 {
@@ -26,6 +27,11 @@ namespace Personalsystem.Models
         public int? gId { get; set; }
         [ForeignKey("gId")]
         public virtual Group group { get; set; }
+
+        public void GetCurrentUser()
+        {
+            HttpContext.Current.User.Identity.GetUserId();
+        }
 
         [InverseProperty("Sender")]
         public virtual ICollection<PrivateMessage> SentMessages { get; set; }
