@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Personalsystem.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Find", "HandleEmploymentrs", FormMethod.Post))
+{
+    <form method="post">
+        <label>  Search employee by User Id:  </label>
+        @Html.TextBox("search")
+        <input type="submit" name="submit" />
+    </form>
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            User Id
+        </th>
+        <th>
+           Company 
+        </th>
+        <th>
+            Department Id ? -->DepName
+        </th>
+        <th>
+           Group
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Surname
+        </th>       
+             
+        <th>
+           UserName
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.company.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.group.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Surname)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
+          
+          
+        </td>
+    </tr>
+}
+
+</table>

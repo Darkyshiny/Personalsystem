@@ -34,7 +34,7 @@ namespace Personalsystem.Repositories
 
 
         public List<ApplicationUser> FindPersonalsBySearchDepId(string uname)
-        //Returns a list of all Departement by int id
+        
         {
             var query = db.user.Where(u => u.UserName == uname);
             return query.ToList();
@@ -58,6 +58,12 @@ namespace Personalsystem.Repositories
         public List<ApplicationUser> FindPersonalsBySearchId(string USERID)
         {
             var query = db.user.Where(u => u.Id == USERID);
+            return query.ToList();
+        }
+
+        public List<ApplicationUser> FindUserHandleEmploymentById(string usrid)       
+        {
+            var query = db.user.Where(u => u.Id == usrid);
             return query.ToList();
         }
 
