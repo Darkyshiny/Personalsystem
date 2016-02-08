@@ -37,8 +37,8 @@ namespace Personalsystem.Controllers
 //Begin, written by Ali ********************************************************
         public ActionResult Index()
         {
-            var user = db.user;
-            return View(user.ToList());
+            var user = db.user.ToList();
+            return View(user);
         }
 
         [HttpPost]

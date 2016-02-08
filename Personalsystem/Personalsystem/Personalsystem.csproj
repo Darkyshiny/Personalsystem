@@ -175,10 +175,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602030943159_Initial.cs" />
-    <Compile Include="Migrations\201602030943159_Initial.Designer.cs">
-      <DependentUpon>201602030943159_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -192,6 +188,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PrivateMessage.cs" />
     <Compile Include="Models\Vacancy.cs" />
+    <Compile Include="Models\VM\EventVM.cs" />
     <Compile Include="Models\VM\PrivateMessageVM.cs" />
     <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1074,6 +1071,9 @@
     <Content Include="Views\Files\CoverLetter.cshtml" />
     <Content Include="Views\Files\Index.cshtml" />
     <Content Include="Views\Files\ShowApplicants.cshtml" />
+    <Content Include="Views\Users\DeletUser.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1084,11 +1084,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602030943159_Initial.resx">
-      <DependentUpon>201602030943159_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
