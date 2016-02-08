@@ -10,8 +10,8 @@
              });
          }
          $scope.Name = "";
-         $scope.UserName = function () {
-             $scope.Name = _name;
+         $scope.SearchFill = function (_name) {
+             $scope.searchUser = _name;
          }
      };
 
@@ -23,5 +23,5 @@
          };
          return PMService;
      }]);
-
+    
 }());
