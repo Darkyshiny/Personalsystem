@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
+using Personalsystem.Models.VM;
 
 namespace Personalsystem.Controllers
 {
@@ -52,29 +53,33 @@ namespace Personalsystem.Controllers
             // Will implement to search by UserName later
             ViewBag.receiverId = new SelectList(db.user, "Id", "UserName");
             ViewBag.senderId = new SelectList(db.user, "Id", "UserName");
+            ViewBag.userList = db.user.ToList();
+            
             return View();
         }
+
 
         // POST: PM/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Content,Timestamp,receiverId")] PrivateMessage privateMessage)
+        public ActionResult Compose([Bind(Include = "PM.Title,PM.Content,PM.Timestamp,UserName")] PrivateMessageVM model)
         {
-
+            //PrivateMessage privateMessage = new PrivateMessage();
             if (ModelState.IsValid)
             {
-                privateMessage.senderId = User.Identity.GetUserId();
-                privateMessage.Timestamp = DateTime.Now;
-                db.message.Add(privateMessage);
+                model.PM.receiverId = db.user.Find(model.UserName).Id;
+                model.PM.senderId = User.Identity.GetUserId();
+                model.PM.Timestamp = DateTime.Now;
+                db.message.Add(model.PM);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.receiverId = new SelectList(db.user, "Id", "UserName", privateMessage.receiverId);
-            ViewBag.senderId = new SelectList(db.user, "Id", "UserName", privateMessage.senderId);
-            return View(privateMessage);
+            ViewBag.receiverId = new SelectList(db.user, "Id", "UserName", model.PM.receiverId);
+            ViewBag.senderId = new SelectList(db.user, "Id", "UserName", model.PM.senderId);
+            return View(model);
         }
 
         //// GET: PM/Edit/5

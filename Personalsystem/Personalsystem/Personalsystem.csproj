@@ -192,6 +192,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PrivateMessage.cs" />
     <Compile Include="Models\Vacancy.cs" />
+    <Compile Include="Models\VM\PrivateMessageVM.cs" />
     <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repo.cs" />
@@ -997,6 +998,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\personalSystemAngular.js" />
+    <Content Include="Scripts\PMscript.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />

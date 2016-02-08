@@ -1,23 +1,24 @@
-﻿
+﻿(function () {
 
 
 
-angular.module('PersonalSystemAngular', ['ngAnimate'])
-            .controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
+    angular.module('PersonalSystemAngular', ['ngAnimate'])
+                .controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
 
-                $scope.displayByInt = 0;
+                    $scope.displayByInt = 0;
 
-                $scope.hourSlotToggle = function (x) {
-                    if ($scope.displayByInt != 0) {
-                        if ($scope.displayByInt != x)
-                            $scope.displayByInt = x;
+                    $scope.hourSlotToggle = function (x) {
+                        if ($scope.displayByInt != 0) {
+                            if ($scope.displayByInt != x)
+                                $scope.displayByInt = x;
+                            else {
+                                $scope.displayByInt = 0;
+                            }
+                        }
                         else {
-                            $scope.displayByInt = 0;
+                            $scope.displayByInt = x;
                         }
                     }
-                    else {
-                        $scope.displayByInt = x;
-                    }
-                }
 
-            }]);
+                }]);
+}());

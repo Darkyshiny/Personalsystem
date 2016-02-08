@@ -29,6 +29,14 @@ namespace Personalsystem.Controllers
             return View(db.company.ToList());
         }
 
+        public ActionResult Test(int id)
+        {
+            //CompanyProflie companyProfile = new CompanyProflie();
+            //companyProfile.companyId = id;
+            //companyProfile.departmentId = db.department.Where(r => r.cId == id);
+            return View();
+        }
+
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {

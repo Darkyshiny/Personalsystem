@@ -33,21 +33,13 @@ namespace Personalsystem.Controllers
             return View(applicationUser);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
 //Begin, written by Ali ********************************************************
         public ActionResult Index()
         {
             var user = db.user;
             return View(user.ToList());
         }
-
 
         [HttpPost]
         public ActionResult FindUserByUserName(string search)
@@ -65,7 +57,6 @@ namespace Personalsystem.Controllers
             }
         }
 
-
         [HttpPost]
         public ActionResult FindUserByUserId(string search)
         {
@@ -82,6 +73,7 @@ namespace Personalsystem.Controllers
                 return RedirectToAction("Index");
             }
         }
+
         // GET: ApplicationUsers/Delete/5
         public ActionResult Delete(string id)
         {
@@ -110,6 +102,20 @@ namespace Personalsystem.Controllers
     
 //********************************************************************
 
+        public JsonResult GetUsers()
+        {
+            var result = db.user.ToList();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
     }
 }

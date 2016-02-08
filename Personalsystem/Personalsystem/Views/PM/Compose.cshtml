@@ -1,4 +1,4 @@
-﻿@model Personalsystem.Models.PrivateMessage
+﻿@model Personalsystem.Models.VM.PrivateMessageVM
 
 @{
     ViewBag.Title = "Create";
@@ -7,55 +7,51 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Compose","PM",FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
-    @*@Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.senderId)
-    @Html.HiddenFor(model => model.Timestamp)*@
+    @Html.HiddenFor(model => model.PM.receiverId)
+    @Html.HiddenFor(model => model.PM.senderId)
+    @Html.HiddenFor(model => model.PM.Timestamp)
     <div class="form-horizontal">
         <h4>PrivateMessage</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PM.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.PM.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PM.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PM.Content, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.PM.Content, new { htmlAttributes = new { @class = "" } })
+                @Html.ValidationMessageFor(model => model.PM.Content, "", new { @class = "text-danger" })
             </div>
         </div>
 
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.senderId, "senderId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group" ng-controller="PMController">
+            @Html.LabelFor(model => model.UserName, "Receiver", htmlAttributes: new { @class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.DropDownList("senderId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.senderId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-        @if (HttpContext.Current.Request.QueryString.Count != null) 
-        { 
-        <div class="form-group">
-            @Html.LabelFor(model => model.receiverId, "receiverId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("receiverId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.receiverId, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", ng_model = "searchUser" } })
+                @*<input  type="text" ng-model="searchUser" name="username" class="form-control" />*@
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                <ul>
+                    <li ng-repeat="item in filtered = (users | filter:searchUser)" ng-if="searchUser && filtered.length < 10" 
+                        class="list-group-item" ng-click="UserName(searchUser)" style="max-width:280px; display:ruby-base"  >
+                        {{item.UserName}}
+                    </li>
+                </ul>
             </div>
         </div>
-        }
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default"  />
             </div>
         </div>
     </div>
