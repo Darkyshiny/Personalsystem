@@ -10,6 +10,7 @@ using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
 using Personalsystem.Models.VM;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -64,22 +65,25 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Compose([Bind(Include = "PM.Title,PM.Content,PM.Timestamp,UserName")] PrivateMessageVM model)
+        public ActionResult Compose([Bind(Include = "PM,UserName")] PrivateMessageVM privateMessageVM)
         {
-            //PrivateMessage privateMessage = new PrivateMessage();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            if (privateMessageVM.PM != null)
+            {
+                privateMessageVM.PM.receiverId = userManager.FindByName(privateMessageVM.UserName).Id;
+                privateMessageVM.PM.senderId = User.Identity.GetUserId();
+                privateMessageVM.PM.Timestamp = DateTime.Now;
+            }
             if (ModelState.IsValid)
             {
-                model.PM.receiverId = db.user.Find(model.UserName).Id;
-                model.PM.senderId = User.Identity.GetUserId();
-                model.PM.Timestamp = DateTime.Now;
-                db.message.Add(model.PM);
+                db.message.Add(privateMessageVM.PM);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.receiverId = new SelectList(db.user, "Id", "UserName", model.PM.receiverId);
-            ViewBag.senderId = new SelectList(db.user, "Id", "UserName", model.PM.senderId);
-            return View(model);
+            ViewBag.receiverId = new SelectList(db.user, "Id", "UserName", privateMessageVM.PM.receiverId);
+            ViewBag.senderId = new SelectList(db.user, "Id", "UserName", privateMessageVM.PM.senderId);
+            return View(privateMessageVM);
         }
 
         //// GET: PM/Edit/5

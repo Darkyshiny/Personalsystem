@@ -10,9 +10,7 @@
 @using (Html.BeginForm("Compose","PM",FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.PM.receiverId)
-    @Html.HiddenFor(model => model.PM.senderId)
-    @Html.HiddenFor(model => model.PM.Timestamp)
+
     <div class="form-horizontal">
         <h4>PrivateMessage</h4>
         <hr />

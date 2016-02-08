@@ -193,6 +193,7 @@
     <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repo.cs" />
+    <Compile Include="Repositories\RepoPlus.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
