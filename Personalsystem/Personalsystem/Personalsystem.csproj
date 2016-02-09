@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -164,6 +165,7 @@
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\HandleEmploymentrsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PMController.cs" />
@@ -174,6 +176,10 @@
     <Compile Include="DataAccessLayer\DbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602081426099_Initial.cs" />
+    <Compile Include="Migrations\201602081426099_Initial.Designer.cs">
+      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201602090741109_initial.cs" />
     <Compile Include="Migrations\201602090741109_initial.Designer.cs">
@@ -198,6 +204,7 @@
     <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repo.cs" />
+    <Compile Include="Repositories\RepoPlus.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1079,6 +1086,8 @@
     <Content Include="Views\Users\DeletUser.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\HandleEmploymentrs\Edit.cshtml" />
+    <Content Include="Views\HandleEmploymentrs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1089,6 +1098,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602081426099_Initial.resx">
+      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602090741109_initial.resx">
