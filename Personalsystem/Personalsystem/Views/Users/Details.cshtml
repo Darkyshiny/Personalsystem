@@ -1,4 +1,6 @@
 ﻿@model Personalsystem.Models.ApplicationUser
+@using Personalsystem
+
 
 @{
     ViewBag.Title = "Details";
@@ -43,8 +45,8 @@
         </dd>
 
         <dt>
-            @if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.Identity.Name == Model.UserName) 
-            { 
+            @if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.Identity.Name == Model.UserName)
+            {
                 @Html.DisplayNameFor(model => model.Salary)
             }
         </dt>
@@ -53,7 +55,7 @@
             @if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.Identity.Name == Model.UserName)
             {
                 @Html.DisplayFor(model => model.Salary)
-            }    
+            }
         </dd>
 
         <dt>
@@ -71,11 +73,11 @@
         <dd>
             @Html.DisplayFor(model => model.UserName)
         </dd>
-
+       
     </dl>
 </div>
 <p>
-@*    @Html.ActionLink("", "") |*@
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+
+    @Html.ActionLink("Edit", "Index", "Manage") |
     @Html.ActionLink("Back to List", "Index")
 </p>

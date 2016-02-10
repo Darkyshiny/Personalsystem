@@ -1,0 +1,92 @@
+﻿@using Personalsystem
+
+@{
+    ViewBag.Title = "ShowApplicants";
+}
+
+<h2>ShowApplicants</h2>
+@using (Html.BeginForm("Hire", "Vacancy", FormMethod.Post))
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Job Name")
+            </th>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Surname")
+            </th>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("Letter")
+            </th>
+            <th>
+                @Html.DisplayName("CV")
+            </th>
+            <th>
+                @Html.DisplayName("Send Mail")
+            </th>
+            <th>
+                @Html.DisplayName("")
+            </th>
+        </tr>
+
+        @foreach (var item in ViewBag.appl)
+        {
+            <tr>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Surname
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    <div>
+                        <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
+                            @Html.ActionLink("Cover Letter", "CoverLetter", new { id = item.Id })
+                        </button>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
+                            <span class=" glyphicon glyphicon-briefcase" style="font-size: 1em;">&nbsp</span>
+                            @Html.ActionLink("Download CV", "DownloadCV", "Vacancy", new { url = item.CVurl }, null)
+                        </button>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
+                            <a href="mailto:" item.email
+                               subject=MessageTitle&amp;
+                               body=Message content>
+                                Send Email
+                                <span class="glyphicon glyphicon-envelope"></span>
+                            </a>
+
+                        </button>
+                    </div>
+                </td>
+                <td>
+                   <input type="button" name='Agree' value="Hire"
+                           onclick="location.href='@Url.Action("Hire", "Vacancy", new { id = item.Id })'" />
+                </td>
+            </tr>
+        }
+
+
+    </table>
+}
+
+

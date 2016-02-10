@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -9,6 +10,8 @@ using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Personalsystem.Repositories;
+using System.Web.Hosting;
+using Microsoft.AspNet.Identity;
 
 namespace Personalsystem.Controllers
 {
@@ -21,6 +24,8 @@ namespace Personalsystem.Controllers
         // GET: Users/Details/5
         public ActionResult Details(string id)
         {
+            var user = db.user.Find(User.Identity.GetUserId());
+            id = user.Id;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -73,7 +78,7 @@ namespace Personalsystem.Controllers
                 return RedirectToAction("Index");
             }
         }
-
+       
         // GET: ApplicationUsers/Delete/5
         public ActionResult Delete(string id)
         {

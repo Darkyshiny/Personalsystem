@@ -1,244 +1,235 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Personalsystem.DataAccessLayer;
-using Personalsystem.Models;
-using System.Web.Hosting;
-using Microsoft.AspNet.Identity;
-using System.Dynamic;
-using System.ComponentModel;
-using System.IO;
-using System.Web.Configuration;
-using System.Net.Mail;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Data;
+//using System.Data.Entity;
+//using System.Linq;
+//using System.Net;
+//using System.Web;
+//using System.Web.Mvc;
+//using Personalsystem.DataAccessLayer;
+//using Personalsystem.Models;
+//using System.Web.Hosting;
+//using Microsoft.AspNet.Identity;
+//using System.Dynamic;
+//using System.ComponentModel;
+//using System.IO;
+//using System.Web.Configuration;
+//using System.Net.Mail;
 
-namespace Personalsystem.Controllers
-{
-    public class FilesController : Controller
-    {
-        private PersonalSystemContext db = new PersonalSystemContext();
+//namespace Personalsystem.Controllers
+//{
+//    public class FilesController : Controller
+//    {
+//        private PersonalSystemContext db = new PersonalSystemContext();
 
-        // GET: Files
-        public ActionResult Index(int? id)
-        {
-            if (id != null)
-            {
-                TempData["AppId"] = id;
-                ViewBag.Description = db.vacancy.Find(id).Description.ToString();
-            }
-            return View();
-        }
+//        // GET: Files
+//        public ActionResult Index(int? vId)
+//        {
+//            if (vId != null)
+//            {
+//                TempData["AppId"] = vId;
+//                ViewBag.Description = db.vacancy.Find(vId).Description.ToString();
+//                //Get name of CV
+//                string applicantId = User.Identity.GetUserId();
+//                var cv = db.user.Find(applicantId);
+//                string filename = cv.CVurl.ToString();
+//                string result = Path.GetFileName(filename);
+//                ViewData.Add("CV", filename);
+//                ViewData.Add("File",  result);
+//            }
+//            ////////////////////////gjort
 
-        //GET: Vacancies for Company
-        public ActionResult ShowApplicants()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
-            if (!User.IsInRole("Executive"))
-                return RedirectToAction("Login", "Account");
+//            return View();
+//        }
 
-            int compId = Convert.ToInt32(user.cId);
+//        //GET: Applicants for Company
+//        public ActionResult ShowApplicants()
+//        {
+//            //ApplicationUser user = db.user.Find(User.Identity.GetUserId());
+//            //if (!User.IsInRole("Executive"))
+//            //    return RedirectToAction("Login", "Account");
 
-            var emp = (from a in db.application
-                                    join b in db.vacancy on a.vId equals b.Id where b.cId == compId
-                                    join c in db.user on a.uId equals c.Id
-                                    select new{c.Name, c.Surname, c.Email, a.CoverLetter, a.Id, c.CVurl});
+//            //int compId = Convert.ToInt32(user.cId);
+//            int compId = 1;
 
-            //Creates a temporary Class
-            List<ExpandoObject> Appl = new List<ExpandoObject>();
+//            TempData["CompanyId"] = compId;
+//            var emp = (from a in db.application
+//                                    join b in db.vacancy on a.vId equals b.Id where b.cId == compId
+//                                    join c in db.user on a.uId equals c.Id
+//                                    select new{b.Description, c.Name, c.Surname, c.Email, a.CoverLetter, a.Id, c.CVurl});
 
-            foreach (var item in emp)
-            {
-                IDictionary<string, object> itemExpando = new ExpandoObject();
-                foreach (PropertyDescriptor property
-                         in
-                         TypeDescriptor.GetProperties(item.GetType()))
-                {
-                    itemExpando.Add(property.Name, property.GetValue(item));
-                }
-                Appl.Add(itemExpando as ExpandoObject);
-            }
-            ViewBag.appl = Appl;
-            return View();
-        }
+//            //Creates a temporary Class
+//            List<ExpandoObject> Appl = new List<ExpandoObject>();
 
-        // GET: Files
-        public ActionResult CoverLetter(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Application applicationUser = db.application.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            return View(applicationUser);
+//            foreach (var item in emp)
+//            {
+//                IDictionary<string, object> itemExpando = new ExpandoObject();
+//                foreach (PropertyDescriptor property
+//                         in
+//                         TypeDescriptor.GetProperties(item.GetType()))
+//                {
+//                    itemExpando.Add(property.Name, property.GetValue(item));
+//                }
+//                Appl.Add(itemExpando as ExpandoObject);
+//            }
+//            ViewBag.appl = Appl;
+
+//            ////////////////////////////gjort
+//            return View();
+//        }
+
+//        // GET: Files
+//        public ActionResult CoverLetter(int? id)
+//        {
             
-        }
-        // GET: Files
-        public ActionResult DownloadCV(string url)
-        {
+//            if (id == null)
+//            {
+//                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+//            }
+//            TempData["AppId"] = id;
+//            Application applicationUser = db.application.Find(id);
+//            if (applicationUser == null)
+//            {
+//                return HttpNotFound();
+//            }
 
-            byte[] filedata = System.IO.File.ReadAllBytes(url);
-            string contentType = MimeMapping.GetMimeMapping(url);
 
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = url,
-                Inline = true,
-            };
+//            //////////////gjort
+//            return View(applicationUser);
+            
+//        }
+//        // GET: Files
+//        public ActionResult DownloadCV(string url)
+//        {
 
-            Response.AppendHeader("Content-Disposition", cd.ToString());
+//            byte[] filedata = System.IO.File.ReadAllBytes(url);
+//            string contentType = MimeMapping.GetMimeMapping(url);
 
-            return File(filedata, contentType);
-        }
+//            var cd = new System.Net.Mime.ContentDisposition
+//            {
+//                FileName = url,
+//                Inline = true,
+//            };
+
+//            Response.AppendHeader("Content-Disposition", cd.ToString());
+//            //gjort
+
+//            return File(filedata, contentType);
+//        }
        
+//        public ActionResult Hire(string id)
+//         {
+//            //hire person
+//             TempData["ApplId"] = id;
+//            int appId = Convert.ToInt32(id);
+       
+//            var emp = (from a in db.user 
+//                               join b in db.application on a.Id equals b.uId  where b.Id == appId
+//                               select new {a.Id, a.Name, a.Surname });
 
-        // GET: Files/Create
-        public ActionResult Create()
-        {
-            ViewBag.cId = new SelectList(db.company, "Id", "Name");
-            ViewBag.gId = new SelectList(db.group, "Id", "Name");
-            
-            return View();
-        }
-        // POST: File/Create
-        [HttpPost]
-        public ActionResult UploadCV(string letter, HttpPostedFileBase upload)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-            if (letter.Length == 0 || upload.FileName == null)
-            {
-                TempData["Error"] = "To save application both Cover Letter and CV must be given";
-                return RedirectToAction("Account", "Login" );
-            }
-
-            string folderName = HostingEnvironment.ApplicationPhysicalPath;
-            string appId = User.Identity.GetUserId();
-            string pathString = System.IO.Path.Combine(folderName, "Users", appId);
-            System.IO.Directory.CreateDirectory(pathString);
-            string fileName = upload.FileName;
-          
-            pathString = System.IO.Path.Combine(pathString, fileName);
-            if (System.IO.File.Exists(pathString))
-            {
-                System.IO.File.Delete(pathString);
-            }
-            upload.SaveAs(pathString);
-
-            // Update Application and User
-            Application app = new Application();
+//            foreach (var item in emp)
+//            {
+//                TempData["EmpId"] = item.Id;
+//                TempData["Name"] = item.Name;
+//                TempData["Surname"] = item.Surname;
+//            }
   
-            var user = db.user.Find(User.Identity.GetUserId());
-            user.CVurl = pathString;
-            //db.SaveChanges();
+//            //int CId = Convert.ToInt32(TempData["CompanyId"]);
+//            int CId = 1;
 
-            app.uId = user.Id;
-            app.CoverLetter = letter;
-            int test;
-            int.TryParse(TempData["AppId"].ToString(), out test);
-            app.vId = test;
+//            List<Department> DepartmentList = db.department.Where(r => r.cId == CId).ToList();
+//            List<Group> GroupList = db.group.Where(r => r.department.cId == CId).ToList();
+           
+//            List<SelectListItem> Departments = new List<SelectListItem>();
+//            foreach(var item in DepartmentList)
+//            { 
+//                Departments.AddRange(new[]{ new SelectListItem() { Text = item.Description,  Value = ((int)item.Id).ToString()}});
+//            }
+//            ViewData.Add("Department", Departments);
 
-            db.application.Add(app);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+//            List<SelectListItem> Groups = new List<SelectListItem>();
+//            foreach (var item in GroupList)
+//            {
+//                Groups.AddRange(new[] { new SelectListItem() { Text = item.Description, Value = ((int)item.Id).ToString() } });
+//            }
+//            ViewData.Add("Group", Groups);
 
-        // POST: Files/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Surname,Salary,CVurl,cId,gId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
-        {
-            if (ModelState.IsValid)
-            {
-                db.user.Add(applicationUser);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+//            //gjort
 
-            ViewBag.cId = new SelectList(db.company, "Id", "Name", applicationUser.cId);
-            ViewBag.gId = new SelectList(db.group, "Id", "Name", applicationUser.gId);
-            return View(applicationUser);
-        }
+//            return View();
+//        }
+        
+//        // POST: File/Create
+//        [HttpPost]
+//        public ActionResult Apply(string letter)
+//        {
+//            if (letter.Length == 0 )
+//            {
+//                TempData["Error"] = "To save, Cover Letter must be given";
+//                return RedirectToAction("Index");
+//            }
+ 
+//            // Update Application and User
+//            Application app = new Application();
+//            var user = db.user.Find(User.Identity.GetUserId());
+//            app.uId = user.Id;
+//            app.CoverLetter = letter;
+//            int test;
+//            int.TryParse(TempData["AppId"].ToString(), out test);
+//            app.vId = test;
 
-        // GET: Files/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = db.user.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.cId = new SelectList(db.company, "Id", "Name", applicationUser.cId);
-            ViewBag.gId = new SelectList(db.group, "Id", "Name", applicationUser.gId);
-            return View(applicationUser);
-        }
+//            db.application.Add(app);
+//            db.SaveChanges();
+//            return View("Index");
 
-        // POST: Files/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Surname,Salary,CVurl,cId,gId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(applicationUser).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.cId = new SelectList(db.company, "Id", "Name", applicationUser.cId);
-            ViewBag.gId = new SelectList(db.group, "Id", "Name", applicationUser.gId);
-            return View(applicationUser);
-        }
+//            /////////////////gjort
+//        }
 
-        // GET: Files/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = db.user.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            return View(applicationUser);
-        }
 
-        // POST: Files/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            ApplicationUser applicationUser = db.user.Find(id);
-            db.user.Remove(applicationUser);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+//        // POST: Companies/Create
+//        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+//        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+//        [HttpPost]
+//        [ValidateAntiForgeryToken]
+//        [Authorize(Roles = (""))]
+//        public ActionResult Create(int Department, int Group)
+//        {
+//            if (ModelState.IsValid)
+//            {
+//                int appId = Convert.ToInt32(TempData["ApplId"]);
+//                string empId =TempData["EmpId"].ToString();
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-    }
-}
+//                var emp = db.user.Find(empId);
+//                emp.cId = Convert.ToInt32(TempData["CompanyId"]);
+//                emp.gId = Group;
+               
+//                //delete other applicants
+//                var actvac = db.application.Find(appId);
+                
+//                var del = db.application.Where(a => a.vId == actvac.vId);
+//                if (del != null)
+//                {
+//                    db.application.RemoveRange(del);
+//                }
+
+//                //Null vacancy
+//                var vac = db.vacancy.Find(actvac.vId);
+//                vac.Active = false;
+
+//                db.SaveChanges();
+//                return RedirectToAction("ShowApplicants", "Vacancy");
+//            }
+
+//            return View();
+//        }
+
+//        protected override void Dispose(bool disposing)
+//        {
+//            if (disposing)
+//            {
+//                db.Dispose();
+//            }
+//            base.Dispose(disposing);
+//        }
+//    }
+//}

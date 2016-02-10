@@ -18,13 +18,14 @@ namespace Personalsystem.Models
         public int? dId { get; set; }
         [ForeignKey("dId")]
         public virtual Department Department { get; set; }
+        public bool Active { get; set; }
         
         private PersonalSystemContext db = new PersonalSystemContext();
 
         public List<Vacancy> ListVacancies(Company company)
         {
             var vacancies = db.vacancy.ToList();
-            var result = vacancies.Where(v => v.cId == company.Id).ToList();
+            var result = vacancies.Where(v => v.cId == company.Id && v.Active) .ToList();
             if (result.Count > 0)
             {
                 return result.OrderBy(v => v.Id).ToList();

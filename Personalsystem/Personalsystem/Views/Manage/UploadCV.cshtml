@@ -1,0 +1,31 @@
+﻿@model Personalsystem.Models.ApplicationUser
+@{
+    ViewBag.Title = "UploadCV";
+}
+
+<h2>Upload Your CV</h2>
+@using (Html.BeginForm("UploadCV", "Manage", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <dd>
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <input type="file" id="CV" name="upload" />
+        <br />
+        <br />
+        <input type="submit" value="Save" class="btn btn-default" />
+
+        @if (TempData["Error"] != null)
+        {
+            <h3>@TempData["Error"] </h3>
+        }
+        <br />
+        <br />
+        <br />
+    </dd>
+}
+
+
+

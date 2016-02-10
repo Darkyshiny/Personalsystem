@@ -196,6 +196,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-Personalsystem-20160119111221.mdf" />
+    <Content Include="App_Data\aspnet-Personalsystem-20160119111221_log.ldf">
+      <DependentUpon>aspnet-Personalsystem-20160119111221.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -1068,15 +1072,14 @@
     <Content Include="Views\PM\Edit.cshtml" />
     <Content Include="Views\PM\Inbox.cshtml" />
     <Content Include="Views\PM\Sent.cshtml" />
-    <Content Include="Views\Files\CoverLetter.cshtml" />
+    <Content Include="Views\Vacancy\CoverLetter.cshtml" />
     <Content Include="Views\Files\Index.cshtml" />
-    <Content Include="Views\Files\ShowApplicants.cshtml" />
+    <Content Include="Views\Vacancy\ShowApplicants.cshtml" />
     <Content Include="Views\Users\DeletUser.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Content Include="Views\Vacancy\Hire.cshtml" />
+    <Content Include="Views\Manage\UploadCV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
