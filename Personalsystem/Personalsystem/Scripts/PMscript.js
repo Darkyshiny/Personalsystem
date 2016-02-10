@@ -1,5 +1,5 @@
 ﻿(function () {
-   var app = angular.module('PersonalSystemAngular', ['ngAnimate'])
+
      var PMController = function ($scope, $http, PMService) {
          getUsers();
          function getUsers() {
