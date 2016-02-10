@@ -26,13 +26,19 @@ namespace Personalsystem.Repositories
             UserManager.AddToRole(userid, "Super Admin");
         }
 
-        public List<ApplicationUser> FindUser(string name)
+        public ApplicationUser FindUserByName(string name)
         {
-            var query = db.user.Where(u => u.UserName.Equals(name));
-            return query.ToList();
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            ApplicationUser user = UserManager.FindByName(name);
+            return user;
         }
 
-
+        public ApplicationUser FindUserById(string id)
+        {
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            ApplicationUser user = UserManager.FindById(id);
+            return user;
+        }
         public List<ApplicationUser> FindPersonalsBySearchDepId(string uname)
         
         {
@@ -47,6 +53,11 @@ namespace Personalsystem.Repositories
             db.user.Find(userid).cId = companyid;
             db.SaveChanges();
             
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
 //Begin, Written by Ali 
         public List<ApplicationUser> FindPersonalsBySearchUserName(string USERNAME) 

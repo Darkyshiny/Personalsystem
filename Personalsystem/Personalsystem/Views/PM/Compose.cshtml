@@ -19,14 +19,14 @@
         <div class="form-group" ng-controller="PMController">
             @Html.LabelFor(model => model.UserName, "Receiver", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", ng_model = "searchUser" } })
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", ng_model = "searchUser", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                 <div style="position:relative;">
-                    <div ng-repeat="item in filtered = (users | filter:searchUser)" ng-if="filtered.length < 25"
+                    <div ng-repeat="item in filtered = (users | filter:searchUser)" ng-if="filtered.length <= 11"
                          ng-hide="item.UserName == searchUser || !searchUser"
                          class="list-group-item" ng-click="SearchFill(item.UserName)"
                          ng-style="{'top': 40*$index+'px'}"
-                         style=" min-width:280px; max-width:280px; margin-left:2%; display:block; position:absolute; z-index:2;">
+                         style=" min-width:280px; max-width:280px; margin-left:2%; display:block; position:absolute; z-index:2; ">
                         {{item.UserName}}
                     </div>
                 </div>
@@ -35,14 +35,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PM.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PM.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.PM.Title, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.PM.Title, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.PM.Content, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PM.Content, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.PM.Content, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.PM.Content, "", new { @class = "text-danger" })
             </div>
         </div>
