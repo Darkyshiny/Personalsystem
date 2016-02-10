@@ -1,9 +1,7 @@
-﻿(function () {
+﻿
 
-
-
-    angular.module('PersonalSystemAngular', ['ngAnimate'])
-                .controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
+    var app = angular.module('PersonalSystemAngular', ['ngAnimate'])
+                app.controller('scheduleController', ['$scope', '$http', function ($scope, $http) {
 
                     $scope.displayByInt = 0;
 
@@ -21,4 +19,3 @@
                     }
 
                 }]);
-}());

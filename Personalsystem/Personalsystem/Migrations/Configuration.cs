@@ -258,7 +258,7 @@ using System.Linq;
             }
 
 
-            if (context.user.Any(u => u.Id == ""))
+            if (!context.user.Any(u => u.start.ToString() == "00:00:00"))
             {
                 var company = context.company.Find(1);
                 List<Group> groups = context.group.Where(g => g.Id != null).ToList();
