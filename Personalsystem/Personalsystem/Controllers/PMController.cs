@@ -10,28 +10,32 @@ using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
 using Personalsystem.Models.VM;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
     public class PMController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+        private PMRepo pmRepo = new PMRepo();
+        private Repo repo = new Repo();
 
         public ActionResult Index() { return RedirectToAction("Inbox"); }
         // GET: PM
         public ActionResult Inbox()
         {
             string userid = User.Identity.GetUserId();
-            var message = db.message.Include(p => p.Receiver).Include(p => p.Sender).Where(p => p.Receiver.Id == userid).ToList();
+            var message = pmRepo.GetReceivedMessages(userid);
             return View(message);
         }
 
         public ActionResult Sent()
         {
             string userid = User.Identity.GetUserId();
-            var message = db.message.Include(p => p.Receiver).Include(p => p.Sender).Where(p => p.Sender.Id == userid).ToList();
+            var message = pmRepo.GetSentMessages(userid);
             return View(message);
         }
+
         // GET: PM/Details/5
         public ActionResult Details(int? id)
         {
@@ -39,7 +43,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PrivateMessage privateMessage = db.message.Find(id);
+            PrivateMessage privateMessage = pmRepo.FindPM(id.Value);
             if (privateMessage == null)
             {
                 return HttpNotFound();
@@ -50,72 +54,30 @@ namespace Personalsystem.Controllers
         // GET: PM/Create
         public ActionResult Compose()
         {
-            // Will implement to search by UserName later
-            ViewBag.receiverId = new SelectList(db.user, "Id", "UserName");
-            ViewBag.senderId = new SelectList(db.user, "Id", "UserName");
-            ViewBag.userList = db.user.ToList();
-            
+            //ViewBag.userList = db.user.ToList();
             return View();
         }
-
 
         // POST: PM/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Compose([Bind(Include = "PM.Title,PM.Content,PM.Timestamp,UserName")] PrivateMessageVM model)
+        public ActionResult Compose([Bind(Include = "PM,UserName")] PrivateMessageVM privateMessageVM)
         {
-            //PrivateMessage privateMessage = new PrivateMessage();
             if (ModelState.IsValid)
             {
-                model.PM.receiverId = db.user.Find(model.UserName).Id;
-                model.PM.senderId = User.Identity.GetUserId();
-                model.PM.Timestamp = DateTime.Now;
-                db.message.Add(model.PM);
-                db.SaveChanges();
+                privateMessageVM = pmRepo.SetPMProperties(privateMessageVM, User.Identity.GetUserId());
+                privateMessageVM.PM.Timestamp = DateTime.Now;
+                pmRepo.SaveNewMessageToDatabase(privateMessageVM);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.receiverId = new SelectList(db.user, "Id", "UserName", model.PM.receiverId);
-            ViewBag.senderId = new SelectList(db.user, "Id", "UserName", model.PM.senderId);
-            return View(model);
+            return View(privateMessageVM);
         }
 
-        //// GET: PM/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    PrivateMessage privateMessage = db.message.Find(id);
-        //    if (privateMessage == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.receiverId = new SelectList(db.user, "Id", "Name", privateMessage.receiverId);
-        //    ViewBag.senderId = new SelectList(db.user, "Id", "Name", privateMessage.senderId);
-        //    return View(privateMessage);
-        //}
 
-        //// POST: PM/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,Content,Timestamp,senderId,receiverId")] PrivateMessage privateMessage)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(privateMessage).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.receiverId = new SelectList(db.user, "Id", "Name", privateMessage.receiverId);
-        //    ViewBag.senderId = new SelectList(db.user, "Id", "Name", privateMessage.senderId);
-        //    return View(privateMessage);
-        //}
+
+
 
         // GET: PM/Delete/5
         public ActionResult Delete(int? id)
@@ -124,7 +86,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PrivateMessage privateMessage = db.message.Find(id);
+            PrivateMessage privateMessage = pmRepo.FindPM(id);
             if (privateMessage == null)
             {
                 return HttpNotFound();
@@ -137,19 +99,21 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PrivateMessage privateMessage = db.message.Find(id);
-            db.message.Remove(privateMessage);
-            db.SaveChanges();
+            PrivateMessage privateMessage = pmRepo.FindPM(id);
+            pmRepo.DeletePM(privateMessage);
             return RedirectToAction("Index");
         }
+
+
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }
+
     }
 }

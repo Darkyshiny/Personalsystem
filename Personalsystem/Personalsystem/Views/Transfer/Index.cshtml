@@ -16,10 +16,13 @@
 }
 @*//end **********************************@
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Back to list", "Index")
 </p>
 <table class="table">
     <tr>
+        <th>
+            UserId
+        </th>
         <th>
             @*@Html.DisplayNameFor(model => model.group.Name)*@
             Group Name
@@ -39,6 +42,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.group.Name)
         </td>

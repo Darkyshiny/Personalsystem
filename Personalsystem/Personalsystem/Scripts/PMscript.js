@@ -1,5 +1,5 @@
 ﻿(function () {
-   var app = angular.module('PersonalSystemAngular', ['ngAnimate'])
+
      var PMController = function ($scope, $http, PMService) {
          getUsers();
          function getUsers() {
@@ -8,11 +8,11 @@
              }).error(function (error) {
                  $scope.status = 'Unable to load user data' + error.message;
              });
-         }
+         };
          $scope.Name = "";
-         $scope.UserName = function () {
-             $scope.Name = _name;
-         }
+         $scope.SearchFill = function (_name) {
+             $scope.searchUser = _name;
+         };
      };
 
      app.controller("PMController", PMController);
@@ -23,5 +23,5 @@
          };
          return PMService;
      }]);
-
+    
 }());

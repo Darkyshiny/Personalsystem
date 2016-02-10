@@ -9,18 +9,19 @@ using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
+using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
     [Authorize(Roles=("Super Admin, Admin"))]
     public class GroupsController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+        private GroupRepo groupRepo = new GroupRepo();
+        private Repo repo = new Repo();
         // GET: Groups
         public ActionResult Index()
         {
-            var group = db.group.Include(g => g.department);
-            return View(group.ToList());
+            return View(groupRepo.GetAll());
         }
 
         // GET: Groups/Details/5
@@ -31,7 +32,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.group.Find(id);
+            Group group = groupRepo.Find(id.Value);
             if (group == null)
             {
                 return HttpNotFound();
@@ -42,11 +43,9 @@ namespace Personalsystem.Controllers
         // GET: Groups/Create
         public ActionResult Create(int? cId)
         {
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
-            if(!User.IsInRole("Super Admin"))
-                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
-            else
-                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
+            string userid = User.Identity.GetUserId();
+            ApplicationUser user = repo.FindUserById(userid);
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View();
         }
 
@@ -55,40 +54,35 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,dId")] Group group)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,dId")] Group group, int? cId)
         {
             if (ModelState.IsValid)
             {
-                db.group.Add(group);
-                db.SaveChanges();
-                int redir = db.department.Find(group.dId).cId;
+                groupRepo.Save(group);
+                int redir = groupRepo.Redir(group);
                 return RedirectToAction("Details", "Companies", new { id = redir });
             }
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
-            if (!User.IsInRole("Super Admin"))
-                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == user.cId), "Id", "Name", group.dId);
-            else
-                ViewBag.dId = new SelectList(db.department, "Id", "Name", group.dId);
+            string userid = User.Identity.GetUserId();
+            ApplicationUser user = repo.FindUserById(userid);
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View(group);
         }
 
         // GET: Groups/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? cId)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.group.Find(id);
+            Group group = groupRepo.Find(id.Value);
             if (group == null)
             {
                 return HttpNotFound();
             }
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
-            if (!User.IsInRole("Super Admin"))
-                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == user.cId), "Id", "Name", group.dId);
-            else
-                ViewBag.dId = new SelectList(db.department, "Id", "Name", group.dId);
+            string userid = User.Identity.GetUserId();
+            ApplicationUser user = repo.FindUserById(userid);
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View(group);
         }
 
@@ -97,20 +91,17 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,dId")] Group group)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,dId")] Group group, int? cId)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(group).State = EntityState.Modified;
-                db.SaveChanges();
-                int redir = db.department.Find(group.dId).cId;
+                groupRepo.Edit(group);
+                int redir = groupRepo.Redir(group);
                 return RedirectToAction("Details", "Companies", new { id = redir });
             }
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
-            if (!User.IsInRole("Super Admin"))
-                ViewBag.dId = new SelectList(db.department.Where(d => d.cId == user.cId), "Id", "Name", group.dId);
-            else
-                ViewBag.dId = new SelectList(db.department, "Id", "Name", group.dId);
+            string userid = User.Identity.GetUserId();
+            ApplicationUser user = repo.FindUserById(userid);
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View(group);
         }
 
@@ -121,7 +112,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.group.Find(id);
+            Group group = groupRepo.Find(id.Value);
             if (group == null)
             {
                 return HttpNotFound();
@@ -134,10 +125,9 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Group group = db.group.Find(id);
-            db.group.Remove(group);
-            db.SaveChanges();
-            int redir = db.department.Find(group.dId).cId;
+            Group group = groupRepo.Find(id);
+            groupRepo.Delete(group);
+            int redir = groupRepo.Redir(group);
             return RedirectToAction("Details", "Companies", new { id = redir });
         }
 
@@ -145,7 +135,7 @@ namespace Personalsystem.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

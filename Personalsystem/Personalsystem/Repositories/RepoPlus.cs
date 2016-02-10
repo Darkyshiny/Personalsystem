@@ -2,9 +2,7 @@
 using System;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

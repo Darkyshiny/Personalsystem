@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -19,7 +20,12 @@ namespace Personalsystem.Controllers
         [Authorize]
         public ActionResult Index(int? setWeek)
         {
+            UserManager<ApplicationUser> UM = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var uID = User.Identity.GetUserId();
+            var user = UM.FindById(uID);
+
             var currentWeek = repo.GetIso8601WeekOfYear(DateTime.Now);
+            
 
             if (vm.week == 0)
             {
@@ -33,9 +39,7 @@ namespace Personalsystem.Controllers
 
             ViewBag.Menu = vm.week;
 
-            var userId = User.Identity.GetUserId();
-            var user = db.user.Find(userId);
-            var userCompany = db.company.First(c => c.Id == user.cId);
+            var userCompany = db.company.Find(user.cId);
 
             var companyEvents = db.companyEvent.Where(c => c.cId == userCompany.Id);
 
@@ -49,6 +53,36 @@ namespace Personalsystem.Controllers
             }
 
             return View(vm);
+        }
+
+        [Authorize]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Create([Bind(Include = "Title,Content,Time")] Event e)
+        {
+            var user = db.user.Find(User.Identity.GetUserId());
+            var company = db.company.First(c => c.Id == user.cId);
+
+            if (ModelState.IsValid)
+            {
+                e.CreateCompanyEvent(company, e.Title, e.Content, e.Time);
+                return RedirectToAction("Index");
+            }
+            return View("Create");
+        }
+
+        public ActionResult _GroupSchedule()
+        {
+            UserManager<ApplicationUser> UM = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var uID = User.Identity.GetUserId();
+            var user = UM.FindById(uID);
+
+            return PartialView(user);
         }
     }
 }

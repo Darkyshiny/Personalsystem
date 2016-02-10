@@ -47,7 +47,10 @@ using System.Linq;
                                 Id = 0,
                                 Content = "Lorem ipsum 1",
                                 Timestamp = DateTime.Now,
-                                cId = 1
+                                cId = 1,
+                                postedBy = "user1@gmail.com",
+                                publicPost = true,
+                                Title = "Lorem1"
                             },
 
                             new BlogPost
@@ -55,7 +58,10 @@ using System.Linq;
                                 Id = 1,
                                 Content = "Lorem ipsum 2",
                                 Timestamp = DateTime.Now,
-                                cId = 1
+                                cId = 1,
+                                postedBy = "user2@gmail.com",
+                                publicPost = false,
+                                Title = "Lorem2"
                             },
 
                             new BlogPost
@@ -63,7 +69,10 @@ using System.Linq;
                                 Id = 2,
                                 Content = "Lorem ipsum 3",
                                 Timestamp = DateTime.Now,
-                                cId = 1
+                                cId = 1,
+                                postedBy = "user1@gmail.com",
+                                publicPost = false,
+                                Title = "Lorem3"
                             }
 
                 );
@@ -249,7 +258,7 @@ using System.Linq;
             }
 
 
-            if (context.user.Any(u => u.Id == ""))
+            if (!context.user.Any(u => u.start.ToString() == "00:00:00"))
             {
                 var company = context.company.Find(1);
                 List<Group> groups = context.group.Where(g => g.Id != null).ToList();

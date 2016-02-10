@@ -1,6 +1,7 @@
 ﻿using Personalsystem.DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
@@ -21,14 +22,21 @@ namespace Personalsystem.Models
 
         PersonalSystemContext db = new PersonalSystemContext();
 
-        public void CreateCompanyEvent(Company company, string description, DateTime time)
+        public void CreateCompanyEvent(Company company, string title, string description, DateTime time)
         {
             var target = db.company.Find(company.Id);
 
+            if (target != null)
+            {
+                var companyEvent = new Event { Title = title, Content = description, cId = target.Id, Time = time };
+                db.companyEvent.Add(companyEvent);
+                db.SaveChanges();
+            }
+            else
+            {
+                throw new Exception();
+            }
 
-            var companyEvent = new Event { Content = description, cId = target.Id, Time = time };
-            db.companyEvent.Add(companyEvent);
-            db.SaveChanges();
 
         }
 

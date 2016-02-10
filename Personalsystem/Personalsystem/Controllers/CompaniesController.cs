@@ -16,39 +16,32 @@ namespace Personalsystem.Controllers
 {
     public class CompaniesController : Controller
     {
+        private CompanyRepo companyRepo = new CompanyRepo();
         private Repo repo = new Repo();
-        private PersonalSystemContext db = new PersonalSystemContext();
 
         // GET: Companies
         public ActionResult Index()
         {
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
             if (User.IsInRole("Admin") || User.IsInRole("Executive") || User.IsInRole("Employee"))
+            {
+                ApplicationUser user = repo.FindUserById(User.Identity.GetUserId());
                 return RedirectToAction("Details", new { id = user.cId });
-
-            return View(db.company.ToList());
-        }
-
-        public ActionResult Test(int id)
-        {
-            //CompanyProflie companyProfile = new CompanyProflie();
-            //companyProfile.companyId = id;
-            //companyProfile.departmentId = db.department.Where(r => r.cId == id);
-            return View();
+            }
+            return View(companyRepo.GetAll());
         }
 
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
-            List<Department> DepartmentList = db.department.Where(r => r.cId == id).ToList();
-            List<Group> GroupList = db.group.Where(r => r.department.cId == id).ToList();
+            List<Department> DepartmentList = companyRepo.GetCompanyDepartments(id.Value);
+            List<Group> GroupList = companyRepo.GetCompanyGroups(id.Value);
             ViewBag.GroupList = GroupList;
             ViewBag.DepartmentList = DepartmentList;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.company.Find(id);
+            Company company = companyRepo.Find(id.Value);
             if (company == null)
             {
                 return HttpNotFound();
@@ -73,8 +66,7 @@ namespace Personalsystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.company.Add(company);
-                db.SaveChanges();
+                companyRepo.Save(company);
                 return RedirectToAction("Index");
             }
 
@@ -89,7 +81,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.company.Find(id);
+            Company company = companyRepo.Find(id.Value);
             if (company == null)
             {
                 return HttpNotFound();
@@ -107,8 +99,7 @@ namespace Personalsystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(company).State = EntityState.Modified;
-                db.SaveChanges();
+                companyRepo.Edit(company);
                 return RedirectToAction("Index");
             }
             return View(company);
@@ -122,7 +113,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.company.Find(id);
+            Company company = companyRepo.Find(id.Value);
             if (company == null)
             {
                 return HttpNotFound();
@@ -135,10 +126,8 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Company company = db.company.Find(id);
-
-            db.company.Remove(company);
-            db.SaveChanges();
+            Company company = companyRepo.Find(id);
+            companyRepo.Delete(company);
             return RedirectToAction("Index");
         }
 
@@ -146,7 +135,7 @@ namespace Personalsystem.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

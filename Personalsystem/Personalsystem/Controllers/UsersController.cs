@@ -10,15 +10,16 @@ using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Personalsystem.Repositories;
-using System.Web.Hosting;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 
 namespace Personalsystem.Controllers
 {
     public class UsersController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+
         private Repo repo = new Repo();
+        private UserRepo userRepo = new UserRepo();
        
 
         // GET: Users/Details/5
@@ -30,7 +31,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.user.Find(id);
+            ApplicationUser applicationUser = repo.FindUserById(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -40,9 +41,9 @@ namespace Personalsystem.Controllers
 
 
 //Begin, written by Ali ********************************************************
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
-            var user = db.user.ToList();
+            var user = userRepo.GetAll();
             return View(user);
         }
 
@@ -78,7 +79,7 @@ namespace Personalsystem.Controllers
                 return RedirectToAction("Index");
             }
         }
-       
+
         // GET: ApplicationUsers/Delete/5
         public ActionResult Delete(string id)
         {
@@ -86,7 +87,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.user.Find(id);
+            ApplicationUser applicationUser = repo.FindUserById(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -98,9 +99,8 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            ApplicationUser applicationUser = db.user.Find(id);
-            db.user.Remove(applicationUser);
-            db.SaveChanges();
+            ApplicationUser applicationUser = repo.FindUserById(id);
+            userRepo.Delete(applicationUser);
             return RedirectToAction("Index");
         }
 
@@ -109,7 +109,8 @@ namespace Personalsystem.Controllers
 
         public JsonResult GetUsers()
         {
-            var result = db.user.ToList();
+
+            var result = userRepo.GetAll();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -117,7 +118,7 @@ namespace Personalsystem.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.worktime{
+
+    color: white;
+    font-weight: 700;
+    text-align: right;
+    
+}

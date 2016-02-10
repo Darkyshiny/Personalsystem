@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -159,11 +160,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BlogPostsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\HandleEmploymentrsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PMController.cs" />
@@ -175,10 +178,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602081426099_Initial.cs" />
+    <Compile Include="Migrations\201602081426099_Initial.Designer.cs">
+      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\BlogPost.cs" />
+    <Compile Include="Models\CompanyProfile.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Company.cs" />
@@ -192,16 +200,21 @@
     <Compile Include="Models\VM\PrivateMessageVM.cs" />
     <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BlogPostRepo.cs" />
+    <Compile Include="Repositories\CompanyRepo.cs" />
+    <Compile Include="Repositories\DepartmentRepo.cs" />
+    <Compile Include="Repositories\GroupRepo.cs" />
+    <Compile Include="Repositories\RepoInterface.cs" />
+    <Compile Include="Repositories\PMRepo.cs" />
     <Compile Include="Repositories\Repo.cs" />
+    <Compile Include="Repositories\RepoPlus.cs" />
+    <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-Personalsystem-20160119111221.mdf" />
-    <Content Include="App_Data\aspnet-Personalsystem-20160119111221_log.ldf">
-      <DependentUpon>aspnet-Personalsystem-20160119111221.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -993,6 +1006,9 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.datetimepicker.full.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
+    <Content Include="Scripts\jquery.datetimepicker.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1072,14 +1088,24 @@
     <Content Include="Views\PM\Edit.cshtml" />
     <Content Include="Views\PM\Inbox.cshtml" />
     <Content Include="Views\PM\Sent.cshtml" />
-    <Content Include="Views\Vacancy\CoverLetter.cshtml" />
+    <Content Include="Views\Files\CoverLetter.cshtml" />
     <Content Include="Views\Files\Index.cshtml" />
-    <Content Include="Views\Vacancy\ShowApplicants.cshtml" />
+    <Content Include="Views\Files\ShowApplicants.cshtml" />
     <Content Include="Views\Users\DeletUser.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
-    <Content Include="Views\Vacancy\Hire.cshtml" />
-    <Content Include="Views\Manage\UploadCV.cshtml" />
+    <Content Include="Views\HandleEmploymentrs\Edit.cshtml" />
+    <Content Include="Views\HandleEmploymentrs\Index.cshtml" />
+    <Content Include="Views\BlogPosts\Delete.cshtml" />
+    <Content Include="Views\BlogPosts\Details.cshtml" />
+    <Content Include="Views\BlogPosts\Edit.cshtml" />
+    <Content Include="Views\BlogPosts\Index.cshtml" />
+    <Content Include="Views\BlogPosts\Create.cshtml" />
+    <Content Include="Views\Vacancy\Apply.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Shared\EditorTemplate\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1087,6 +1113,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602091033247_Initial.resx">
+      <DependentUpon>201602091033247_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
