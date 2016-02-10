@@ -16,7 +16,7 @@ namespace Personalsystem.Controllers
 {
     public class UsersController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+
         private Repo repo = new Repo();
         private UserRepo userRepo = new UserRepo();
        
@@ -97,8 +97,7 @@ namespace Personalsystem.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             ApplicationUser applicationUser = repo.FindUserById(id);
-            db.user.Remove(applicationUser);
-            db.SaveChanges();
+            userRepo.Delete(applicationUser);
             return RedirectToAction("Index");
         }
 

@@ -34,9 +34,10 @@ namespace Personalsystem.Repositories
         //    throw new NotImplementedException();
         //}
 
-        //public void Delete(ApplicationUser Entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void Delete(ApplicationUser Entity)
+        {
+            db.user.Remove(Entity);
+            db.SaveChanges();
+        }
     }
 }

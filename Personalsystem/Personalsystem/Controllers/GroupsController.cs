@@ -16,7 +16,6 @@ namespace Personalsystem.Controllers
     [Authorize(Roles=("Super Admin, Admin"))]
     public class GroupsController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
         private GroupRepo groupRepo = new GroupRepo();
         private Repo repo = new Repo();
         // GET: Groups
@@ -33,7 +32,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Group group = db.group.Find(id);
+            Group group = groupRepo.Find(id.Value);
             if (group == null)
             {
                 return HttpNotFound();
@@ -46,7 +45,7 @@ namespace Personalsystem.Controllers
         {
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View();
         }
 
@@ -65,7 +64,7 @@ namespace Personalsystem.Controllers
             }
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View(group);
         }
 
@@ -83,7 +82,7 @@ namespace Personalsystem.Controllers
             }
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = new SelectList(db.department.Where(d => d.cId == group.department.cId), "Id", "Name");
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View(group);
         }
 
@@ -102,7 +101,7 @@ namespace Personalsystem.Controllers
             }
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = new SelectList(db.department.Where(d => d.cId == group.department.cId), "Id", "Name");
+            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
             return View(group);
         }
 
