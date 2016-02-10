@@ -10,23 +10,24 @@ using Personalsystem.DataAccessLayer;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Personalsystem.Models;
+using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
     [Authorize(Roles = ("Super Admin, Admin"))]
     public class DepartmentsController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
-
+        private DepartmentRepo departmentRepo = new DepartmentRepo();
+        private Repo repo = new Repo();
         // GET: Departments
         public ActionResult Index()
         {
-            List<Department> departmentList = new List<Department>();
-            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
+            IEnumerable<Department> departmentList = new List<Department>();
+            ApplicationUser user = repo.FindUserById(User.Identity.GetUserId());
             if (!User.IsInRole("Super Admin"))
-                departmentList = db.department.Where(r => r.cId == user.cId).ToList();
-            else 
-                departmentList = db.department.OrderBy(r => r.cId).ToList();
+                departmentList = departmentRepo.DepartmentList(user.cId.Value);
+            else
+                departmentList = departmentRepo.GetAll();
 
             return View(departmentList);
         }
@@ -39,7 +40,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.department.Find(id);
+            Department department = departmentRepo.Find(id.Value);
             if (department == null)
             {
                 return HttpNotFound();
@@ -64,8 +65,7 @@ namespace Personalsystem.Controllers
             if (ModelState.IsValid)
             {
                 department.cId = cId.Value;
-                db.department.Add(department);
-                db.SaveChanges();
+                departmentRepo.Save(department);
                 return RedirectToAction("Details", "Companies", new { id = department.cId });
             }
 
@@ -79,7 +79,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.department.Find(id);
+            Department department = departmentRepo.Find(id.Value);
             if (department == null)
             {
                 return HttpNotFound();
@@ -92,15 +92,11 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description")] Department department)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,cId")] Department department)
         {
             if (ModelState.IsValid)
             {
-                Department depart = db.department.Find(department.Id);
-                department.cId = depart.cId;
-                db.department.Remove(depart);
-                db.department.Add(department);
-                db.SaveChanges();
+                departmentRepo.Edit(department);
                 return RedirectToAction("Details", "Companies", new { id = department.cId });
             }
             return View(department);
@@ -113,7 +109,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.department.Find(id);
+            Department department = departmentRepo.Find(id.Value);
             if (department == null)
             {
                 return HttpNotFound();
@@ -126,9 +122,8 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Department department = db.department.Find(id);
-            db.department.Remove(department);
-            db.SaveChanges();
+            Department department = departmentRepo.Find(id);
+            departmentRepo.Delete(department);
             return RedirectToAction("Details", "Companies", new { id = department.cId });
         }
 
@@ -136,7 +131,7 @@ namespace Personalsystem.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

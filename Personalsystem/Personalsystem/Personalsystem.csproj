@@ -160,6 +160,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BlogPostsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
@@ -177,14 +178,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602090958358_initial.cs" />
-    <Compile Include="Migrations\201602090958358_initial.Designer.cs">
-      <DependentUpon>201602090958358_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602081426099_Initial.cs" />
+    <Compile Include="Migrations\201602081426099_Initial.Designer.cs">
+      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602090741109_initial.cs" />
+    <Compile Include="Migrations\201602090741109_initial.Designer.cs">
+      <DependentUpon>201602090741109_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\BlogPost.cs" />
+    <Compile Include="Models\CompanyProfile.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Company.cs" />
@@ -198,8 +204,15 @@
     <Compile Include="Models\VM\PrivateMessageVM.cs" />
     <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BlogPostRepo.cs" />
+    <Compile Include="Repositories\CompanyRepo.cs" />
+    <Compile Include="Repositories\DepartmentRepo.cs" />
+    <Compile Include="Repositories\GroupRepo.cs" />
+    <Compile Include="Repositories\RepoInterface.cs" />
+    <Compile Include="Repositories\PMRepo.cs" />
     <Compile Include="Repositories\Repo.cs" />
     <Compile Include="Repositories\RepoPlus.cs" />
+    <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1087,8 +1100,6 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\HandleEmploymentrs\Edit.cshtml" />
     <Content Include="Views\HandleEmploymentrs\Index.cshtml" />
-    <Content Include="Views\Schedule\Create.cshtml" />
-    <Content Include="Views\Schedule\_GroupSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1102,8 +1113,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602090958358_initial.resx">
-      <DependentUpon>201602090958358_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602081426099_Initial.resx">
+      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

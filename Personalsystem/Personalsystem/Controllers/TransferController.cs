@@ -41,7 +41,8 @@ namespace Personalsystem.Controllers
         [HttpPost]
         public ActionResult Find(string search)
         {
-        var re = repo.FindPersonalsBySearchDepId(search);
+            var re = repo.FindPersonalsBySearchId(search);
+       // var re = repo.FindPersonalsBySearchDepId(search);
         return View("Index",re.ToList());
         
         }

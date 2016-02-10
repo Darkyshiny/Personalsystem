@@ -13,7 +13,7 @@ namespace Personalsystem.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201602090958358_initial"; }
+            get { return "201602030926130_initial"; }
         }
         
         string IMigrationMetadata.Source

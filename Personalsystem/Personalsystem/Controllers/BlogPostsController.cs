@@ -9,125 +9,119 @@ using System.Web.Mvc;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
-    public class CompaniesController : Controller
+    [Authorize(Roles = "Admin, Executive, Employee")]
+    public class BlogPostsController : Controller
     {
-        private CompanyRepo companyRepo = new CompanyRepo();
         private Repo repo = new Repo();
+        private BlogPostRepo blogRepo = new BlogPostRepo();
 
-        // GET: Companies
+        // GET: BlogPosts
         public ActionResult Index()
         {
-            if (User.IsInRole("Admin") || User.IsInRole("Executive") || User.IsInRole("Employee"))
-            {
-                ApplicationUser user = repo.FindUserById(User.Identity.GetUserId());
-                return RedirectToAction("Details", new { id = user.cId });
-            }
-            return View(companyRepo.GetAll());
+            return View(blogRepo.GetAll());
         }
 
-        // GET: Companies/Details/5
+        // GET: BlogPosts/Details/5
         public ActionResult Details(int? id)
         {
-            List<Department> DepartmentList = companyRepo.GetCompanyDepartments(id.Value);
-            List<Group> GroupList = companyRepo.GetCompanyGroups(id.Value);
-            ViewBag.GroupList = GroupList;
-            ViewBag.DepartmentList = DepartmentList;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = companyRepo.Find(id.Value);
-            if (company == null)
+            BlogPost blogPost = blogRepo.Find(id.Value);
+            if (blogPost == null)
             {
                 return HttpNotFound();
             }
-            return View(company);
+            return View(blogPost);
         }
 
-        // GET: Companies/Create 
-        [Authorize(Roles = ("Super Admin"))]
+        // GET: BlogPosts/Create
+        
         public ActionResult Create()
         {
+            //ViewBag.userList = db.user.ToList();
             return View();
         }
 
-        // POST: Companies/Create
+        // POST: BlogPosts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ("Super Admin"))]
-        public ActionResult Create([Bind(Include = "Id,Name,Description")] Company company)
+        public ActionResult Create([Bind(Include = "Id,Title,publicPost,Content")] BlogPost blogPost)
         {
+            string userid = User.Identity.GetUserId();
+            ApplicationUser currentUser = repo.FindUserById(userid);
+
             if (ModelState.IsValid)
             {
-                companyRepo.Save(company);
+                blogPost.cId = currentUser.cId.Value;
+                blogPost.postedBy = currentUser.UserName;
+                blogPost.Timestamp = DateTime.Now;
+                blogRepo.Save(blogPost);
                 return RedirectToAction("Index");
             }
 
-            return View(company);
+            return View(blogPost);
         }
 
-        // GET: Companies/Edit/5
-        [Authorize(Roles = ("Super Admin, Admin"))]
+        // GET: BlogPosts/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = companyRepo.Find(id.Value);
-            if (company == null)
+            BlogPost blogPost = blogRepo.Find(id.Value);
+            if (blogPost == null)
             {
                 return HttpNotFound();
             }
-            return View(company);
+            return View(blogPost);
         }
 
-        // POST: Companies/Edit/5
+        // POST: BlogPosts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = ("Super Admin, Admin"))]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description")] Company company)
+        public ActionResult Edit([Bind(Include = "Id,Name,cId,Content,Timestamp")] BlogPost blogPost)
         {
             if (ModelState.IsValid)
             {
-                companyRepo.Edit(company);
+                blogRepo.Edit(blogPost);
                 return RedirectToAction("Index");
             }
-            return View(company);
+            return View(blogPost);
         }
 
-        // GET: Companies/Delete/5
-        [Authorize(Roles = ("Super Admin"))]
+        // GET: BlogPosts/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = companyRepo.Find(id.Value);
-            if (company == null)
+            BlogPost blogPost = blogRepo.Find(id.Value);
+            if (blogPost == null)
             {
                 return HttpNotFound();
             }
-            return View(company);
+            return View(blogPost);
         }
 
-        // POST: Companies/Delete/5
+        // POST: BlogPosts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Company company = companyRepo.Find(id);
-            companyRepo.Delete(company);
+            BlogPost blogPost = blogRepo.Find(id);
+            blogRepo.Delete(blogPost);
             return RedirectToAction("Index");
         }
 

@@ -8,11 +8,11 @@
              }).error(function (error) {
                  $scope.status = 'Unable to load user data' + error.message;
              });
-         }
+         };
          $scope.Name = "";
          $scope.SearchFill = function (_name) {
              $scope.searchUser = _name;
-         }
+         };
      };
 
      app.controller("PMController", PMController);

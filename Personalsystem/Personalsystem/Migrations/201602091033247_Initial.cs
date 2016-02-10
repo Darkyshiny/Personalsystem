@@ -182,7 +182,9 @@ namespace Personalsystem.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Title = c.String(),
+                        postedBy = c.String(),
+                        publicPost = c.Boolean(nullable: false),
                         cId = c.Int(nullable: false),
                         Content = c.String(),
                         Timestamp = c.DateTime(nullable: false),
