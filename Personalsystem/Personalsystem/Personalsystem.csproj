@@ -1105,7 +1105,6 @@
     <Content Include="Views\Vacancy\CoverLetter.cshtml" />
     <Content Include="Views\Vacancy\ShowApplicants.cshtml" />
     <Content Include="Views\Vacancy\Hire.cshtml" />
-    <Content Include="Users\8a406331-9f88-46ad-9a11-cf6da0d7eb55\Collections.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -195,7 +195,7 @@ using System.Linq;
                 RoleManager.Create(new IdentityRole("Employee"));
                 RoleManager.Create(new IdentityRole("Job Searcher"));       
             }
-            var admin = new ApplicationUser { UserName = "admin@personalsystem.com", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com", gId = 1 };
+            var admin = new ApplicationUser { UserName = "admin@personalsystem.com", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com" };
 
             if (!context.user.Any(u => u.UserName == "admin@personalsystem.com"))
             {
@@ -230,7 +230,7 @@ using System.Linq;
 
                 Random rng = new Random();
                 var groupCount = context.group.Count();
-                foreach (ApplicationUser user in context.user.Where(u => u.UserName != "admin@personalsystem.com"))
+                foreach (ApplicationUser user in context.user.Where(u => u.Id != admin.Id))
                 {
                     int target = rng.Next(1, groupCount + 1);
                     user.gId = target;

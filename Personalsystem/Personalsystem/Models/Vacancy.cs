@@ -25,15 +25,8 @@ namespace Personalsystem.Models
         public List<Vacancy> ListVacancies(Company company)
         {
             var vacancies = db.vacancy.ToList();
-            var result = vacancies.Where(v => v.cId == company.Id && v.Active) .ToList();
-            if (result.Count > 0)
-            {
-                return result.OrderBy(v => v.Id).ToList();
-            }
-            else
-            {
-                throw new Exception();
-            }
+            var result = vacancies.Where(v => v.cId == company.Id && v.Active).ToList();
+            return result.OrderBy(v => v.Id).ToList();
         }
 
         public List<Vacancy> ListVacancies(Company company, string search)
