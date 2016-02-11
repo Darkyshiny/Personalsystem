@@ -1102,6 +1102,10 @@
     <Content Include="Views\BlogPosts\Index.cshtml" />
     <Content Include="Views\BlogPosts\Create.cshtml" />
     <Content Include="Views\Vacancy\Apply.cshtml" />
+    <Content Include="Views\Vacancy\CoverLetter.cshtml" />
+    <Content Include="Views\Vacancy\ShowApplicants.cshtml" />
+    <Content Include="Views\Vacancy\Hire.cshtml" />
+    <Content Include="Users\8a406331-9f88-46ad-9a11-cf6da0d7eb55\Collections.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1113,11 +1117,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602091033247_Initial.resx">
-      <DependentUpon>201602091033247_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
