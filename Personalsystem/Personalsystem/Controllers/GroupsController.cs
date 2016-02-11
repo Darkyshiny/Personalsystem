@@ -16,6 +16,7 @@ namespace Personalsystem.Controllers
     [Authorize(Roles=("Super Admin, Admin"))]
     public class GroupsController : Controller
     {
+        private DepartmentRepo departmentRepo = new DepartmentRepo();
         private GroupRepo groupRepo = new GroupRepo();
         private Repo repo = new Repo();
         // GET: Groups
@@ -45,7 +46,7 @@ namespace Personalsystem.Controllers
         {
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
+            ViewBag.dId = departmentRepo.GetDepartmentSelectList(cId.Value);
             return View();
         }
 
@@ -64,7 +65,7 @@ namespace Personalsystem.Controllers
             }
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
+            ViewBag.dId = departmentRepo.GetDepartmentSelectList(cId.Value);
             return View(group);
         }
 
@@ -82,7 +83,7 @@ namespace Personalsystem.Controllers
             }
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
+            ViewBag.dId = departmentRepo.GetDepartmentSelectList(cId.Value);
             return View(group);
         }
 
@@ -101,7 +102,7 @@ namespace Personalsystem.Controllers
             }
             string userid = User.Identity.GetUserId();
             ApplicationUser user = repo.FindUserById(userid);
-            ViewBag.dId = groupRepo.GetDepartmentList(cId.Value);
+            ViewBag.dId = departmentRepo.GetDepartmentSelectList(cId.Value);
             return View(group);
         }
 

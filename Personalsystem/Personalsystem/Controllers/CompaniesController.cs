@@ -122,6 +122,7 @@ namespace Personalsystem.Controllers
         }
 
         // POST: Companies/Delete/5
+        [Authorize(Roles="Super Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

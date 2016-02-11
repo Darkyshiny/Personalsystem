@@ -27,6 +27,7 @@ namespace Personalsystem.Controllers
             var vacancy = repo.ListVacancies(companyId);
             if (vacancy.Count <= 0)
                 ViewBag.Message = "Sorry no vacancies for the company at the moment. Please check back later!";
+            ViewBag.CompanyName = companyId.Name;
             return View(vacancy);
         }
 

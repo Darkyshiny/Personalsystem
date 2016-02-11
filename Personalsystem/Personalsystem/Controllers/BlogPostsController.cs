@@ -13,19 +13,21 @@ using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
-    [Authorize(Roles = "Admin, Executive, Employee")]
+    [Authorize(Roles = "Admin,Executive")]
     public class BlogPostsController : Controller
     {
         private Repo repo = new Repo();
         private BlogPostRepo blogRepo = new BlogPostRepo();
 
         // GET: BlogPosts
+        [Authorize(Roles = "Admin,Executive,Employee")]
         public ActionResult Index()
         {
             return View(blogRepo.GetAll());
         }
 
         // GET: BlogPosts/Details/5
+        [Authorize(Roles = "Admin,Executive,Employee")]
         public ActionResult Details(int? id)
         {
             if (id == null)

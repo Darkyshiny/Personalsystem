@@ -9,6 +9,7 @@ using Microsoft.Owin.Security;
 using Personalsystem.Models;
 using System.Web.Hosting;
 using Personalsystem.DataAccessLayer;
+using Personalsystem.Repositories;
 
 
 
@@ -19,7 +20,7 @@ namespace Personalsystem.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private PersonalSystemContext db = new PersonalSystemContext();
+        private Repo repo = new Repo();
 
         public ManageController()
         {
@@ -161,7 +162,7 @@ namespace Personalsystem.Controllers
             upload.SaveAs(pathString);
 
             // Update User
-            var user = db.user.Find(User.Identity.GetUserId());
+            var user = repo.FindUserById(appId);
             user.CVurl = pathString;
             db.SaveChanges();
 

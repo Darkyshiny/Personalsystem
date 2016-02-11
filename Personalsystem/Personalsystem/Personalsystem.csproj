@@ -1106,6 +1106,7 @@
     <Content Include="Views\Vacancy\CoverLetter.cshtml" />
     <Content Include="Views\Vacancy\ShowApplicants.cshtml" />
     <Content Include="Views\Vacancy\Hire.cshtml" />
+    <Content Include="Views\Manage\UploadCV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

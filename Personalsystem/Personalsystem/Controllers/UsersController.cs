@@ -17,11 +17,9 @@ namespace Personalsystem.Controllers
 {
     public class UsersController : Controller
     {
-
         private Repo repo = new Repo();
         private UserRepo userRepo = new UserRepo();
        
-
         // GET: Users/Details/5
         public ActionResult Details(string id)
         {
@@ -36,7 +34,6 @@ namespace Personalsystem.Controllers
             }
             return View(applicationUser);
         }
-
 
 //Begin, written by Ali ********************************************************
         public ActionResult Index(string search)
@@ -102,7 +99,6 @@ namespace Personalsystem.Controllers
             return RedirectToAction("Index");
         }
 
-    
 //********************************************************************
 
         public JsonResult GetUsers()
@@ -120,6 +116,5 @@ namespace Personalsystem.Controllers
             }
             base.Dispose(disposing);
         }
-
     }
 }

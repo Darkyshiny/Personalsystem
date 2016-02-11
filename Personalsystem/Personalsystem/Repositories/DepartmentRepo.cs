@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Personalsystem.Repositories
 {
@@ -41,6 +42,11 @@ namespace Personalsystem.Repositories
         public List<Department> DepartmentList(int cId)
         {
             return db.department.Where(r => r.cId == cId).ToList();
+        }
+
+        public SelectList GetDepartmentSelectList(int cId)
+        {
+            return new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
         }
     }
 }
