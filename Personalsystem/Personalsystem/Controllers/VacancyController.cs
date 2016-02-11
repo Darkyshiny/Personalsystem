@@ -54,7 +54,7 @@ namespace Personalsystem.Controllers
                 TempData["Error"] = "You have to load up your CV, before you can make application! Click Hello in the header.";
             }
 
-            return View("CoverLetter");
+            return View("Apply");
         }
         // GET: Files
         public ActionResult DownloadCV(string url)
@@ -75,7 +75,7 @@ namespace Personalsystem.Controllers
                 return File(filedata, contentType);
             }
             TempData["Error"] = "You have to load up your CV! Click Hello in the header.";
-            return View("CoverLetter");
+            return View("Apply");
         }
 
         // POST: File/Create
@@ -85,7 +85,7 @@ namespace Personalsystem.Controllers
             if (letter.Length == 0)
             {
                 TempData["Error"] = "To save, Cover Letter must be given";
-                return View("CoverLetter");
+                return View("Apply");
             }
 
             // Update Application and User
@@ -109,7 +109,7 @@ namespace Personalsystem.Controllers
                 TempData["Error"] = "You have to load up your CV! Click Welcome in the header.";
             }
 
-            return View("CoverLetter");
+            return View("Apply");
         }
         //GET: Applicants for Company
         [Authorize(Roles = ("Executive"))]
@@ -158,19 +158,9 @@ namespace Personalsystem.Controllers
                 return HttpNotFound();
             }
 
-            string filedata = applicationUser.CoverLetter;
-            string contentType = MimeMapping.GetMimeMapping(applicationUser.CoverLetter);
+            ViewBag.CoverLetter = applicationUser.CoverLetter;
 
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = "Cover Letter",
-                Inline = true,
-            };
-
-            Response.AppendHeader("Content-Disposition", cd.ToString());
-
-            return File(filedata, contentType);
-
+            return View(); 
         }
 
         public ActionResult Hire(string id)
@@ -282,7 +272,7 @@ namespace Personalsystem.Controllers
                 vac.Active = false;
 
                 db.SaveChanges();
-                return RedirectToAction("ShowApplicants", "Vacancy");
+                return View("ShowApplicants");
             }
 
             return View();
