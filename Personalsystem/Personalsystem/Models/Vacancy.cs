@@ -34,15 +34,7 @@ namespace Personalsystem.Models
             var vacancies = db.vacancy.ToList();
             var result = vacancies.Where(v => v.cId == company.Id).ToList();
             var searchString = result.Where(r => r.Description.Contains(search)).ToString();
-
-            if (result.Count > 0 & searchString.Contains(search))
-            {
-                return result.OrderBy(v => v.Id).ToList();
-            }
-            else
-            {
-                throw new Exception();
-            }
+            return result.OrderBy(v => v.Id).ToList();
         }
     }
 }

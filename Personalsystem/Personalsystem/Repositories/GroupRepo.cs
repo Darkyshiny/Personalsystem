@@ -45,10 +45,9 @@ namespace Personalsystem.Repositories
             return db.department.Find(Entity.dId).cId;
         }
 
-        public SelectList GetDepartmentList(int cId)
+        public SelectList GetGroupSelectList()
         {
-            return new SelectList(db.department.Where(d => d.cId == cId), "Id", "Name");
+            return new SelectList(db.group, "Id", "Name");
         }
-        
     }
 }

@@ -15,6 +15,7 @@ using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
+    [Authorize]
     public class PMController : Controller
     {
         private PMRepo pmRepo = new PMRepo();
@@ -54,7 +55,6 @@ namespace Personalsystem.Controllers
         // GET: PM/Create
         public ActionResult Compose()
         {
-            //ViewBag.userList = db.user.ToList();
             return View();
         }
 

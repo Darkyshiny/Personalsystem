@@ -51,6 +51,10 @@ namespace Personalsystem.Repositories
             db.SaveChanges();
         }
 
+        public void SaveChanges()
+        {
+            db.SaveChanges();
+        }
         public void Dispose()
         {
             db.Dispose();
