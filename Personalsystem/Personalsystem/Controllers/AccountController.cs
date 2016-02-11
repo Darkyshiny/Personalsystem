@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -176,6 +177,10 @@ namespace Personalsystem.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
+                    if (!UserManager.IsInRole(user.Id,"Job Searcher" ))
+                    {
+                        UserManager.AddToRole(user.Id, "Job Searcher");
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

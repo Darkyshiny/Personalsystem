@@ -23,7 +23,7 @@
             <div class="col-md-offset-3">
                 @Html.Label("Cover letter", new { @class = "control-label col-md-10" })
                 <br />
-                @Html.TextArea("letter", null, 10, 100, null)
+                @Html.TextArea("letter", "", 10, 100, null)
                 @Html.ValidationMessage("Cover letter", "", new { @class = "text-danger" })
                 <br />
                 <br />
@@ -52,9 +52,9 @@
 
         </div>
     </div>
-
-
 }
+
+@ViewBag.Message
 <p>
-    @Html.ActionLink("Back to List", "ShowApplicants")
+    @Html.ActionLink("Back to List", "Index", new {cId = TempData["CompanyId"]})
 </p>

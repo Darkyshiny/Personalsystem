@@ -163,6 +163,7 @@ namespace Personalsystem.Controllers
             // Update User
             var user = db.user.Find(User.Identity.GetUserId());
             user.CVurl = pathString;
+            db.SaveChanges();
 
             return View();
         }

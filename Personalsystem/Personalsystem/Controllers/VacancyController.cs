@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using System.Dynamic;
 using System.ComponentModel;
 using System.Net;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -21,6 +22,7 @@ namespace Personalsystem.Controllers
         // GET: Vacancy
         public ActionResult Index(int cId)
         {
+            TempData["CompanyId"] = cId;
             var companyId = db.company.Find(cId);
             var vacancy = repo.ListVacancies(companyId);
             if (vacancy.Count <= 0)
@@ -29,39 +31,52 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Apply
+        [Authorize(Roles = ("Job Searcher"))]
         public ActionResult Apply(int vId)
         {
+            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
 
             TempData["AppId"] = vId;
             ViewBag.Description = db.vacancy.Find(vId).Description.ToString();
             //Get name of CV
             string applicantId = User.Identity.GetUserId();
             var cv = db.user.Find(applicantId);
-            string filename = cv.CVurl.ToString();
-            string result = Path.GetFileName(filename);
-            ViewData.Add("CV", filename);
-            ViewData.Add("File", result);
+            if (cv.CVurl != null)
+            {
+                string filename = cv.CVurl.ToString();
+                string result = Path.GetFileName(filename);
+                ViewData.Add("CV", filename);
+                ViewData.Add("File", result);
+            }
+            else
+            {
+                TempData["Error"] = "You have to load up your CV, before you can make application! Click Hello in the header.";
+            }
 
             return View("CoverLetter");
         }
         // GET: Files
         public ActionResult DownloadCV(string url)
         {
-
-            byte[] filedata = System.IO.File.ReadAllBytes(url);
-            string contentType = MimeMapping.GetMimeMapping(url);
-
-            var cd = new System.Net.Mime.ContentDisposition
+            if (url != null)
             {
-                FileName = url,
-                Inline = true,
-            };
+                byte[] filedata = System.IO.File.ReadAllBytes(url);
+                string contentType = MimeMapping.GetMimeMapping(url);
 
-            Response.AppendHeader("Content-Disposition", cd.ToString());
+                var cd = new System.Net.Mime.ContentDisposition
+                {
+                    FileName = url,
+                    Inline = true,
+                };
 
-            return File(filedata, contentType);
+                Response.AppendHeader("Content-Disposition", cd.ToString());
+
+                return File(filedata, contentType);
+            }
+            TempData["Error"] = "You have to load up your CV! Click Hello in the header.";
+            return View("CoverLetter");
         }
-        
+
         // POST: File/Create
         [HttpPost]
         public ActionResult SendAppl(string letter)
@@ -75,25 +90,33 @@ namespace Personalsystem.Controllers
             // Update Application and User
             Application app = new Application();
             var user = db.user.Find(User.Identity.GetUserId());
-            app.uId = user.Id;
-            app.CoverLetter = letter;
-            int test;
-            int.TryParse(TempData["AppId"].ToString(), out test);
-            app.vId = test;
+            if (user.CVurl != null)
+            {
+                app.uId = user.Id;
+                app.CoverLetter = letter;
+                int test;
+                int.TryParse(TempData["AppId"].ToString(), out test);
+                app.vId = test;
 
-            db.application.Add(app);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+                db.application.Add(app);
+                db.SaveChanges();
+                letter = "";
+                TempData["Error"] = "Your application has been submitted.";
+            }
+            else
+            {
+                TempData["Error"] = "You have to load up your CV! Click Welcome in the header.";
+            }
+
+            return View("CoverLetter");
         }
         //GET: Applicants for Company
+        [Authorize(Roles = ("Executive"))]
         public ActionResult ShowApplicants()
         {
-            //ApplicationUser user = db.user.Find(User.Identity.GetUserId());
-            //if (!User.IsInRole("Executive"))
-            //    return RedirectToAction("Login", "Account");
+            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
 
-            //int compId = Convert.ToInt32(user.cId);
-            int compId = 1;
+            int compId = Convert.ToInt32(user.cId);
 
             TempData["CompanyId"] = compId;
             var emp = (from a in db.application
@@ -133,10 +156,22 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(applicationUser);
+
+            string filedata = applicationUser.CoverLetter;
+            string contentType = MimeMapping.GetMimeMapping(applicationUser.CoverLetter);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = "Cover Letter",
+                Inline = true,
+            };
+
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+
+            return File(filedata, contentType);
 
         }
-       
+
         public ActionResult Hire(string id)
         {
             //hire person
@@ -155,8 +190,7 @@ namespace Personalsystem.Controllers
                 TempData["Surname"] = item.Surname;
             }
 
-            //int CId = Convert.ToInt32(TempData["CompanyId"]);
-            int CId = 1;
+            int CId = Convert.ToInt32(TempData["CompanyId"]);
 
             List<Department> DepartmentList = db.department.Where(r => r.cId == CId).ToList();
             List<Group> GroupList = db.group.Where(r => r.department.cId == CId).ToList();
@@ -181,12 +215,12 @@ namespace Personalsystem.Controllers
         [HttpPost]
         public ActionResult Apply(string letter)
         {
-            if (letter.Length == 0 )
+            if (letter.Length == 0)
             {
                 TempData["Error"] = "To save, Cover Letter must be given";
                 return RedirectToAction("Index");
             }
- 
+
             // Update Application and User
             Application app = new Application();
             var user = db.user.Find(User.Identity.GetUserId());
@@ -205,17 +239,25 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = (""))]
+        [Authorize(Roles = ("Executive"))]
         public ActionResult Create(int Department, int Group)
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser ExUser = db.user.Find(User.Identity.GetUserId());
+
                 int appId = Convert.ToInt32(TempData["ApplId"]);
                 string empId = TempData["EmpId"].ToString();
 
                 var emp = db.user.Find(empId);
-                emp.cId = Convert.ToInt32(TempData["CompanyId"]);
+                emp.cId = ExUser.cId;
                 emp.gId = Group;
+                db.SaveChanges();
+
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+
+                UserManager.RemoveFromRole(emp.Id, "Job Searcher");
+                UserManager.AddToRole(emp.Id, "Employee");
 
                 //delete other applicants
                 var actvac = db.application.Find(appId);
@@ -225,6 +267,14 @@ namespace Personalsystem.Controllers
                 {
                     db.application.RemoveRange(del);
                 }
+
+                //delete other applications same person applied for
+                var del2 = db.application.Where(a => a.uId == actvac.uId);
+                if (del2 != null)
+                {
+                    db.application.RemoveRange(del2);
+                }
+
 
                 //Null vacancy
                 var vac = db.vacancy.Find(actvac.vId);

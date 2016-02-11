@@ -163,10 +163,9 @@
     <Compile Include="Controllers\BlogPostsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
-    <Compile Include="Controllers\HandleEmploymentrsController.cs" />
+    <Compile Include="Controllers\HandleEmploymentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PMController.cs" />
@@ -178,9 +177,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602081426099_Initial.cs" />
-    <Compile Include="Migrations\201602081426099_Initial.Designer.cs">
-      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602090741109_initial.Designer.cs" />
+    <Compile Include="Migrations\201602110810351_MNIntial.cs" />
+    <Compile Include="Migrations\201602110810351_MNIntial.Designer.cs">
+      <DependentUpon>201602110810351_MNIntial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -208,6 +208,7 @@
     <Compile Include="Repositories\PMRepo.cs" />
     <Compile Include="Repositories\Repo.cs" />
     <Compile Include="Repositories\RepoPlus.cs" />
+    <Compile Include="Repositories\ScheduleRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1116,6 +1117,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602090958358_initial.resx" />
+    <EmbeddedResource Include="Migrations\201602110810351_MNIntial.resx">
+      <DependentUpon>201602110810351_MNIntial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
