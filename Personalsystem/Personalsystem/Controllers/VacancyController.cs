@@ -19,10 +19,12 @@ namespace Personalsystem.Controllers
         private Vacancy repo = new Vacancy();
 
         // GET: Vacancy
-        public ActionResult Index()
+        public ActionResult Index(int cId)
         {
-            var companyId = db.company.Find(1);
+            var companyId = db.company.Find(cId);
             var vacancy = repo.ListVacancies(companyId);
+            if (vacancy.Count <= 0)
+                ViewBag.Message = "Sorry no vacancies for the company at the moment. Please check back later!";
             return View(vacancy);
         }
 

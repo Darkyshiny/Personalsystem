@@ -163,10 +163,9 @@
     <Compile Include="Controllers\BlogPostsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
-    <Compile Include="Controllers\HandleEmploymentrsController.cs" />
+    <Compile Include="Controllers\HandleEmploymentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PMController.cs" />
@@ -178,9 +177,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602081426099_Initial.cs" />
-    <Compile Include="Migrations\201602081426099_Initial.Designer.cs">
-      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602110716262_Initial.cs" />
+    <Compile Include="Migrations\201602110716262_Initial.Designer.cs">
+      <DependentUpon>201602110716262_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -208,6 +207,7 @@
     <Compile Include="Repositories\PMRepo.cs" />
     <Compile Include="Repositories\Repo.cs" />
     <Compile Include="Repositories\RepoPlus.cs" />
+    <Compile Include="Repositories\ScheduleRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1077,11 +1077,6 @@
     <Content Include="Views\Transfer\Details.cshtml" />
     <Content Include="Views\Transfer\Edit.cshtml" />
     <Content Include="Views\Transfer\Index.cshtml" />
-    <Content Include="Views\Events\Create.cshtml" />
-    <Content Include="Views\Events\Delete.cshtml" />
-    <Content Include="Views\Events\Details.cshtml" />
-    <Content Include="Views\Events\Edit.cshtml" />
-    <Content Include="Views\Events\Index.cshtml" />
     <Content Include="Views\PM\Compose.cshtml" />
     <Content Include="Views\PM\Delete.cshtml" />
     <Content Include="Views\PM\Details.cshtml" />
@@ -1102,6 +1097,11 @@
     <Content Include="Views\BlogPosts\Index.cshtml" />
     <Content Include="Views\BlogPosts\Create.cshtml" />
     <Content Include="Views\Vacancy\Apply.cshtml" />
+    <Content Include="Views\Schedule\_GroupSchedule.cshtml" />
+    <Content Include="Views\Schedule\Create.cshtml" />
+    <Content Include="Views\Vacancy\ShowApplicants.cshtml" />
+    <Content Include="Views\Vacancy\CoverLetter.cshtml" />
+    <Content Include="Views\Vacancy\Hire.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1115,8 +1115,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602091033247_Initial.resx">
-      <DependentUpon>201602091033247_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602110716262_Initial.resx">
+      <DependentUpon>201602110716262_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

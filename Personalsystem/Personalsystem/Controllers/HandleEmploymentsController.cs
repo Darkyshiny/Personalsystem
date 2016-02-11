@@ -12,7 +12,7 @@ using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
-    public class HandleEmploymentrsController : Controller
+    public class HandleEmploymentsController : Controller
     {
         private PersonalSystemContext db = new PersonalSystemContext();
         private Repo repo = new Repo(); 

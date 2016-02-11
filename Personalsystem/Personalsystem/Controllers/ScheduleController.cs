@@ -8,23 +8,26 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
     public class ScheduleController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+        private UserManager<ApplicationUser> UM = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new PersonalSystemContext()));
         private EventVM vm = new EventVM { week = 0, year = 0, eventList = new List<Event>() };
-        Event repo = new Event();
+        private ScheduleRepo scheduleRepo = new ScheduleRepo();
+        private CompanyRepo companyRepo = new CompanyRepo();
+        private Repo repo = new Repo();
 
         [Authorize]
         public ActionResult Index(int? setWeek)
         {
-            UserManager<ApplicationUser> UM = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            
             var uID = User.Identity.GetUserId();
             var user = UM.FindById(uID);
 
-            var currentWeek = repo.GetIso8601WeekOfYear(DateTime.Now);
+            var currentWeek = scheduleRepo.GetIso8601WeekOfYear(DateTime.Now);
             
 
             if (vm.week == 0)
@@ -39,13 +42,13 @@ namespace Personalsystem.Controllers
 
             ViewBag.Menu = vm.week;
 
-            var userCompany = db.company.Find(user.cId);
+            var userCompany = companyRepo.Find(user.cId.Value);
 
-            var companyEvents = db.companyEvent.Where(c => c.cId == userCompany.Id);
+            var companyEvents = scheduleRepo.ListCompanyEvents(userCompany);
 
             foreach (var item in companyEvents)
             {
-                if (repo.GetIso8601WeekOfYear(item.Time) == vm.week)
+                if (scheduleRepo.GetIso8601WeekOfYear(item.Time) == vm.week)
                 {
                     vm.eventList.Add(item);
                 }
@@ -65,12 +68,12 @@ namespace Personalsystem.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "Title,Content,Time")] Event e)
         {
-            var user = db.user.Find(User.Identity.GetUserId());
-            var company = db.company.First(c => c.Id == user.cId);
+            var user = repo.FindUserById(User.Identity.GetUserId());
+            var company = companyRepo.Find(user.cId.Value);
 
             if (ModelState.IsValid)
             {
-                e.CreateCompanyEvent(company, e.Title, e.Content, e.Time);
+                scheduleRepo.CreateCompanyEvent(company, e.Title, e.Content, e.Time);
                 return RedirectToAction("Index");
             }
             return View("Create");
@@ -78,7 +81,6 @@ namespace Personalsystem.Controllers
 
         public ActionResult _GroupSchedule()
         {
-            UserManager<ApplicationUser> UM = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var uID = User.Identity.GetUserId();
             var user = UM.FindById(uID);
 

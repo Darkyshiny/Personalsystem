@@ -25,8 +25,6 @@ namespace Personalsystem.Controllers
         // GET: Users/Details/5
         public ActionResult Details(string id)
         {
-            var user = db.user.Find(User.Identity.GetUserId());
-            id = user.Id;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

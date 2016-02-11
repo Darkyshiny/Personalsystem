@@ -27,11 +27,14 @@
         </dd>
     </dl>
     <p>
-        @Html.ActionLink("Edit Company", "Edit", new { id = Model.Id })
+        @Html.ActionLink("Edit Company", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Carrier opertunitiest", "Index", "Vacancy", new { cId = Model.Id }, null)
     </p>
 </div>
-<h4 class="col-md-6">Company Departments</h4>
-<h4 class="col-md-6">Department Groups</h4>
+<div class="col-md-12">
+    <h4 class="col-md-6">Company Departments</h4>
+    <h4 class="col-md-6">Department Groups</h4>
+</div>
 <table class=" col-md-6">
     @foreach (Personalsystem.Models.Department item in ViewBag.DepartmentList)
     {
@@ -72,9 +75,11 @@
         </tr>
     }
 </table>
-<p class="col-md-6">
-    @Html.ActionLink("Create New Department", "Create", "Departments", new { cId = Model.Id }, null)
-</p>
-<p class="col-md-6">
-    @Html.ActionLink("Create New Group", "Create", "Groups", new { cId = Model.Id }, null) 
-</p>
+<div>
+    <p class="col-md-12" style="display:inline-block;">
+        @Html.ActionLink("Create New Department", "Create", "Departments", new { cId = Model.Id }, new { @class="col-md-6" })
+        @Html.ActionLink("Create New Group", "Create", "Groups", new { cId = Model.Id }, new { @class="col-md-6" })
+    </p>
+    @*<p class="col-md-6" style="display:inline-block;">
+    </p>*@
+</div>
