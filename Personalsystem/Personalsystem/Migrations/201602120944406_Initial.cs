@@ -3,7 +3,7 @@ namespace Personalsystem.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -156,6 +156,7 @@ namespace Personalsystem.Migrations
                         Description = c.String(),
                         cId = c.Int(nullable: false),
                         dId = c.Int(),
+                        Active = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Companies", t => t.cId, cascadeDelete: true)

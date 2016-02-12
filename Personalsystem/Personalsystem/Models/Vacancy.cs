@@ -19,22 +19,5 @@ namespace Personalsystem.Models
         [ForeignKey("dId")]
         public virtual Department Department { get; set; }
         public bool Active { get; set; }
-        
-        private PersonalSystemContext db = new PersonalSystemContext();
-
-        public List<Vacancy> ListVacancies(Company company)
-        {
-            var vacancies = db.vacancy.ToList();
-            var result = vacancies.Where(v => v.cId == company.Id && v.Active).ToList();
-            return result.OrderBy(v => v.Id).ToList();
-        }
-
-        public List<Vacancy> ListVacancies(Company company, string search)
-        {
-            var vacancies = db.vacancy.ToList();
-            var result = vacancies.Where(v => v.cId == company.Id).ToList();
-            var searchString = result.Where(r => r.Description.Contains(search)).ToString();
-            return result.OrderBy(v => v.Id).ToList();
-        }
     }
 }

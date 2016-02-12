@@ -1,0 +1,25 @@
+﻿    <div class="row">
+        <div class="col-xs-8">
+            <img src="http://www.activprayer.com/media/profile_images/default.png" id="Avatar">
+        </div>
+        <div class="col-xs-4">
+            <div class="row">
+                <div class="userbutton">
+                    @Html.Action("_GroupSchedule", "Schedule")
+                </div>
+            </div>
+            <div class="row">
+                <div class="userbutton">
+                    <a href="@Url.Action("Inbox","PM")" class="glyphlink"><span class="fa fa-envelope"></span></a>
+                    <a href="@Url.Action("Index","Manage")" class="glyphlink"><span class="fa fa-cog"></span></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="userbutton">
+                    @Html.Action("_GroupSchedule", "Schedule")
+                </div>
+            </div>
+        </div>
+    </div>
+  
+

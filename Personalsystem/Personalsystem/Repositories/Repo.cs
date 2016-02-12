@@ -26,25 +26,28 @@ namespace Personalsystem.Repositories
             userManager.AddToRole(userid, "Super Admin");
         }
 
+        public void SetUserRoleToExecutive(string userid)
+        {
+            userManager.AddToRole(userid, "Executive");
+        }
+
         public ApplicationUser FindUserByName(string name)
         {
-            ApplicationUser user = userManager.FindByName(name);
-            return user;
+            return userManager.FindByName(name);
         }
 
         public ApplicationUser FindUserById(string id)
         {
-            ApplicationUser user = userManager.FindById(id);
-            return user;
+            return userManager.FindById(id);
         }
-        public List<ApplicationUser> FindPersonalsBySearchDepId(string uname)
+        //public List<ApplicationUser> FindPersonalsBySearchDepId(string uname)
         
-        {
-            var query = db.user.Where(u => u.UserName == uname);
-            return query.ToList();
-        }
+        //{
+        //    var query = db.user.Where(u => u.UserName == uname);
+        //    return query.ToList();
+        //}
 
-        internal void SerUserRoleToAdmin(string userid, int companyid)
+        internal void SetUserRoleToAdmin(string userid, int companyid)
         {
             userManager.AddToRole(userid, "Admin");
             db.user.Find(userid).cId = companyid;
@@ -60,23 +63,23 @@ namespace Personalsystem.Repositories
             db.Dispose();
         }
 //Begin, Written by Ali 
-        public List<ApplicationUser> FindPersonalsBySearchUserName(string USERNAME) 
-        {
-            var query = db.user.Where(u => u.UserName  == USERNAME);
-            return query.ToList();
-        }
+        //public List<ApplicationUser> FindPersonalsBySearchUserName(string USERNAME) 
+        //{
+        //    var query = db.user.Where(u => u.UserName  == USERNAME);
+        //    return query.ToList();
+        //}
 
-        public List<ApplicationUser> FindPersonalsBySearchId(string USERID)
-        {
-            var query = db.user.Where(u => u.Id == USERID);
-            return query.ToList();
-        }
+        //public List<ApplicationUser> FindPersonalsBySearchId(string USERID)
+        //{
+        //    var query = db.user.Where(u => u.Id == USERID);
+        //    return query.ToList();
+        //}
 
-        public List<ApplicationUser> FindUserHandleEmploymentById(string usrid)       
-        {
-            var query = db.user.Where(u => u.Id == usrid);
-            return query.ToList();
-        }
+        //public List<ApplicationUser> FindUserHandleEmploymentById(string usrid)       
+        //{
+        //    var query = db.user.Where(u => u.Id == usrid);
+        //    return query.ToList();
+        //}
 //End
     }
 }

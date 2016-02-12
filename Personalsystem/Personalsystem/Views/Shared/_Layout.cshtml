@@ -3,53 +3,68 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Personal System</title>
     @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300italic,900,300,400italic' rel='stylesheet' type='text/css'>
+
     @Scripts.Render("~/bundles/modernizr")
 
 
 </head>
-        <body>
-            <div class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                    </div>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" id="MobileTopNav"> 
+        <div class="navbar-header">
+            <a class="navbar-brand" href="~/Home/Index"><span class="fa fa-users"></span></a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="fa fa-chevron-down"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav">
+                @Html.Partial("_MenuItems")
+            </ul>
+        </div>
+    </nav>
 
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Companies", "Index", "Companies")</li>
-                            <li>@Html.ActionLink("Apply for job", "Index", "Files")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                        @Html.Partial("_LoginPartial")
 
-                    </div>
+
+
+    <div class="container" id="topContainer">
+        <div class="row">
+            <div class="jumbotron">
+                <div class="col-sm-12">
+                    <h1><span class="fa fa-users"></span> @Html.ActionLink("Personal System", "Index", "Home")</h1>
+                </div>
+                <div id="User">
                     @if (Request.IsAuthenticated)
                     {
-                        @Html.Action("_GroupSchedule", "Schedule")
-
-                    }
+                        @Html.Partial("_User")
+                    }      
                 </div>
+            </div>
+        </div>
+        <div class="loginPartial row">
+                @Html.Partial("_LoginPartial")
+        </div>
+        <div id="menuItems">
+            <ul class="nav nav-pills">
+                @Html.Partial("_MenuItems")
+            </ul>
+        </div>
+    </div>
 
-            </div>
-            <div class="container body-content" ng-app="PersonalSystemAngular">
-                @RenderBody()
-                <hr />
-                <footer>
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-                </footer>
-            </div>
+
+
+    <div class="container body-content" ng-app="PersonalSystemAngular">
+        @RenderBody()
+    </div>
 
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/bundles/angular")
