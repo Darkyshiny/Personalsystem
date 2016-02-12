@@ -12,6 +12,7 @@ namespace Personalsystem.Repositories
     public class Repo
     {
         private PersonalSystemContext db = new PersonalSystemContext();
+        private UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new PersonalSystemContext()));
         static Random rnd = new Random();
 
         public void GetRandom(int first, int last)
@@ -22,63 +23,63 @@ namespace Personalsystem.Repositories
 
         public void SetUserRoleToSuperAdmin(string userid)
         {
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            UserManager.AddToRole(userid, "Super Admin");
+            userManager.AddToRole(userid, "Super Admin");
+        }
+
+        public void SetUserRoleToExecutive(string userid)
+        {
+            userManager.AddToRole(userid, "Executive");
         }
 
         public ApplicationUser FindUserByName(string name)
         {
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            ApplicationUser user = UserManager.FindByName(name);
-            return user;
+            return userManager.FindByName(name);
         }
 
         public ApplicationUser FindUserById(string id)
         {
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            ApplicationUser user = UserManager.FindById(id);
-            return user;
+            return userManager.FindById(id);
         }
-        public List<ApplicationUser> FindPersonalsBySearchDepId(string uname)
+        //public List<ApplicationUser> FindPersonalsBySearchDepId(string uname)
         
-        {
-            var query = db.user.Where(u => u.UserName == uname);
-            return query.ToList();
-        }
+        //{
+        //    var query = db.user.Where(u => u.UserName == uname);
+        //    return query.ToList();
+        //}
 
-        internal void SerUserRoleToAdmin(string userid, int companyid)
+        internal void SetUserRoleToAdmin(string userid, int companyid)
         {
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            UserManager.AddToRole(userid, "Admin");
+            userManager.AddToRole(userid, "Admin");
             db.user.Find(userid).cId = companyid;
             db.SaveChanges();
-            
         }
 
+        public void SaveChanges()
+        {
+            db.SaveChanges();
+        }
         public void Dispose()
         {
             db.Dispose();
         }
 //Begin, Written by Ali 
-        public List<ApplicationUser> FindPersonalsBySearchUserName(string USERNAME) 
-        {
-            var query = db.user.Where(u => u.UserName  == USERNAME);
-            return query.ToList();
-        }
+        //public List<ApplicationUser> FindPersonalsBySearchUserName(string USERNAME) 
+        //{
+        //    var query = db.user.Where(u => u.UserName  == USERNAME);
+        //    return query.ToList();
+        //}
 
-        public List<ApplicationUser> FindPersonalsBySearchId(string USERID)
-        {
-            var query = db.user.Where(u => u.Id == USERID);
-            return query.ToList();
-        }
+        //public List<ApplicationUser> FindPersonalsBySearchId(string USERID)
+        //{
+        //    var query = db.user.Where(u => u.Id == USERID);
+        //    return query.ToList();
+        //}
 
-        public List<ApplicationUser> FindUserHandleEmploymentById(string usrid)       
-        {
-            var query = db.user.Where(u => u.Id == usrid);
-            return query.ToList();
-        }
-
+        //public List<ApplicationUser> FindUserHandleEmploymentById(string usrid)       
+        //{
+        //    var query = db.user.Where(u => u.Id == usrid);
+        //    return query.ToList();
+        //}
 //End
-
     }
 }

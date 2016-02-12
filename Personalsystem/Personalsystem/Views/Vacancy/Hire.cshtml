@@ -1,0 +1,77 @@
+﻿@model Personalsystem.Models.ApplicationUser
+@using Personalsystem
+
+@{
+    ViewBag.Title = "Hire";
+}
+
+<h2>Hire</h2>
+
+@using (Html.BeginForm("Create", "Vacancy", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Company</h4>
+        <hr />
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                <div class="col-md-10">
+                    @TempData["Name"]
+                </div>
+                <br />
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Surname)
+            </dt>
+            <dd>
+                <div class="col-md-10">
+                    @TempData["Surname"]
+                </div>
+                <br />
+            </dd>
+
+            <dt>
+                @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-2" })
+            </dt>
+            <dd>
+                <div class="col-md-10">
+                    @Html.DropDownList("Department", ViewData["Departments"] as List<SelectListItem>)
+                </div>
+                <br />
+            </dd>
+
+            <dt>
+                @Html.Label("Group", htmlAttributes: new { @class = "control-label col-md-2" })
+            </dt>
+            <dd>
+                <div class="col-md-10">
+                    @Html.DropDownList("Group", ViewData["Groups"] as List<SelectListItem>)
+                </div>
+                <br />
+            </dd>
+        </dl>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

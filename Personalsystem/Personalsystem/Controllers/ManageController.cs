@@ -7,6 +7,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Personalsystem.Models;
+using System.Web.Hosting;
+using Personalsystem.DataAccessLayer;
+using Personalsystem.Repositories;
+
+
 
 namespace Personalsystem.Controllers
 {
@@ -15,6 +20,7 @@ namespace Personalsystem.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private Repo repo = new Repo();
 
         public ManageController()
         {
@@ -129,7 +135,39 @@ namespace Personalsystem.Controllers
             }
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
+        public ActionResult UploadCV()
+        {
+            return View();
+        }
+        // POST: File/Create
+        [HttpPost]
+        public ActionResult UploadCV(HttpPostedFileBase upload)
+        {
+            if (upload.FileName == null)
+            {
+                TempData["Error"] = "To save,  CV must be given";
+                return View("UploadCV");
+            }
+            string folderName = HostingEnvironment.ApplicationPhysicalPath;
+            string appId = User.Identity.GetUserId();
+            string pathString = System.IO.Path.Combine(folderName, "Users", appId);
+            System.IO.Directory.CreateDirectory(pathString);
+            string fileName = upload.FileName;
 
+            pathString = System.IO.Path.Combine(pathString, fileName);
+            if (System.IO.File.Exists(pathString))
+            {
+                System.IO.File.Delete(pathString);
+            }
+            upload.SaveAs(pathString);
+
+            // Update User
+            var user = repo.FindUserById(appId);
+            user.CVurl = pathString;
+            repo.SaveChanges();
+
+            return View();
+        }
         //
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]

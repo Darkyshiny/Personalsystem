@@ -5,14 +5,14 @@
 }
 
 
-<h2>Vacancy list for Company 1</h2>
+<h2>Vacancy list for @ViewBag.CompanyName</h2>
 
 
     @foreach (var vacancy in Model)
     {
         
             <div class="row" style="background-color:lightcoral; padding:10px; margin-bottom: 5px">
-
+                
             <div class="col-sm-1">
                 @Html.DisplayFor(modelItem => vacancy.Id)
             </div>
@@ -24,6 +24,7 @@
             </div>
         </div>
     }
+@ViewBag.Message
 
 
 

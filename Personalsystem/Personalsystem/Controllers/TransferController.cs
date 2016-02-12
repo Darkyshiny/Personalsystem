@@ -15,15 +15,16 @@ namespace Personalsystem.Controllers
 {
     public class TransferController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+        private GroupRepo groupRepo = new GroupRepo();
+        private UserRepo userRepo = new UserRepo();
         private Repo repo = new Repo();
 
         // GET: Transfer
         public ActionResult Index()
         {
 
-            var user = db.user.OrderBy(g => g.gId).ToList();
-            var group = db.group;
+            var user = userRepo.GetAll().OrderBy(g => g.gId).ToList();
+            var group = groupRepo.GetAll();
 
             return View(user);
         }
@@ -32,7 +33,7 @@ namespace Personalsystem.Controllers
         [HttpPost]
         public ActionResult Index(string search)
         {
-            var result = db.user.Where(u => u.UserName == search);
+            var result = repo.FindUserById(search);
             return View(result);
         }
 
@@ -41,9 +42,9 @@ namespace Personalsystem.Controllers
         [HttpPost]
         public ActionResult Find(string search)
         {
-            var re = repo.FindPersonalsBySearchId(search);
+            var re = repo.FindUserById(search);
        // var re = repo.FindPersonalsBySearchDepId(search);
-        return View("Index",re.ToList());
+        return View("Index",re);
         
         }
         
@@ -57,7 +58,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.user.Find(id);
+            ApplicationUser applicationUser = repo.FindUserById(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -65,41 +66,41 @@ namespace Personalsystem.Controllers
             return View(applicationUser);
         }
 
-        // GET: Transfer/Create
-        public ActionResult Create()
-        {
-            ViewBag.cId = new SelectList(db.company, "Id", "Name");
-            ViewBag.gId = new SelectList(db.group, "Id", "Name");
-            return View();
-        }
+        //// GET: Transfer/Create
+        //public ActionResult Create()
+        //{
+        //    ViewBag.cId = new SelectList(db.company, "Id", "Name");
+        //    ViewBag.gId = new SelectList(db.group, "Id", "Name");
+        //    return View();
+        //}
 
-        // POST: Transfer/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Surname,Salary,CVurl,cId,gId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
-        {
-            if (ModelState.IsValid)
-            {
-                db.user.Add(applicationUser);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+        //// POST: Transfer/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "Id,Name,Surname,Salary,CVurl,cId,gId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.user.Add(applicationUser);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
 
-            return View(applicationUser);
-        }
+        //    return View(applicationUser);
+        //}
 
         // GET: Transfer/Edit/5
         public ActionResult Edit(string id)
         {
             TransferVM transferVM = new TransferVM();
-            ApplicationUser applicationUser = db.user.Find(id);
+            ApplicationUser applicationUser = repo.FindUserById(id);
 
             transferVM.userID = applicationUser.Id;
             transferVM.groupID = applicationUser.gId;
 
-            ViewBag.groupID = new SelectList(db.group, "Id", "Name");
+            ViewBag.groupID = groupRepo.GetGroupSelectList();
 
             //var target = db.group.Select(g => new SelectListItem
             //{
@@ -113,7 +114,7 @@ namespace Personalsystem.Controllers
             //transferVM.dbgroupList = new SelectList(target);
 
 
-            ViewBag.User = applicationUser.UserName.ToString() + " - UserId:   " + transferVM.userID.ToString() + " - groupID:  " + transferVM.groupID.ToString();
+            ViewBag.User = applicationUser.UserName + " - UserId:   " + transferVM.userID + " - groupID:  " + transferVM.groupID;
 
             if (id == null)
             {
@@ -136,49 +137,49 @@ namespace Personalsystem.Controllers
         public ActionResult Edit([Bind(Include = "userID, groupID")] TransferVM transferVM)
         {
             ViewBag.User = "  UserId:   " + transferVM.userID + " - groupID: " + transferVM.groupID + " - Posted";
-            var user = db.user.First(u => u.Id == transferVM.userID);
-            ViewBag.groupID = new SelectList(db.group, "Id", "Name");
+            var user = repo.FindUserById(transferVM.userID);
+            ViewBag.groupID = groupRepo.GetGroupSelectList();
             if (ModelState.IsValid)
             {
                 //Ta User ID från viewmodell, sök i User efter användern med ID, ändra användarens grupp till viewmodells grupp.
-                db.user.Find(transferVM.userID).gId = transferVM.groupID;
-                db.SaveChanges();
+                repo.FindUserById(transferVM.userID).gId = transferVM.groupID;
+                repo.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View("Edit");
         }
 
         // GET: Transfer/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = db.user.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            return View(applicationUser);
-        }
+        //public ActionResult Delete(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ApplicationUser applicationUser = repo.FindUserById(id);
+        //    if (applicationUser == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(applicationUser);
+        //}
 
-        // POST: Transfer/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            ApplicationUser applicationUser = db.user.Find(id);
-            db.user.Remove(applicationUser);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: Transfer/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(string id)
+        //{
+        //    ApplicationUser applicationUser = repo.FindUserById(id);
+        //    db.user.Remove(applicationUser);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

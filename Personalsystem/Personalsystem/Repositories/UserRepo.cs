@@ -19,24 +19,10 @@ namespace Personalsystem.Repositories
             return db.user.ToList();
         }
 
-        //public ApplicationUser Find(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void Save(ApplicationUser Entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void Edit(ApplicationUser Entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void Delete(ApplicationUser Entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void Delete(ApplicationUser Entity)
+        {
+            db.user.Remove(Entity);
+            db.SaveChanges();
+        }
     }
 }

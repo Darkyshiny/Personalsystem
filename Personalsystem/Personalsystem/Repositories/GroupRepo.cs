@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Personalsystem.Repositories
 {
@@ -38,9 +39,15 @@ namespace Personalsystem.Repositories
             db.group.Remove(Entity);
             db.SaveChanges();
         }
+        
         public int Redir(Group Entity)
         {
             return db.department.Find(Entity.dId).cId;
+        }
+
+        public SelectList GetGroupSelectList()
+        {
+            return new SelectList(db.group, "Id", "Name");
         }
     }
 }

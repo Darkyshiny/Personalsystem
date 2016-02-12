@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,11 +17,9 @@ namespace Personalsystem.Controllers
 {
     public class UsersController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
         private Repo repo = new Repo();
         private UserRepo userRepo = new UserRepo();
        
-
         // GET: Users/Details/5
         public ActionResult Details(string id)
         {
@@ -36,7 +35,6 @@ namespace Personalsystem.Controllers
             return View(applicationUser);
         }
 
-
 //Begin, written by Ali ********************************************************
         public ActionResult Index(string search)
         {
@@ -51,8 +49,8 @@ namespace Personalsystem.Controllers
             {
                 //var re = repo.FindPersonalsBySearchId(search);
                 search = search.Trim();
-                var re = repo.FindPersonalsBySearchUserName(search);
-                return View("Index", re.ToList());
+                var re = repo.FindUserById(search);
+                return View("Index", re);
             }
             else
             {
@@ -66,10 +64,10 @@ namespace Personalsystem.Controllers
             search = search.Trim();
             if (search != null)
             {
-                var re = repo.FindPersonalsBySearchId(search);
+                var re = repo.FindUserById(search);
 
                 //var re = repo.FindPersonalsBySearchUserName(search);
-                return View("Index", re.ToList());
+                return View("Index", re);
             }
             else
             {
@@ -97,17 +95,14 @@ namespace Personalsystem.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             ApplicationUser applicationUser = repo.FindUserById(id);
-            db.user.Remove(applicationUser);
-            db.SaveChanges();
+            userRepo.Delete(applicationUser);
             return RedirectToAction("Index");
         }
 
-    
 //********************************************************************
 
         public JsonResult GetUsers()
         {
-
             var result = userRepo.GetAll();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -120,6 +115,5 @@ namespace Personalsystem.Controllers
             }
             base.Dispose(disposing);
         }
-
     }
 }
