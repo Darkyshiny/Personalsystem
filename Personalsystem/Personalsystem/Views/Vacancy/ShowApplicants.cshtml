@@ -1,4 +1,5 @@
-﻿@using Personalsystem
+﻿@model IEnumerable<Personalsystem.Models.Application>
+@using Personalsystem
 
 @{
     ViewBag.Title = "ShowApplicants";
@@ -52,8 +53,8 @@
                 </td>
                 <td>
                     <div>
-                        <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
-                            @Html.ActionLink("Cover Letter", "CoverLetter", new { id = item.Id })
+                          <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
+                           @Html.ActionLink("Cover Letter", "CoverLetter", new { id = item.Id })
                         </button>
                     </div>
                 </td>
@@ -74,7 +75,6 @@
                                 Send Email
                                 <span class="glyphicon glyphicon-envelope"></span>
                             </a>
-
                         </button>
                     </div>
                 </td>
@@ -84,9 +84,11 @@
                 </td>
             </tr>
         }
-
-
     </table>
 }
+
+
+
+
 
 

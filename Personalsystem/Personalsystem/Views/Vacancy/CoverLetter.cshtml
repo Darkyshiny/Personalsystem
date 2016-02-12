@@ -3,7 +3,7 @@
     ViewBag.Title = "CoverLetter";
 }
 
-<h2>Application</h2>
+<h2>Cover Letter </h2>
 
 <table class="table">
     <tr>
@@ -13,48 +13,4 @@
     </tr>
 
 </table>
-
-@using (Html.BeginForm("SendAppl", "Vacancy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div>
-
-        <div class="form-group">
-            <div class="col-md-offset-3">
-                @Html.Label("Cover letter", new { @class = "control-label col-md-10" })
-                <br />
-                @Html.TextArea("letter", null, 10, 100, null)
-                @Html.ValidationMessage("Cover letter", "", new { @class = "text-danger" })
-                <br />
-                <br />
-                @Html.Label("Uploaded CV")
-                <br />
-                @ViewData["File"]
-                <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
-                    <span class=" glyphicon glyphicon-briefcase" style="font-size: 1em;"></span>
-                    @Html.ActionLink("Download CV", "DownloadCV", "Vacancy", new { url = ViewData["CV"] }, null)
-                </button>
-                <br />
-                <br />
-                <br />
-                <input type="submit" value="Apply" class="btn btn-default" />
-            </div>
-            <br />
-            <br />
-
-            @if (TempData["Error"] != null)
-            {
-                <h3>@TempData["Error"] </h3>
-            }
-            <br />
-            <br />
-            <br />
-
-        </div>
-    </div>
-
-
-}
-<p>
-    @Html.ActionLink("Back to List", "ShowApplicants")
-</p>
+ @ViewBag.CoverLetter

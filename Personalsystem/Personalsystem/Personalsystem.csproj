@@ -180,6 +180,10 @@
     <Compile Include="Migrations\201602111244228_Initial.cs" />
     <Compile Include="Migrations\201602111244228_Initial.Designer.cs">
       <DependentUpon>201602111244228_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602090741109_initial.Designer.cs" />
+    <Compile Include="Migrations\201602110810351_MNIntial.cs" />
+    <Compile Include="Migrations\201602110810351_MNIntial.Designer.cs">
+      <DependentUpon>201602110810351_MNIntial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1126,6 +1130,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602111244228_Initial.resx">
       <DependentUpon>201602111244228_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602090958358_initial.resx" />
+    <EmbeddedResource Include="Migrations\201602110810351_MNIntial.resx">
+      <DependentUpon>201602110810351_MNIntial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

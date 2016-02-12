@@ -11,6 +11,7 @@ using System.Dynamic;
 using System.ComponentModel;
 using System.Net;
 using Personalsystem.Repositories;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -36,25 +37,36 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Apply
+        [Authorize(Roles = ("Job Searcher"))]
         public ActionResult Apply(int vId)
         {
+            ApplicationUser user = db.user.Find(User.Identity.GetUserId());
 
             TempData["AppId"] = vId;
             ViewBag.Description = vRepo.Find(vId).Description.ToString();
             //Get name of CV
             string applicantId = User.Identity.GetUserId();
             var cv = repo.FindUserById(applicantId);
+            var cv = db.user.Find(applicantId);
+            if (cv.CVurl != null)
+            {
             string filename = cv.CVurl.ToString();
             string result = Path.GetFileName(filename);
             ViewData.Add("CV", filename);
             ViewData.Add("File", result);
+            }
+            else
+            {
+                TempData["Error"] = "You have to load up your CV, before you can make application! Click Hello in the header.";
+            }
 
-            return View("CoverLetter");
+            return View("Apply");
         }
         // GET: Files
         public ActionResult DownloadCV(string url)
         {
-
+            if (url != null)
+            {
             byte[] filedata = System.IO.File.ReadAllBytes(url);
             string contentType = MimeMapping.GetMimeMapping(url);
 
@@ -68,6 +80,9 @@ namespace Personalsystem.Controllers
 
             return File(filedata, contentType);
         }
+            TempData["Error"] = "You have to load up your CV! Click Hello in the header.";
+            return View("Apply");
+        }
         
         // POST: File/Create
         [HttpPost]
@@ -76,20 +91,34 @@ namespace Personalsystem.Controllers
             if (letter.Length == 0)
             {
                 TempData["Error"] = "To save, Cover Letter must be given";
-                return View("CoverLetter");
+                return View("Apply");
             }
 
             // Update Application and User
             Application app = new Application();
             var user = repo.FindUserById(User.Identity.GetUserId());
+            var user = db.user.Find(User.Identity.GetUserId());
+            if (user.CVurl != null)
+            {
             app.uId = user.Id;
             app.CoverLetter = letter;
             int test;
             int.TryParse(TempData["AppId"].ToString(), out test);
             app.vId = test;
 
+                db.application.Add(app);
+                db.SaveChanges();
+                letter = "";
+                TempData["Error"] = "Your application has been submitted.";
             aRepo.Save(app);
             return RedirectToAction("Index");
+        }
+            else
+            {
+                TempData["Error"] = "You have to load up your CV! Click Welcome in the header.";
+            }
+
+            return View("Apply");
         }
         //GET: Applicants for Company
         [Authorize(Roles="Admin,Executive")]
@@ -99,7 +128,7 @@ namespace Personalsystem.Controllers
             ApplicationUser user = repo.FindUserById(User.Identity.GetUserId());
 
             int compId = Convert.ToInt32(user.cId);
-            
+
 
             TempData["CompanyId"] = compId;
             var emp = (from a in db.application
@@ -107,16 +136,6 @@ namespace Personalsystem.Controllers
                        where b.cId == compId
                        join c in db.user on a.uId equals c.Id
                        select new { b.Description, c.Name, c.Surname, c.Email, a.CoverLetter, a.Id, c.CVurl });
-            
-            
-            
-            //(from a in db.application
-            // join b in db.vacancy on a.vId equals b.Id
-            // where b.cId == compId
-            // join c in db.user on a.uId equals c.Id
-            // select new { b.Description, c.Name, c.Surname, c.Email, a.CoverLetter, a.Id, c.CVurl });
-
-
 
             //Creates a temporary Class
             List<ExpandoObject> Appl = new List<ExpandoObject>();
@@ -149,8 +168,10 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(applicationUser);
 
+            ViewBag.CoverLetter = applicationUser.CoverLetter;
+
+            return View(); 
         }
        
         public ActionResult Hire(string id)
@@ -171,8 +192,7 @@ namespace Personalsystem.Controllers
                 TempData["Surname"] = item.Surname;
             }
 
-            //int CId = Convert.ToInt32(TempData["CompanyId"]);
-            int CId = 1;
+            int CId = Convert.ToInt32(TempData["CompanyId"]);
 
             List<Department> DepartmentList = dRepo.GetAll().Where(r => r.cId == CId).ToList();
             List<Group> GroupList = gRepo.GetAll().Where(r => r.department.cId == CId).ToList();
@@ -197,7 +217,7 @@ namespace Personalsystem.Controllers
         [HttpPost]
         public ActionResult Apply(string letter)
         {
-            if (letter.Length == 0 )
+            if (letter.Length == 0)
             {
                 TempData["Error"] = "To save, Cover Letter must be given";
                 return RedirectToAction("Index");
@@ -220,17 +240,25 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = (""))]
+        [Authorize(Roles = ("Executive"))]
         public ActionResult Create(int Department, int Group)
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser ExUser = db.user.Find(User.Identity.GetUserId());
+
                 int appId = Convert.ToInt32(TempData["ApplId"]);
                 string empId = TempData["EmpId"].ToString();
 
-                var emp = repo.FindUserById(empId);
-                emp.cId = Convert.ToInt32(TempData["CompanyId"]);
+                var emp = db.user.Find(empId);
+                emp.cId = ExUser.cId;
                 emp.gId = Group;
+                db.SaveChanges();
+
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+
+                UserManager.RemoveFromRole(emp.Id, "Job Searcher");
+                UserManager.AddToRole(emp.Id, "Employee");
 
                 //delete other applicants
                 var actvac = aRepo.Find(appId);
@@ -240,6 +268,14 @@ namespace Personalsystem.Controllers
                 {
                     aRepo.RemoveRange(del);
                 }
+
+                //delete other applications same person applied for
+                var del2 = db.application.Where(a => a.uId == actvac.uId);
+                if (del2 != null)
+                {
+                    db.application.RemoveRange(del2);
+                }
+
 
                 //Null vacancy
                 var vac = vRepo.Find(actvac.vId);
