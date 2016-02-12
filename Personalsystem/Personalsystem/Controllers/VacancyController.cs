@@ -47,7 +47,6 @@ namespace Personalsystem.Controllers
             //Get name of CV
             string applicantId = User.Identity.GetUserId();
             var cv = repo.FindUserById(applicantId);
-            var cv = db.user.Find(applicantId);
             if (cv.CVurl != null)
             {
             string filename = cv.CVurl.ToString();
@@ -97,7 +96,6 @@ namespace Personalsystem.Controllers
             // Update Application and User
             Application app = new Application();
             var user = repo.FindUserById(User.Identity.GetUserId());
-            var user = db.user.Find(User.Identity.GetUserId());
             if (user.CVurl != null)
             {
             app.uId = user.Id;
