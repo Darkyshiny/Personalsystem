@@ -53,9 +53,8 @@
                 </td>
                 <td>
                     <div>
-                        @item.CoverLetter
-                        <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
-                            @Html.ActionLink("Cover Letter", "CoverLetter", new { id = item.Id })
+                          <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;">
+                           @Html.ActionLink("Cover Letter", "CoverLetter", new { id = item.Id })
                         </button>
                     </div>
                 </td>
@@ -76,7 +75,6 @@
                                 Send Email
                                 <span class="glyphicon glyphicon-envelope"></span>
                             </a>
-
                         </button>
                     </div>
                 </td>
@@ -86,9 +84,11 @@
                 </td>
             </tr>
         }
-
-
     </table>
 }
+
+
+
+
 
 
