@@ -163,10 +163,9 @@
     <Compile Include="Controllers\BlogPostsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
-    <Compile Include="Controllers\HandleEmploymentrsController.cs" />
+    <Compile Include="Controllers\HandleEmploymentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PMController.cs" />
@@ -178,9 +177,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602081426099_Initial.cs" />
-    <Compile Include="Migrations\201602081426099_Initial.Designer.cs">
-      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602111244228_Initial.cs" />
+    <Compile Include="Migrations\201602111244228_Initial.Designer.cs">
+      <DependentUpon>201602111244228_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -200,6 +199,7 @@
     <Compile Include="Models\VM\PrivateMessageVM.cs" />
     <Compile Include="Models\VM\TransferVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ApplicationRepo.cs" />
     <Compile Include="Repositories\BlogPostRepo.cs" />
     <Compile Include="Repositories\CompanyRepo.cs" />
     <Compile Include="Repositories\DepartmentRepo.cs" />
@@ -208,7 +208,9 @@
     <Compile Include="Repositories\PMRepo.cs" />
     <Compile Include="Repositories\Repo.cs" />
     <Compile Include="Repositories\RepoPlus.cs" />
+    <Compile Include="Repositories\ScheduleRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
+    <Compile Include="Repositories\VacancyRepo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1106,6 +1108,9 @@
     <Content Include="Views\Vacancy\ShowApplicants.cshtml" />
     <Content Include="Views\Vacancy\Hire.cshtml" />
     <Content Include="Views\Manage\UploadCV.cshtml" />
+    <Content Include="Users\8a406331-9f88-46ad-9a11-cf6da0d7eb55\Collections.pdf" />
+    <Content Include="Views\Schedule\Create.cshtml" />
+    <Content Include="Views\Schedule\_GroupSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1117,6 +1122,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602111244228_Initial.resx">
+      <DependentUpon>201602111244228_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

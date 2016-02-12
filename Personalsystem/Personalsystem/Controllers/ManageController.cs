@@ -164,6 +164,7 @@ namespace Personalsystem.Controllers
             // Update User
             var user = repo.FindUserById(appId);
             user.CVurl = pathString;
+            repo.SaveChanges();
 
             return View();
         }

@@ -14,14 +14,14 @@ namespace Personalsystem.Controllers
 {
     public class HandleEmploymentsController : Controller
     {
-        private PersonalSystemContext db = new PersonalSystemContext();
+        //private PersonalSystemContext db = new PersonalSystemContext();
         private Repo repo = new Repo(); 
 
         // GET: HandleEmploymentrs
         public ActionResult Index()
         {
-            var user = db.user.Include(a => a.company).Include(a => a.group);
-            return View(user.ToList());
+            //var user = db.user.Include(a => a.company).Include(a => a.group);
+            return View();
         }
 
 
@@ -33,7 +33,7 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser applicationUser = db.user.Find(id);
+            ApplicationUser applicationUser = repo.FindUserById(id);
             if (applicationUser == null)
             {
                 return HttpNotFound();
@@ -48,8 +48,8 @@ namespace Personalsystem.Controllers
             if (search != null)
             {
                 search = search.Trim();
-                var re = repo.FindUserHandleEmploymentById(search);
-                return View("Index", re.ToList());
+                var re = repo.FindUserById(search);
+                return View("Index", re);
             }
             else
             {
@@ -59,46 +59,46 @@ namespace Personalsystem.Controllers
 
         ////////////////////////////////////////////////////////////////end
 
-        // GET: HandleEmploymentrs/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = db.user.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.cId = new SelectList(db.company, "Id", "Name", applicationUser.cId);
-            ViewBag.gId = new SelectList(db.group, "Id", "Name", applicationUser.gId);
-            return View(applicationUser);
-        }
+        //// GET: HandleEmploymentrs/Edit/5
+        //public ActionResult Edit(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ApplicationUser applicationUser = repo.FindUserById(id);
+        //    if (applicationUser == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.cId = new SelectList(db.company, "Id", "Name", applicationUser.cId);
+        //    ViewBag.gId = new SelectList(db.group, "Id", "Name", applicationUser.gId);
+        //    return View(applicationUser);
+        //}
 
-        // POST: HandleEmploymentrs/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Surname,Salary,CVurl,start,end,cId,gId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(applicationUser).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.cId = new SelectList(db.company, "Id", "Name", applicationUser.cId);
-            ViewBag.gId = new SelectList(db.group, "Id", "Name", applicationUser.gId);
-            return View(applicationUser);
-        }
+        //// POST: HandleEmploymentrs/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "Id,Name,Surname,Salary,CVurl,start,end,cId,gId,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(applicationUser).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.cId = new SelectList(db.company, "Id", "Name", applicationUser.cId);
+        //    ViewBag.gId = new SelectList(db.group, "Id", "Name", applicationUser.gId);
+        //    return View(applicationUser);
+        //}
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

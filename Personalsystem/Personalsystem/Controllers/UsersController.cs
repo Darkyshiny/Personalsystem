@@ -49,8 +49,8 @@ namespace Personalsystem.Controllers
             {
                 //var re = repo.FindPersonalsBySearchId(search);
                 search = search.Trim();
-                var re = repo.FindPersonalsBySearchUserName(search);
-                return View("Index", re.ToList());
+                var re = repo.FindUserById(search);
+                return View("Index", re);
             }
             else
             {
@@ -64,10 +64,10 @@ namespace Personalsystem.Controllers
             search = search.Trim();
             if (search != null)
             {
-                var re = repo.FindPersonalsBySearchId(search);
+                var re = repo.FindUserById(search);
 
                 //var re = repo.FindPersonalsBySearchUserName(search);
-                return View("Index", re.ToList());
+                return View("Index", re);
             }
             else
             {
@@ -103,7 +103,6 @@ namespace Personalsystem.Controllers
 
         public JsonResult GetUsers()
         {
-
             var result = userRepo.GetAll();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
