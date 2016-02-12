@@ -1,0 +1,18 @@
+﻿@if (User.IsInRole("Super Admin") || User.IsInRole("Job Searcher"))
+{
+<li>@Html.ActionLink("Companies", "Index", "Companies")</li>
+}
+else
+{
+<li>@Html.ActionLink("Company", "Index", "Companies")</li>
+}
+
+@if (User.IsInRole("Job Searcher"))
+{
+<li>@Html.ActionLink("Apply for job", "Index", "Files")</li>
+}
+@if (!User.IsInRole("Job Searcher"))
+{
+<li>@Html.ActionLink("Schedule", "Index", "Schedule")</li>
+}
+<li>@Html.ActionLink("Contact", "Contact", "Home")</li>

@@ -178,13 +178,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602081426099_Initial.cs" />
-    <Compile Include="Migrations\201602081426099_Initial.Designer.cs">
-      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602090741109_initial.cs" />
-    <Compile Include="Migrations\201602090741109_initial.Designer.cs">
-      <DependentUpon>201602090741109_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602101325406_initial.cs" />
+    <Compile Include="Migrations\201602101325406_initial.Designer.cs">
+      <DependentUpon>201602101325406_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1100,6 +1096,18 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\HandleEmploymentrs\Edit.cshtml" />
     <Content Include="Views\HandleEmploymentrs\Index.cshtml" />
+    <Content Include="Views\BlogPosts\Create.cshtml" />
+    <Content Include="Views\BlogPosts\Delete.cshtml" />
+    <Content Include="Views\BlogPosts\Details.cshtml" />
+    <Content Include="Views\BlogPosts\Edit.cshtml" />
+    <Content Include="Views\BlogPosts\Index.cshtml" />
+    <Content Include="Views\Schedule\Create.cshtml" />
+    <Content Include="Views\Schedule\_GroupSchedule.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Vacancy\Apply.cshtml" />
+    <Content Include="Views\Shared\_MenuItems.cshtml" />
+    <Content Include="Views\Shared\_User.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1113,8 +1121,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602081426099_Initial.resx">
-      <DependentUpon>201602081426099_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602101325406_initial.resx">
+      <DependentUpon>201602101325406_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
