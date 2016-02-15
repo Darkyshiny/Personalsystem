@@ -5,13 +5,13 @@
 }
 
 
-<h2>Vacancy list for @ViewBag.CompanyName</h2>
+<h2>Vacancy list </h2>
 
 
     @foreach (var vacancy in Model)
     {
         
-            <div class="row" style="background-color:lightcoral; padding:10px; margin-bottom: 5px">
+            <div class="row vacancy">
                 
             <div class="col-sm-1">
                 @Html.DisplayFor(modelItem => vacancy.Id)
@@ -20,7 +20,7 @@
                 @Html.DisplayFor(modelItem => vacancy.Description)
             </div>
             <div class="col-sm-5">
-                <button class="btn-sm btn-default" style="height:100%; border-radius: 7px; border-style: none;"><span class=" glyphicon glyphicon-briefcase" style="font-size: 1em;">&nbsp</span>@Html.ActionLink("Apply", "Apply", "Vacancy", new { vId = vacancy.Id }, null)</button>
+                <button class="btn-sm btn-default applybutton"><span class=" glyphicon glyphicon-briefcase">&nbsp</span>@Html.ActionLink("Apply", "Apply", "Vacancy", new { vId = vacancy.Id }, null)</button>
             </div>
         </div>
     }

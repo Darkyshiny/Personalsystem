@@ -156,6 +156,38 @@
     }
 
 
+    /*Company CSS*/
+
+    .contentrow{
+        margin-top: 20px;
+    }
+
+    .contentdiv {
+        background-color: #eeaeae;
+        height: 200px;
+        padding: 20px;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    /*Vacancy CSS*/
+    
+    .vacancy{
+        background-color:lightcoral; 
+        padding:10px; 
+        margin-bottom: 5px;
+        height:100%; 
+        border-radius: 7px; 
+        border-style: none;
+    }
+    .applybutton{
+        font-size: 1em;
+        
+
+    }
+
+
+
     /*Schedule CSS*/
 
     .weekdayCol .col-xs-1 {
@@ -269,15 +301,16 @@
     }
 
     /* Small Devices, Tablets */
-    @media only screen and (min-width : 768px) {
-        #topContainer {
-            display:block;
-        }
-        #MobileTopNav {
-            display:none;
-        }
-       
-        .nav > li > a{
+@media only screen and (min-width : 768px) {
+    #topContainer {
+        display: block;
+    }
+
+    #MobileTopNav {
+        display: none;
+    }
+
+    .nav > li > a {
         border-radius: 20px;
         font-size: 1.2em;
         font-weight: 300;
@@ -285,10 +318,9 @@
 
     /* Medium Devices, Desktops */
     @media only screen and (min-width : 992px) {
-
     }
 
     /* Large Devices, Wide Screens */
     @media only screen and (min-width : 1200px) {
-
     }
+}

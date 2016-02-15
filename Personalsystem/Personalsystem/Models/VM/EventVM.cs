@@ -1,4 +1,5 @@
 ﻿using Personalsystem.DataAccessLayer;
+using Personalsystem.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Personalsystem.Models.VM
     public class EventVM
     {
         PersonalSystemContext db = new PersonalSystemContext();
-        public Event e = new Event();
+        public ScheduleRepo e = new ScheduleRepo();
 
         public List<Event> events()
         {

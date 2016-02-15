@@ -18,14 +18,19 @@ namespace Personalsystem.Controllers
     {
         private CompanyRepo companyRepo = new CompanyRepo();
         private Repo repo = new Repo();
+        private PersonalSystemContext db = new PersonalSystemContext();
 
         // GET: Companies
         public ActionResult Index()
         {
-            if (User.IsInRole("Admin") || User.IsInRole("Executive") || User.IsInRole("Employee"))
+            if (Request.IsAuthenticated)
             {
-                ApplicationUser user = repo.FindUserById(User.Identity.GetUserId());
-                return RedirectToAction("Details", new { id = user.cId });
+                if (User.IsInRole("Admin") || User.IsInRole("Executive") || User.IsInRole("Employee"))
+                {
+                    ApplicationUser user = repo.FindUserById(User.Identity.GetUserId());
+                    return RedirectToAction("Details", new { id = user.cId });
+                }
+                return View(companyRepo.GetAll());
             }
             return View(companyRepo.GetAll());
         }
@@ -33,10 +38,13 @@ namespace Personalsystem.Controllers
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
+            var tempblogs = db.post.Where(c => c.cId == id).ToList();
             List<Department> DepartmentList = companyRepo.GetCompanyDepartments(id.Value);
             List<Group> GroupList = companyRepo.GetCompanyGroups(id.Value);
             ViewBag.GroupList = GroupList;
             ViewBag.DepartmentList = DepartmentList;
+            ViewBag.BlogPostList = tempblogs;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

@@ -195,7 +195,11 @@ using System.Linq;
                 RoleManager.Create(new IdentityRole("Employee"));
                 RoleManager.Create(new IdentityRole("Job Searcher"));       
             }
+
             var admin = new ApplicationUser { UserName = "admin@personalsystem.com", Name = "Admeen", Surname = "Admeenian", Email = "admin@personalsystem.com" };
+            var companyadmin = new ApplicationUser { UserName = "admin@company1.com", Name = "Compadminian", Surname = "Adminsson", Email = "admin@company1.com" };
+            var executive = new ApplicationUser { UserName = "executive@company1.com", Name = "Executron", Surname = "Serfmurder", Email = "executive@company1.com" };
+            var jobsearcher = new ApplicationUser { UserName = "jobsearcher@unemployed.com", Name = "Job", Surname = "Less", Email = "jobsearcher@unemployed.com" };
 
             if (!context.user.Any(u => u.UserName == "admin@personalsystem.com"))
             {
@@ -204,6 +208,39 @@ using System.Linq;
                 if (result.Succeeded)
                 {
                     UserManager.AddToRole(admin.Id, "Super Admin");
+                }
+
+            }
+
+            if (!context.user.Any(u => u.UserName == "admin@company1.com"))
+            {
+
+                var result = UserManager.Create(companyadmin, "admin1");
+                if (result.Succeeded)
+                {
+                    UserManager.AddToRole(companyadmin.Id, "Admin");
+                }
+
+            }
+
+            if (!context.user.Any(u => u.UserName == "executive@company1.com"))
+            {
+
+                var result = UserManager.Create(executive, "executive");
+                if (result.Succeeded)
+                {
+                    UserManager.AddToRole(executive.Id, "Executive");
+                }
+
+            }
+
+            if (!context.user.Any(u => u.UserName == "jobsearcher@unemployed.com"))
+            {
+
+                var result = UserManager.Create(jobsearcher, "jobsearcher");
+                if (result.Succeeded)
+                {
+                    UserManager.AddToRole(jobsearcher.Id, "Job Searcher");
                 }
 
             }
@@ -277,7 +314,7 @@ using System.Linq;
                     ApplicationUser currentuser = context.user.Find(user.Id);
                     int dId = context.group.Find(user.gId.Value).dId;
                     int companyid = context.department.Find(dId).cId;
-                    currentuser.cId = companyid;
+                    currentuser.cId = 1;
                 }
                 context.SaveChanges();
             }

@@ -15,7 +15,16 @@
         @Html.ActionLink("Last week", "Index", "Schedule", new { setWeek = Model.week - 1 }, null)
     </div>
     <div class="col-xs-8">
-        @Html.ActionLink("Create event", "Create", "Schedule")
+        @if (User.IsInRole("Admin") || User.IsInRole("Executive"))
+        {
+            <nav>
+                <ul class="nav nav-pills">
+                    <li>
+                        @Html.ActionLink("Create event", "Create", "Schedule")
+                    </li>
+                </ul>
+            </nav>
+        }
     </div>
     <div class="col-xs-2">
         @Html.ActionLink("Next week", "Index", "Schedule", new { setWeek = Model.week + 1 }, null)

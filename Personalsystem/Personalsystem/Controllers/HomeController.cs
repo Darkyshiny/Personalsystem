@@ -10,7 +10,16 @@ namespace Personalsystem.Controllers
     {
         public ActionResult Index()
         {
+            if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("Employee") || User.IsInRole("Executive"))
+                {
+                    return RedirectToAction("Index", "Companies");
+                }
+                return View();
+            }
             return View();
+
         }
 
         public ActionResult About()

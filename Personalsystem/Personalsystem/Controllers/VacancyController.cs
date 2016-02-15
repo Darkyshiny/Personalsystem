@@ -26,18 +26,25 @@ namespace Personalsystem.Controllers
         private Repo repo = new Repo();
 
         // GET: Vacancy
-        public ActionResult Index(int cId)
+        public ActionResult Index()
         {
-            var companyId = cRepo.Find(cId);
-            var vacancy = vRepo.ListVacancies(companyId);
-            if (vacancy.Count <= 0)
-                ViewBag.Message = "Sorry no vacancies for the company at the moment. Please check back later!";
-            ViewBag.CompanyName = companyId.Name;
-            return View(vacancy);
-        }
+            var company = db.company.ToList();
+            List<Vacancy> result = new List<Vacancy>();
+
+            foreach (var c in company)
+            {
+                var temp = vRepo.ListVacancies(c);
+                foreach (var v in temp)
+                {
+                    result.Add(v);
+                }
+            }
+                    return View(result);
+            }
+            
 
         // GET: Apply
-        [Authorize(Roles = ("Job Searcher"))]
+        [Authorize(Roles = "Job Searcher")]
         public ActionResult Apply(int vId)
         {
             ApplicationUser user = db.user.Find(User.Identity.GetUserId());

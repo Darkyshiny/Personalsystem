@@ -21,6 +21,8 @@ namespace Personalsystem.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private Repo repo = new Repo();
+        private PersonalSystemContext db = new PersonalSystemContext();
+        
 
         public ManageController()
         {
@@ -162,9 +164,8 @@ namespace Personalsystem.Controllers
             upload.SaveAs(pathString);
 
             // Update User
-            var user = repo.FindUserById(appId);
-            user.CVurl = pathString;
-            repo.SaveChanges();
+            repo.FindUserById(appId).CVurl = pathString;
+            db.SaveChanges();
 
             return View();
         }
