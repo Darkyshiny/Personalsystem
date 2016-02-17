@@ -177,9 +177,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602120944406_Initial.cs" />
-    <Compile Include="Migrations\201602120944406_Initial.Designer.cs">
-      <DependentUpon>201602120944406_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602121249203_initial.cs" />
+    <Compile Include="Migrations\201602121249203_initial.Designer.cs">
+      <DependentUpon>201602121249203_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -221,6 +221,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\default.png" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -1111,6 +1112,8 @@
     <Content Include="Users\8a406331-9f88-46ad-9a11-cf6da0d7eb55\Collections.pdf" />
     <Content Include="Views\Schedule\_GroupSchedule.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
+    <Content Include="Views\Shared\_MenuItems.cshtml" />
+    <Content Include="Views\Shared\_User.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1124,8 +1127,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602120944406_Initial.resx">
-      <DependentUpon>201602120944406_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602121249203_initial.resx">
+      <DependentUpon>201602121249203_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

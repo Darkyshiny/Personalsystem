@@ -4,82 +4,103 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 
 <div class="col-md-12">
-    <h4>Company</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <div class="row contentrow">
+        <div class="col-sm-4">
+            <div class="contentdiv">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="contentdiv">
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-    <p>
-        @Html.ActionLink("Edit Company", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Carrier opertunitiest", "Index", "Vacancy", new { cId = Model.Id }, null)
-    </p>
-</div>
-<div class="col-md-12">
-    <h4 class="col-md-6">Company Departments</h4>
-    <h4 class="col-md-6">Department Groups</h4>
-</div>
-<table class=" col-md-6">
-    @foreach (Personalsystem.Models.Department item in ViewBag.DepartmentList)
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="contentdiv">
+
+            </div>
+        </div>
+    </div>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Executive"))
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(loopitem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(loopitem => item.Description)
-            </td>
-            <td>
-                @Html.ActionLink("Edit Department", "Edit", "Departments", new { id = item.Id }, null) |
-                @Html.ActionLink("Details", "Details", "Departments", new { id = item.Id }, null) |
-                @Html.ActionLink("Delete", "Delete", "Departments", new { id = item.Id }, null)
-            </td>
-        </tr>
-    }
-</table>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
 
-<table class="col-md-6">
-    @foreach (Personalsystem.Models.Group item in ViewBag.GroupList)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(loopitem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(loopitem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(loopitem => item.department.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit Group", "Edit", "Groups", new { id = item.Id }, null) |
-                @Html.ActionLink("Details", "Details", "Groups", new { id = item.Id }, null) |
-                @Html.ActionLink("Delete", "Delete", "Groups", new { id = item.Id }, null)
-            </td>
-        </tr>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
+        <p>
+            @Html.ActionLink("Edit Company", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Career opportunities", "Index", "Vacancy", new { cId = Model.Id }, null)
+        </p>
+
+        <div class="col-md-12">
+            <h4 class="col-md-6">Company Departments</h4>
+            <h4 class="col-md-6">Department Groups</h4>
+        </div>
+        <table class=" col-md-6">
+            @foreach (Personalsystem.Models.Department item in ViewBag.DepartmentList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(loopitem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(loopitem => item.Description)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit Department", "Edit", "Departments", new { id = item.Id }, null) |
+                        @Html.ActionLink("Details", "Details", "Departments", new { id = item.Id }, null) |
+                        @Html.ActionLink("Delete", "Delete", "Departments", new { id = item.Id }, null)
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <table class="col-md-6">
+            @foreach (Personalsystem.Models.Group item in ViewBag.GroupList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(loopitem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(loopitem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(loopitem => item.department.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit Group", "Edit", "Groups", new { id = item.Id }, null) |
+                        @Html.ActionLink("Details", "Details", "Groups", new { id = item.Id }, null) |
+                        @Html.ActionLink("Delete", "Delete", "Groups", new { id = item.Id }, null)
+                    </td>
+                </tr>
+            }
+        </table>
+        <div>
+            <p class="col-md-12" style="display:inline-block;">
+                @Html.ActionLink("Create New Department", "Create", "Departments", new { cId = Model.Id }, new { @class = "col-md-6" })
+                @Html.ActionLink("Create New Group", "Create", "Groups", new { cId = Model.Id }, new { @class = "col-md-6" })
+            </p>
+            @*<p class="col-md-6" style="display:inline-block;">
+                </p>*@
+        </div>
+
     }
-</table>
-<div>
-    <p class="col-md-12" style="display:inline-block;">
-        @Html.ActionLink("Create New Department", "Create", "Departments", new { cId = Model.Id }, new { @class="col-md-6" })
-        @Html.ActionLink("Create New Group", "Create", "Groups", new { cId = Model.Id }, new { @class="col-md-6" })
-    </p>
-    @*<p class="col-md-6" style="display:inline-block;">
-    </p>*@
 </div>

@@ -9,10 +9,17 @@ else
 
 @if (User.IsInRole("Job Searcher"))
 {
-<li>@Html.ActionLink("Apply for job", "Index", "Vacancy")</li>
+<li>@Html.ActionLink("Apply for a job", "Index", "Vacancy")</li>
 }
-@if (!User.IsInRole("Job Searcher"))
+@if (User.IsInRole("Admin") || User.IsInRole("Executive"))
 {
-<li>@Html.ActionLink("Schedule", "Index", "Schedule")</li>
+<li>@Html.ActionLink("View applications", "Hire", "Vacancy")</li>
 }
+
+@if (Request.IsAuthenticated && !User.IsInRole("Job Searcher") && !User.IsInRole("Super Admin"))
+{
+    <li>@Html.ActionLink("Schedule", "Index", "Schedule")</li>
+}
+
+
 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>

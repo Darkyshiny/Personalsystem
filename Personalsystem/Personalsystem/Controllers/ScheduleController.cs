@@ -58,13 +58,13 @@ namespace Personalsystem.Controllers
             return View(vm);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Executive")]
         public ActionResult Create()
         {
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Executive")]
         [HttpPost]
         public ActionResult Create([Bind(Include = "Title,Content,Time")] Event e)
         {
