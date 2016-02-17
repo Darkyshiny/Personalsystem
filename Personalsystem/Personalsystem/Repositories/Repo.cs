@@ -4,6 +4,7 @@ using Personalsystem.DataAccessLayer;
 using Personalsystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -56,6 +57,12 @@ namespace Personalsystem.Repositories
 
         public void SaveChanges()
         {
+            db.SaveChanges();
+        }
+        public void Edit(string userid, string path)
+        {
+            var user = db.user.Find(userid);
+            user.CVurl = path;
             db.SaveChanges();
         }
         public void Dispose()

@@ -28,8 +28,9 @@ namespace Personalsystem.Controllers
         // GET: Vacancy
         public ActionResult Index(int cId)
         {
-            var companyId = cRepo.Find(cId);
-            var vacancy = vRepo.ListVacancies(companyId);
+           var companyId = cRepo.Find(cId);
+           TempData["OrgCid"] = companyId.Id;
+           var vacancy = vRepo.ListVacancies(companyId);
             if (vacancy.Count <= 0)
                 ViewBag.Message = "Sorry no vacancies for the company at the moment. Please check back later!";
             ViewBag.CompanyName = companyId.Name;
@@ -37,10 +38,11 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Apply
-        [Authorize(Roles = ("Job Searcher"))]
+        [Authorize(Roles="Job Searcher")]
         public ActionResult Apply(int vId)
         {
             ApplicationUser user = db.user.Find(User.Identity.GetUserId());
+            //int vId = 1;
 
             TempData["AppId"] = vId;
             ViewBag.Description = vRepo.Find(vId).Description.ToString();
@@ -109,7 +111,7 @@ namespace Personalsystem.Controllers
                 letter = "";
                 TempData["Error"] = "Your application has been submitted.";
             aRepo.Save(app);
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
         }
             else
             {
@@ -125,7 +127,7 @@ namespace Personalsystem.Controllers
 
             ApplicationUser user = repo.FindUserById(User.Identity.GetUserId());
 
-            int compId = Convert.ToInt32(user.cId);
+            int compId = user.cId.Value;
 
 
             TempData["CompanyId"] = compId;

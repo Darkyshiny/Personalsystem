@@ -8,12 +8,13 @@
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Description)
+           
         </th>
     </tr>
 
 </table>
 
-@using (Html.BeginForm("SendAppl", "Vacancy", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("SendAppl", "Vacancy",null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div>
@@ -36,7 +37,7 @@
                 <br />
                 <br />
                 <br />
-                <input type="submit" value="Apply" class="btn btn-default" />
+                 <input type="submit" value="Apply" class="btn btn-default"  />
             </div>
             <br />
             <br />
@@ -55,6 +56,6 @@
 
 @ViewBag.Message
 <p>
-    @Html.ActionLink("Back to List", "Index", new { cId = TempData["CompanyId"] })
+    @Html.ActionLink("Back to List", "Index", new { cId = TempData["OrgCid"]})
 </p>
 

@@ -10,6 +10,7 @@ using Personalsystem.Models;
 using System.Web.Hosting;
 using Personalsystem.DataAccessLayer;
 using Personalsystem.Repositories;
+using System.Data.Entity;
 
 
 
@@ -21,6 +22,7 @@ namespace Personalsystem.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private Repo repo = new Repo();
+        private PersonalSystemContext db = new PersonalSystemContext();
 
         public ManageController()
         {
@@ -162,9 +164,9 @@ namespace Personalsystem.Controllers
             upload.SaveAs(pathString);
 
             // Update User
-            var user = repo.FindUserById(appId);
-            user.CVurl = pathString;
-            repo.SaveChanges();
+           
+            repo.Edit(appId, pathString);
+           
 
             return View();
         }

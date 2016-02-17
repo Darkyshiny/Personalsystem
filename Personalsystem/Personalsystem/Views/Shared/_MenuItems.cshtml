@@ -9,7 +9,7 @@ else
 
 @if (User.IsInRole("Job Searcher"))
 {
-<li>@Html.ActionLink("Apply for job", "Index", "Files")</li>
+<li>@Html.ActionLink("Apply for job", "Index", "Vacancy")</li>
 }
 @if (!User.IsInRole("Job Searcher"))
 {
